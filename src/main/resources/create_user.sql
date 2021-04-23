@@ -1,0 +1,10 @@
+-- Role: karyama
+-- DROP ROLE karyama;
+
+CREATE ROLE karyama WITH
+  LOGIN
+  SUPERUSER
+  INHERIT
+  CREATEDB
+  CREATEROLE
+  NOREPLICATION;
