@@ -34,7 +34,7 @@ public class GroupDao implements Dao<Group> {
 
     @Override
     public Optional<Group> get(int id) throws DAOException {
-        String sql = "SELECT group_name FROM group WHERE group_id = ?";
+        String sql = "SELECT group_name FROM groups WHERE group_id = ?";
         Group group = null;
         try (Connection connection = daoUtil.getConnection();
                 PreparedStatement statement = connection
@@ -47,14 +47,14 @@ public class GroupDao implements Dao<Group> {
                 }
             }
         } catch (SQLException e) {
-            throw new DAOException("Can't get group by ID =" + id, e);
+            throw new DAOException("Can't get group by ID = " + id, e);
         }
-        return Optional.of(group);
+        return Optional.ofNullable(group);
     }
 
     @Override
     public List<Group> getAll() throws DAOException {
-        String sql = "SELECT group_id, group_name FROM group";
+        String sql = "SELECT group_id, group_name FROM groups";
         List<Group> groups = new ArrayList<>();
         try (Connection connection = daoUtil.getConnection();
                 Statement statement = connection.createStatement()) {
@@ -73,7 +73,7 @@ public class GroupDao implements Dao<Group> {
 
     @Override
     public void update(Group group) throws DAOException {
-        String sql = "UPDATE groups SET group_name = ? WHERE proup_id = ?";
+        String sql = "UPDATE groups SET group_name = ? WHERE group_id = ?";
         try (Connection connection = daoUtil.getConnection();
                 PreparedStatement statement = connection
                         .prepareStatement(sql)) {
