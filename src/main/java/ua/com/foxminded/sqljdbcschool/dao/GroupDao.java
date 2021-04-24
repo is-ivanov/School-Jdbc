@@ -12,8 +12,8 @@ import java.util.Optional;
 import ua.com.foxminded.sqljdbcschool.entity.Group;
 
 public class GroupDao implements Dao<Group> {
-    private static final String GROUP_ID = "group_id";
-    private static final String GROUP_NAME = "group_name";
+    private static final String FIELD_GROUP_ID = "group_id";
+    private static final String FIELD_GROUP_NAME = "group_name";
     private DaoUtils daoUtil = new DaoUtils();
 
     @Override
@@ -33,7 +33,7 @@ public class GroupDao implements Dao<Group> {
     }
 
     @Override
-    public Optional<Group> get(int groupId) throws DAOException {
+    public Optional<Group> getById(int groupId) throws DAOException {
         String sql = "SELECT group_name FROM groups WHERE group_id = ?";
         Group group = null;
         try (Connection connection = daoUtil.getConnection();
@@ -43,7 +43,7 @@ public class GroupDao implements Dao<Group> {
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    group = new Group(groupId, resultSet.getString(GROUP_NAME));
+                    group = new Group(groupId, resultSet.getString(FIELD_GROUP_NAME));
                 }
             }
         } catch (SQLException e) {
@@ -60,8 +60,8 @@ public class GroupDao implements Dao<Group> {
                 Statement statement = connection.createStatement()) {
             try (ResultSet resultSet = statement.executeQuery(sql)) {
                 while (resultSet.next()) {
-                    Group group = new Group(resultSet.getInt(GROUP_ID),
-                            resultSet.getString(GROUP_NAME));
+                    Group group = new Group(resultSet.getInt(FIELD_GROUP_ID),
+                            resultSet.getString(FIELD_GROUP_NAME));
                     groups.add(group);
                 }
             }

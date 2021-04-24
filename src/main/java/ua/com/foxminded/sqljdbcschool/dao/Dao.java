@@ -7,7 +7,7 @@ public interface Dao<T> {
 
     void add(T t) throws DAOException;
     
-    Optional<T> get(int id) throws DAOException;
+    Optional<T> getById(int id) throws DAOException;
     
     List<T> getAll() throws DAOException;
     

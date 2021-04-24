@@ -12,10 +12,10 @@ import java.util.Optional;
 import ua.com.foxminded.sqljdbcschool.entity.Student;
 
 public class StudentDao implements Dao<Student> {
-    private static final String STUDENT_ID = "student_id";
-    private static final String GROUP_ID = "group_id";
-    private static final String FIRST_NAME = "first_name";
-    private static final String LAST_NAME = "last_name";
+    private static final String FIELD_STUDENT_ID = "student_id";
+    private static final String FIELD_GROUP_ID = "group_id";
+    private static final String FIELD_FIRST_NAME = "first_name";
+    private static final String FIELD_LAST_NAME = "last_name";
 
     private DaoUtils daoUtil = new DaoUtils();
 
@@ -39,7 +39,7 @@ public class StudentDao implements Dao<Student> {
     }
 
     @Override
-    public Optional<Student> get(int studentId) throws DAOException {
+    public Optional<Student> getById(int studentId) throws DAOException {
         String sql = "SELECT student_id, group_id, first_name, last_name FROM students WHERE student_id = ?";
         Student student = null;
         try (Connection connection = daoUtil.getConnection();
@@ -51,9 +51,9 @@ public class StudentDao implements Dao<Student> {
                 if (resultSet.next()) {
                     student = new Student();
                     student.setStudentId(studentId);
-                    student.setGroupId(resultSet.getInt(GROUP_ID));
-                    student.setFirstName(resultSet.getString(FIRST_NAME));
-                    student.setLastName(resultSet.getString(LAST_NAME));
+                    student.setGroupId(resultSet.getInt(FIELD_GROUP_ID));
+                    student.setFirstName(resultSet.getString(FIELD_FIRST_NAME));
+                    student.setLastName(resultSet.getString(FIELD_LAST_NAME));
                 }
             }
         } catch (SQLException e) {
@@ -71,10 +71,10 @@ public class StudentDao implements Dao<Student> {
             try (ResultSet resultSet = statement.executeQuery(sql)) {
                 while (resultSet.next()) {
                     Student student = new Student();
-                    student.setStudentId(resultSet.getInt(STUDENT_ID));
-                    student.setGroupId(resultSet.getInt(GROUP_ID));
-                    student.setFirstName(resultSet.getString(FIRST_NAME));
-                    student.setLastName(resultSet.getString(LAST_NAME));
+                    student.setStudentId(resultSet.getInt(FIELD_STUDENT_ID));
+                    student.setGroupId(resultSet.getInt(FIELD_GROUP_ID));
+                    student.setFirstName(resultSet.getString(FIELD_FIRST_NAME));
+                    student.setLastName(resultSet.getString(FIELD_LAST_NAME));
 
                     students.add(student);
                 }

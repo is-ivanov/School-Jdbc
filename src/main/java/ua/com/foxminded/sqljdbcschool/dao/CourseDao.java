@@ -12,9 +12,9 @@ import java.util.Optional;
 import ua.com.foxminded.sqljdbcschool.entity.Course;
 
 public class CourseDao implements Dao<Course> {
-    private static final String COURSE_ID = "course_id";
-    private static final String COURSE_NAME = "course_name";
-    private static final String COURSE_DESCRIPTION = "course_desription";
+    private static final String FIELD_COURSE_ID = "course_id";
+    private static final String FIELD_COURSE_NAME = "course_name";
+    private static final String FIELD_COURSE_DESCRIPTION = "course_desription";
 
     private DaoUtils daoUtil = new DaoUtils();
     
@@ -37,7 +37,7 @@ public class CourseDao implements Dao<Course> {
     }
 
     @Override
-    public Optional<Course> get(int courseId) throws DAOException {
+    public Optional<Course> getById(int courseId) throws DAOException {
         String sql = "SELECT course_id, course_name, course_description FROM courses WHERE course_id = ?";
         Course course = null;
         try (Connection connection = daoUtil.getConnection();
@@ -49,8 +49,8 @@ public class CourseDao implements Dao<Course> {
                 if (resultSet.next()) {
                     course = new Course();
                     course.setCourseId(courseId);
-                    course.setCourseName(resultSet.getString(COURSE_NAME));
-                    course.setCourseDescription(resultSet.getString(COURSE_DESCRIPTION));
+                    course.setCourseName(resultSet.getString(FIELD_COURSE_NAME));
+                    course.setCourseDescription(resultSet.getString(FIELD_COURSE_DESCRIPTION));
                 }
             }
         } catch (SQLException e) {
@@ -68,9 +68,9 @@ public class CourseDao implements Dao<Course> {
             try (ResultSet resultSet = statement.executeQuery(sql)) {
                 while (resultSet.next()) {
                     Course course = new Course();
-                    course.setCourseId(resultSet.getInt(COURSE_ID));
-                    course.setCourseName(resultSet.getString(COURSE_NAME));
-                    course.setCourseDescription(resultSet.getString(COURSE_DESCRIPTION));
+                    course.setCourseId(resultSet.getInt(FIELD_COURSE_ID));
+                    course.setCourseName(resultSet.getString(FIELD_COURSE_NAME));
+                    course.setCourseDescription(resultSet.getString(FIELD_COURSE_DESCRIPTION));
 
                     courses.add(course);
                 }
