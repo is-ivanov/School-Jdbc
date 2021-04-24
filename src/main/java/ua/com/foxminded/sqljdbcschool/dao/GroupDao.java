@@ -33,21 +33,21 @@ public class GroupDao implements Dao<Group> {
     }
 
     @Override
-    public Optional<Group> get(int id) throws DAOException {
+    public Optional<Group> get(int groupId) throws DAOException {
         String sql = "SELECT group_name FROM groups WHERE group_id = ?";
         Group group = null;
         try (Connection connection = daoUtil.getConnection();
                 PreparedStatement statement = connection
                         .prepareStatement(sql)) {
-            statement.setInt(1, id);
+            statement.setInt(1, groupId);
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    group = new Group(id, resultSet.getString(GROUP_NAME));
+                    group = new Group(groupId, resultSet.getString(GROUP_NAME));
                 }
             }
         } catch (SQLException e) {
-            throw new DAOException("Can't get group by ID = " + id, e);
+            throw new DAOException("Can't get group by ID = " + groupId, e);
         }
         return Optional.ofNullable(group);
     }
