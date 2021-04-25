@@ -13,8 +13,35 @@ import ua.com.foxminded.sqljdbcschool.entity.StudentCourse;
 public class StudentCourseDao {
     private static final String FIELD_STUDENT_ID = "student_id";
     private static final String FIELD_COURSE_ID = "course_id";
+    private static final String LF = System.lineSeparator();
+    private static final String SQL_CREATE_TABLE = "CREATE TABLE public.students_courses" + LF
+            + "(" + LF
+            + "student_id integer NOT NULL," + LF
+            + "course_id integer NOT NULL," + LF
+            + "CONSTRAINT students_courses_pkey PRIMARY KEY (student_id, course_id)," + LF
+            + "CONSTRAINT course_id FOREIGN KEY (course_id)" + LF
+            + "REFERENCES public.courses (course_id) MATCH SIMPLE" + LF
+            + "ON UPDATE NO ACTION" + LF
+            + "ON DELETE NO ACTION," + LF
+            + "CONSTRAINT student_id FOREIGN KEY (student_id)" + LF
+            + "REFERENCES public.students (student_id) MATCH SIMPLE" + LF
+            + "ON UPDATE NO ACTION" + LF
+            + "ON DELETE NO ACTION" + LF
+            + ")";
+    
 
     private DaoUtils daoUtil = new DaoUtils();
+    
+    public void createTable() throws DAOException {
+        try (Connection connection = daoUtil.getConnection()) {
+            try (PreparedStatement statement = connection
+                    .prepareStatement(SQL_CREATE_TABLE)) {
+                statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Can't create table", e);
+        }
+    }
 
     public void add(StudentCourse studentCourse) throws DAOException {
         String sql = "INSERT INTO students_courses(student_id, course_id)  VALUES (?, ?)";

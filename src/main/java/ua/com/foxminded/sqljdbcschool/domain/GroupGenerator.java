@@ -7,6 +7,7 @@ import java.util.Random;
 import ua.com.foxminded.sqljdbcschool.entity.Group;
 
 public class GroupGenerator {
+    private static final String GROUP_DELIMITER = "-";
     private Random random = new Random();
 
     public List<Group> generateGroups(int numberGroups) {
@@ -27,9 +28,9 @@ public class GroupGenerator {
                 .limit(targetStringLength).collect(StringBuilder::new,
                         StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
-        int rightPartName = random.nextInt(100);
+        int rightPartName = random.nextInt(90) + 10;
 
-        return leftPartName + "-" + rightPartName;
+        return leftPartName + GROUP_DELIMITER + rightPartName;
 
     }
 
