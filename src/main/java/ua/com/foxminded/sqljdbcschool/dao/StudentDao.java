@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +27,11 @@ public class StudentDao implements Dao<Student> {
 
             try (PreparedStatement statement = connection
                     .prepareStatement(sql)) {
-                statement.setInt(1, student.getGroupId());
+                if (student.getGroupId() != 0) {
+                    statement.setInt(1, student.getGroupId());
+                } else {
+                    statement.setNull(1, Types.INTEGER);
+                }
                 statement.setString(2, student.getFirstName());
                 statement.setString(3, student.getLastName());
 

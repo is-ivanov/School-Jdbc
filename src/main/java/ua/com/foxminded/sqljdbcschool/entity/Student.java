@@ -10,6 +10,12 @@ public class Student {
         
     }
 
+    public Student(int studentId, String firstName, String lastName) {
+        this.studentId = studentId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
     public int getStudentId() {
         return studentId;
     }
