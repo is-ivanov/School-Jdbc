@@ -4,19 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import ua.com.foxminded.sqljdbcschool.dao.DAOException;
+import ua.com.foxminded.sqljdbcschool.dao.GroupDao;
 import ua.com.foxminded.sqljdbcschool.entity.Group;
 
 public class GroupGenerator {
     private static final String GROUP_DELIMITER = "-";
+    private static final String MESSAGE_IN_BASE = " in base";
+    
     private Random random = new Random();
 
-    public List<Group> generateGroups(int numberGroups) {
+    public void generateGroups(int numberGroups) {
         List<Group> groups = new ArrayList<>();
         for (int i = 0; i < numberGroups; i++) {
             Group group = new Group(i + 1, generateNameGroup());
             groups.add(group);
         }
-        return groups;
+        saveGroupsInBase(groups);
     }
 
     private String generateNameGroup() {
@@ -32,6 +36,18 @@ public class GroupGenerator {
 
         return leftPartName + GROUP_DELIMITER + rightPartName;
 
+    }
+    
+    private void saveGroupsInBase(List<Group> groups) {
+        GroupDao groupDao = new GroupDao();
+        groups.stream().forEach(group -> {
+            try {
+                groupDao.add(group);
+            } catch (DAOException e) {
+                throw new DomainException(
+                        "Don't save group " + group + MESSAGE_IN_BASE, e);
+            }
+        });
     }
 
 }

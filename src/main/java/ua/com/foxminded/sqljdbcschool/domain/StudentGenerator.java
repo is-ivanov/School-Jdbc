@@ -6,20 +6,23 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import ua.com.foxminded.sqljdbcschool.dao.DAOException;
+import ua.com.foxminded.sqljdbcschool.dao.StudentDao;
 import ua.com.foxminded.sqljdbcschool.entity.Student;
 
 public class StudentGenerator {
+    private static final String MESSAGE_IN_BASE = " in base";
+
     private Random random = new Random();
 
-    public List<Student> generateStudents(int numberStudents) {
+    public void generateStudents(int numberStudents) {
         List<Student> students = new ArrayList<>();
         for (int i = 0; i < numberStudents; i++) {
             String[] names = createStudentNames();
             Student student = new Student(i + 1, names[0], names[1]);
             students.add(student);
         }
-
-        return splitStudents(students);
+        saveStudentsInBase(splitStudents(students));
     }
 
     private String[] createStudentNames() {
@@ -57,10 +60,8 @@ public class StudentGenerator {
 
     private int[] calculateSizeGroups(int numberStudents) {
         int[] numberStudentInGroups = new int[10];
-        List<Integer> variantSizes = Stream.iterate(0, n -> n + 1)
-                .limit(31)
-                .filter(n -> n == 0 || n > 19)
-                .collect(Collectors.toList());
+        List<Integer> variantSizes = Stream.iterate(0, n -> n + 1).limit(31)
+                .filter(n -> n == 0 || n > 19).collect(Collectors.toList());
         for (int i = 0; i < numberStudentInGroups.length; i++) {
             if (numberStudents > 10) {
                 numberStudentInGroups[i] = variantSizes
@@ -73,4 +74,15 @@ public class StudentGenerator {
         return numberStudentInGroups;
     }
 
+    private void saveStudentsInBase(List<Student> students) {
+        StudentDao studentDao = new StudentDao();
+        students.stream().forEach(student -> {
+            try {
+                studentDao.add(student);
+            } catch (DAOException e) {
+                throw new DomainException(
+                        "Don't save student " + student + MESSAGE_IN_BASE, e);
+            }
+        });
+    }
 }

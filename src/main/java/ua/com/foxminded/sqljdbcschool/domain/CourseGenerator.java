@@ -3,11 +3,14 @@ package ua.com.foxminded.sqljdbcschool.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import ua.com.foxminded.sqljdbcschool.dao.CourseDao;
+import ua.com.foxminded.sqljdbcschool.dao.DAOException;
 import ua.com.foxminded.sqljdbcschool.entity.Course;
 
 public class CourseGenerator {
+    private static final String MESSAGE_IN_BASE = " in base";
 
-    public List<Course> createCourses() {
+    public void createCourses() {
         List<Course> courses = new ArrayList<>();
         courses.add(new Course(1, "math", "course of Mathematichs"));
         courses.add(new Course(2, "biology", "course of Biology"));
@@ -21,7 +24,18 @@ public class CourseGenerator {
         courses.add(new Course(10, "physical training",
                 "course of Physical training"));
 
-        return courses;
-
+        saveCoursesInBase(courses);
+    }
+    
+    private void saveCoursesInBase(List<Course> courses) {
+        CourseDao courseDao = new CourseDao();
+        courses.stream().forEach(course -> {
+            try {
+                courseDao.add(course);
+            } catch (DAOException e) {
+                throw new DomainException(
+                        "Don't save course " + course + MESSAGE_IN_BASE, e);
+            }
+        });
     }
 }
