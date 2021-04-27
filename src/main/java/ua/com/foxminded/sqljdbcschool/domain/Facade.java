@@ -2,13 +2,17 @@ package ua.com.foxminded.sqljdbcschool.domain;
 
 import ua.com.foxminded.sqljdbcschool.dao.DAOException;
 import ua.com.foxminded.sqljdbcschool.dao.StartUpDao;
-import ua.com.foxminded.sqljdbcschool.dao.StudentCourseDao;
 import ua.com.foxminded.sqljdbcschool.domain.generator.CourseGenerator;
 import ua.com.foxminded.sqljdbcschool.domain.generator.Generator;
 import ua.com.foxminded.sqljdbcschool.domain.generator.GroupGenerator;
+import ua.com.foxminded.sqljdbcschool.domain.generator.StudentCourseGenerator;
 import ua.com.foxminded.sqljdbcschool.domain.generator.StudentGenerator;
 
 public class Facade {
+    private static final int NUMBER_STUDENTS = 200;
+    private static final int NUMBER_COURSES = 10;
+    private static final int NUMBER_GROUPS = 10;
+
     public void prepareBase() throws DomainException {
 
         StartUpDao startUpDao = new StartUpDao();
@@ -19,20 +23,17 @@ public class Facade {
             throw new DomainException("Can't delete and create tables", e);
         }
         Generator groupGenerator = new GroupGenerator();
-        groupGenerator.generate(10);
+        groupGenerator.generate(NUMBER_GROUPS);
 
         Generator courseGenerator = new CourseGenerator();
-        courseGenerator.generate(10);
+        courseGenerator.generate(NUMBER_COURSES);
 
         Generator studentGenerator = new StudentGenerator();
-        studentGenerator.generate(200);
+        studentGenerator.generate(NUMBER_STUDENTS);
         
-        StudentCourseDao studentCourseDao = new StudentCourseDao();
-        try {
-            studentCourseDao.createTable();
-        } catch (DAOException e) {
-            throw new DomainException("Can't create table students_courses", e);
-        }
+        Generator studentCourseGenerator = new StudentCourseGenerator();
+        studentCourseGenerator.generate(NUMBER_STUDENTS);
+        
 
         System.out.println("OK");
     }

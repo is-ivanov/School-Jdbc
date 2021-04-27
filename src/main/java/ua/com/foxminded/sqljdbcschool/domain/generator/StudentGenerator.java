@@ -23,7 +23,7 @@ public class StudentGenerator implements Generator {
             Student student = new Student(i + 1, names[0], names[1]);
             students.add(student);
         }
-        saveInBase(splitStudents(students));
+        saveInBase(splitStudentsToGroups(students));
     }
 
     private String[] createStudentNames() {
@@ -42,7 +42,7 @@ public class StudentGenerator implements Generator {
         return studentNames;
     }
 
-    private List<Student> splitStudents(List<Student> students) {
+    private List<Student> splitStudentsToGroups(List<Student> students) {
         int numberStudents = students.size();
         int[] sizeGroups = calculateSizeGroups(numberStudents);
 
