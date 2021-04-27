@@ -1,4 +1,4 @@
-package ua.com.foxminded.sqljdbcschool.domain;
+package ua.com.foxminded.sqljdbcschool.exception;
 
 @SuppressWarnings("serial")
 public class DomainException extends RuntimeException{

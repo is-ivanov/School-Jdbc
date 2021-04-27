@@ -1,4 +1,4 @@
-package ua.com.foxminded.sqljdbcschool.dao;
+package ua.com.foxminded.sqljdbcschool.exception;
 
 @SuppressWarnings("serial")
 public class DAOException extends Exception{
