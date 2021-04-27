@@ -1,4 +1,4 @@
-package ua.com.foxminded.sqljdbcschool.domain;
+package ua.com.foxminded.sqljdbcschool.domain.generator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,24 +6,25 @@ import java.util.Random;
 
 import ua.com.foxminded.sqljdbcschool.dao.DAOException;
 import ua.com.foxminded.sqljdbcschool.dao.GroupDao;
+import ua.com.foxminded.sqljdbcschool.domain.DomainException;
 import ua.com.foxminded.sqljdbcschool.entity.Group;
 
-public class GroupGenerator {
+public class GroupGenerator implements Generator{
     private static final String GROUP_DELIMITER = "-";
     private static final String MESSAGE_IN_BASE = " in base";
     
     private Random random = new Random();
 
-    public void generateGroups(int numberGroups) {
+    public void generate(int numberGroups) {
         List<Group> groups = new ArrayList<>();
         for (int i = 0; i < numberGroups; i++) {
-            Group group = new Group(i + 1, generateNameGroup());
+            Group group = new Group(i + 1, generateName());
             groups.add(group);
         }
-        saveGroupsInBase(groups);
+        saveInBase(groups);
     }
 
-    private String generateNameGroup() {
+    private String generateName() {
         int leftLimit = 65;
         int rightLimit = 90;
         int targetStringLength = 2;
@@ -38,7 +39,7 @@ public class GroupGenerator {
 
     }
     
-    private void saveGroupsInBase(List<Group> groups) {
+    private void saveInBase(List<Group> groups) {
         GroupDao groupDao = new GroupDao();
         groups.stream().forEach(group -> {
             try {

@@ -1,16 +1,17 @@
-package ua.com.foxminded.sqljdbcschool.domain;
+package ua.com.foxminded.sqljdbcschool.domain.generator;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ua.com.foxminded.sqljdbcschool.dao.CourseDao;
 import ua.com.foxminded.sqljdbcschool.dao.DAOException;
+import ua.com.foxminded.sqljdbcschool.domain.DomainException;
 import ua.com.foxminded.sqljdbcschool.entity.Course;
 
-public class CourseGenerator {
+public class CourseGenerator implements Generator {
     private static final String MESSAGE_IN_BASE = " in base";
 
-    public void createCourses() {
+    public void generate(int number) {
         List<Course> courses = new ArrayList<>();
         courses.add(new Course(1, "math", "course of Mathematichs"));
         courses.add(new Course(2, "biology", "course of Biology"));
@@ -24,10 +25,10 @@ public class CourseGenerator {
         courses.add(new Course(10, "physical training",
                 "course of Physical training"));
 
-        saveCoursesInBase(courses);
+        saveInBase(courses);
     }
     
-    private void saveCoursesInBase(List<Course> courses) {
+    private void saveInBase(List<Course> courses) {
         CourseDao courseDao = new CourseDao();
         courses.stream().forEach(course -> {
             try {

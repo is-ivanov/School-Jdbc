@@ -1,4 +1,4 @@
-package ua.com.foxminded.sqljdbcschool.domain;
+package ua.com.foxminded.sqljdbcschool.domain.generator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,21 +8,22 @@ import java.util.stream.Stream;
 
 import ua.com.foxminded.sqljdbcschool.dao.DAOException;
 import ua.com.foxminded.sqljdbcschool.dao.StudentDao;
+import ua.com.foxminded.sqljdbcschool.domain.DomainException;
 import ua.com.foxminded.sqljdbcschool.entity.Student;
 
-public class StudentGenerator {
+public class StudentGenerator implements Generator {
     private static final String MESSAGE_IN_BASE = " in base";
 
     private Random random = new Random();
 
-    public void generateStudents(int numberStudents) {
+    public void generate(int numberStudents) {
         List<Student> students = new ArrayList<>();
         for (int i = 0; i < numberStudents; i++) {
             String[] names = createStudentNames();
             Student student = new Student(i + 1, names[0], names[1]);
             students.add(student);
         }
-        saveStudentsInBase(splitStudents(students));
+        saveInBase(splitStudents(students));
     }
 
     private String[] createStudentNames() {
@@ -74,7 +75,7 @@ public class StudentGenerator {
         return numberStudentInGroups;
     }
 
-    private void saveStudentsInBase(List<Student> students) {
+    private void saveInBase(List<Student> students) {
         StudentDao studentDao = new StudentDao();
         students.stream().forEach(student -> {
             try {

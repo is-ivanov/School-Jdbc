@@ -3,6 +3,10 @@ package ua.com.foxminded.sqljdbcschool.domain;
 import ua.com.foxminded.sqljdbcschool.dao.DAOException;
 import ua.com.foxminded.sqljdbcschool.dao.StartUpDao;
 import ua.com.foxminded.sqljdbcschool.dao.StudentCourseDao;
+import ua.com.foxminded.sqljdbcschool.domain.generator.CourseGenerator;
+import ua.com.foxminded.sqljdbcschool.domain.generator.Generator;
+import ua.com.foxminded.sqljdbcschool.domain.generator.GroupGenerator;
+import ua.com.foxminded.sqljdbcschool.domain.generator.StudentGenerator;
 
 public class Facade {
     public void prepareBase() throws DomainException {
@@ -14,14 +18,14 @@ public class Facade {
         } catch (DAOException e) {
             throw new DomainException("Can't delete and create tables", e);
         }
-        GroupGenerator groupGenerator = new GroupGenerator();
-        groupGenerator.generateGroups(10);
+        Generator groupGenerator = new GroupGenerator();
+        groupGenerator.generate(10);
 
-        CourseGenerator courseGenerator = new CourseGenerator();
-        courseGenerator.createCourses();
+        Generator courseGenerator = new CourseGenerator();
+        courseGenerator.generate(10);
 
-        StudentGenerator studentGenerator = new StudentGenerator();
-        studentGenerator.generateStudents(200);
+        Generator studentGenerator = new StudentGenerator();
+        studentGenerator.generate(200);
         
         StudentCourseDao studentCourseDao = new StudentCourseDao();
         try {
