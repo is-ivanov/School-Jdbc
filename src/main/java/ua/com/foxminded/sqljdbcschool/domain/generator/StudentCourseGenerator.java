@@ -6,10 +6,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-import ua.com.foxminded.sqljdbcschool.dao.DAOException;
 import ua.com.foxminded.sqljdbcschool.dao.StudentCourseDao;
-import ua.com.foxminded.sqljdbcschool.domain.DomainException;
 import ua.com.foxminded.sqljdbcschool.entity.StudentCourse;
+import ua.com.foxminded.sqljdbcschool.exception.DAOException;
+import ua.com.foxminded.sqljdbcschool.exception.DomainException;
 
 public class StudentCourseGenerator implements Generator {
 

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 import ua.com.foxminded.sqljdbcschool.entity.Course;
+import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 
 public class CourseDao implements Dao<Course> {
     private static final String FIELD_COURSE_ID = "course_id";

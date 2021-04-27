@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ua.com.foxminded.sqljdbcschool.dao.CourseDao;
-import ua.com.foxminded.sqljdbcschool.dao.DAOException;
-import ua.com.foxminded.sqljdbcschool.domain.DomainException;
 import ua.com.foxminded.sqljdbcschool.entity.Course;
+import ua.com.foxminded.sqljdbcschool.exception.DAOException;
+import ua.com.foxminded.sqljdbcschool.exception.DomainException;
 
 public class CourseGenerator implements Generator {
     private static final String MESSAGE_IN_BASE = " in base";

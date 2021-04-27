@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 import ua.com.foxminded.sqljdbcschool.entity.Group;
+import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 
 public class GroupDao implements Dao<Group> {
     private static final String FIELD_GROUP_ID = "group_id";

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ua.com.foxminded.sqljdbcschool.entity.StudentCourse;
+import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 
 public class StudentCourseDao {
     private static final String FIELD_STUDENT_ID = "student_id";

@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 import ua.com.foxminded.sqljdbcschool.entity.Student;
+import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 
 public class StudentDao implements Dao<Student> {
     private static final String FIELD_STUDENT_ID = "student_id";

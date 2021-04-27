@@ -1,7 +1,7 @@
 package ua.com.foxminded.sqljdbcschool.domain;
 
 
-import ua.com.foxminded.sqljdbcschool.dao.DAOException;
+import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 
 public class Application {
 

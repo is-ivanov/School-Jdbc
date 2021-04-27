@@ -7,6 +7,8 @@ import java.sql.*;
 
 import org.apache.ibatis.jdbc.ScriptRunner;
 
+import ua.com.foxminded.sqljdbcschool.exception.DAOException;
+
 public class StartUpDao {
 
     private static final String MESSAGE_SCRIPT = "Script \"";
