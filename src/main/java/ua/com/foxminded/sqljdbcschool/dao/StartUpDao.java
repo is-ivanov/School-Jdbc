@@ -11,9 +11,6 @@ import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 
 public class StartUpDao {
 
-    private static final String MESSAGE_SCRIPT = "Script \"";
-    private static final String MESSAGE_NOT_FOUND = "\" not found!!";
-
     private DaoUtils daoUtil = new DaoUtils();
 
     public void deleteTables() throws DAOException {
@@ -38,7 +35,7 @@ public class StartUpDao {
         }
     }
 
-    public void createTables(String scriptFileName) throws DAOException {
+    public void createTables(String scriptFilename) throws DAOException {
         DaoUtils daoUtils = new DaoUtils();
 
         try (Connection connection = daoUtils.getConnection()) {
@@ -47,13 +44,14 @@ public class StartUpDao {
 
             scriptRunner = new ScriptRunner(connection);
             try (InputStream inputStream = getClass().getClassLoader()
-                    .getResourceAsStream(scriptFileName);
+                    .getResourceAsStream(scriptFilename);
                     InputStreamReader reader = new InputStreamReader(
                             inputStream);) {
                 scriptRunner.runScript(reader);
             } catch (IOException | NullPointerException e) {
                 throw new DAOException(
-                        MESSAGE_SCRIPT + scriptFileName + MESSAGE_NOT_FOUND, e);
+                        String.format("Script %s not found!!", scriptFilename),
+                        e);
             }
 
         } catch (SQLException e) {
