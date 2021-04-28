@@ -12,18 +12,23 @@ import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 import ua.com.foxminded.sqljdbcschool.reader.Reader;
 
 public class StartUpDao {
-    
+
+    private static final String DELIMITER_QUERIES = ";";
     private static final String PROPERTY_SQL_DELETE_TABLES = "tables.delete.ifexist";
     private static final String FILENAME_SQL_QUERY_PROPERTIES = "sql_query.properties";
+    private static final String MESSAGE_EXCEPTION = "Can't run script";
+    private static final String FORMAT_MASK_MESSAGE_EXCEPTION = "Script %s not found!!";
+
     private DaoUtils daoUtil = new DaoUtils();
 
+    
     public void deleteTables() throws DAOException {
         Reader reader = new Reader();
-        Properties properties = reader.readProperties(FILENAME_SQL_QUERY_PROPERTIES);
-        
-        
+        Properties properties = reader
+                .readProperties(FILENAME_SQL_QUERY_PROPERTIES);
+
         String sqlCommands = properties.getProperty(PROPERTY_SQL_DELETE_TABLES);
-        String[] sql = sqlCommands.split(";");
+        String[] sql = sqlCommands.split(DELIMITER_QUERIES);
 
         try (Connection connection = daoUtil.getConnection()) {
             try (Statement statement = connection.createStatement()) {
@@ -39,7 +44,7 @@ public class StartUpDao {
             throw new DAOException();
         }
     }
-
+    
     public void createTables(String scriptFilename) throws DAOException {
         DaoUtils daoUtils = new DaoUtils();
 
@@ -54,13 +59,12 @@ public class StartUpDao {
                             inputStream);) {
                 scriptRunner.runScript(reader);
             } catch (IOException | NullPointerException e) {
-                throw new DAOException(
-                        String.format("Script %s not found!!", scriptFilename),
-                        e);
+                throw new DAOException(String.format(
+                        FORMAT_MASK_MESSAGE_EXCEPTION, scriptFilename), e);
             }
 
         } catch (SQLException e) {
-            throw new DAOException("Can't run script", e);
+            throw new DAOException(MESSAGE_EXCEPTION, e);
         }
     }
 }
