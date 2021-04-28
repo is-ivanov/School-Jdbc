@@ -32,7 +32,7 @@ public class CourseDao implements Dao<Course> {
 
     private DaoUtils daoUtil = new DaoUtils();
     private Reader reader = new Reader();
-    Properties sqlProp = reader.readProperties(FILENAME_SQL_QUERY);
+    private Properties sqlProp = reader.readProperties(FILENAME_SQL_QUERY);
 
     @Override
     public void add(Course course) throws DAOException {
