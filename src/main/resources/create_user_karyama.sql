@@ -1,6 +1,3 @@
--- Role: karyama
--- DROP ROLE karyama;
-
 CREATE ROLE karyama WITH
   LOGIN
   SUPERUSER

@@ -1,7 +1,3 @@
--- Database: school
-
--- DROP DATABASE school;
-
 CREATE DATABASE school
     WITH 
     OWNER = karyama
