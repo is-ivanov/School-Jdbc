@@ -10,9 +10,12 @@ import ua.com.foxminded.sqljdbcschool.dao.StudentDao;
 import ua.com.foxminded.sqljdbcschool.entity.Student;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 import ua.com.foxminded.sqljdbcschool.exception.DomainException;
+import ua.com.foxminded.sqljdbcschool.reader.Reader;
 
 public class StudentGenerator implements Generator {
-    private static final String MESSAGE_IN_BASE = " in base";
+    private static final String FILENAME_FIRST_NAME_DATA = "student_first_names.txt";
+    private static final String FILENAME_LAST_NAME_DATA = "student_last_names.txt";
+    private static final String MESSAGE_MASK_EXCEPTION = "Don't save student %s in base";
 
     private Random random = new Random();
 
@@ -27,18 +30,16 @@ public class StudentGenerator implements Generator {
     }
 
     private String[] createStudentNames() {
-        String[] firstNames = { "Ivan", "Peter", "John", "Emily", "Linda",
-                "Julia", "Alex", "Irina", "Tom", "Patricia", "Bob", "Stephanie",
-                "Aaron", "Tatyana", "Konstantin", "Olga", "Jim", "Samantha",
-                "Tim", "Meryl" };
-        String[] lastNames = { "Ivanov", "McQuin", "Lennon", "Ratakovski",
-                "Hamilton", "Roberts", "Smith", "Collins", "Brady", "Kaas",
-                "Marley", "Seymour", "Rodgers", "Ant", "Johnson", "Korbut",
-                "Carrey", "Fox", "Robbins", "Streep" };
+        Reader reader = new Reader();
+        List<String> firstNames = reader
+                .readTxtDataFiles(FILENAME_FIRST_NAME_DATA);
+        List<String> lastNames = reader
+                .readTxtDataFiles(FILENAME_LAST_NAME_DATA);
 
         String[] studentNames = new String[2];
-        studentNames[0] = firstNames[random.nextInt(20)];
-        studentNames[1] = lastNames[random.nextInt(20)];
+        studentNames[0] = firstNames.get(random.nextInt(20));
+        studentNames[1] = lastNames.get(random.nextInt(20));
+
         return studentNames;
     }
 
@@ -82,7 +83,7 @@ public class StudentGenerator implements Generator {
                 studentDao.add(student);
             } catch (DAOException e) {
                 throw new DomainException(
-                        "Don't save student " + student + MESSAGE_IN_BASE, e);
+                        String.format(MESSAGE_MASK_EXCEPTION, student), e);
             }
         });
     }

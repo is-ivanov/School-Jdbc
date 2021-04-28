@@ -23,7 +23,7 @@ public class GroupDao implements Dao<Group> {
     private static final String PROPERTY_GROUP_DELETE = "group.delete";
     private static final String FIELD_GROUP_ID = "group_id";
     private static final String FIELD_GROUP_NAME = "group_name";
-    private static final String MESSAGE_EXCEPTION_ADD_GROUP = "Can't add group";
+    private static final String MESSAGE_EXCEPTION_ADD = "Can't add group";
     private static final String MESSAGE_EXCEPTION_GET_BY_ID = "Can't get group by ID = ";
     private static final String MESSAGE_EXCEPTION_GET_ALL = "Can't get groups";
     private static final String MESSAGE_EXCEPTION_GROUP_UPDATE = "Can't update group ";
@@ -44,7 +44,7 @@ public class GroupDao implements Dao<Group> {
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
-            throw new DAOException(MESSAGE_EXCEPTION_ADD_GROUP, e);
+            throw new DAOException(MESSAGE_EXCEPTION_ADD, e);
         }
 
     }
