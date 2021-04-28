@@ -9,10 +9,10 @@ import ua.com.foxminded.sqljdbcschool.entity.Group;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 import ua.com.foxminded.sqljdbcschool.exception.DomainException;
 
-public class GroupGenerator implements Generator{
+public class GroupGenerator implements Generator {
+    private static final String MESSAGE_MASK_EXCEPTION = "Don't save group %s in base";
     private static final String GROUP_DELIMITER = "-";
-    private static final String MESSAGE_IN_BASE = " in base";
-    
+
     private Random random = new Random();
 
     public void generate(int numberGroups) {
@@ -30,7 +30,8 @@ public class GroupGenerator implements Generator{
         int targetStringLength = 2;
 
         String leftPartName = random.ints(leftLimit, rightLimit + 1)
-                .limit(targetStringLength).collect(StringBuilder::new,
+                .limit(targetStringLength)
+                .collect(StringBuilder::new,
                         StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
         int rightPartName = random.nextInt(90) + 10;
@@ -38,7 +39,7 @@ public class GroupGenerator implements Generator{
         return leftPartName + GROUP_DELIMITER + rightPartName;
 
     }
-    
+
     private void saveInBase(List<Group> groups) {
         GroupDao groupDao = new GroupDao();
         groups.stream().forEach(group -> {
@@ -46,7 +47,7 @@ public class GroupGenerator implements Generator{
                 groupDao.add(group);
             } catch (DAOException e) {
                 throw new DomainException(
-                        "Don't save group " + group + MESSAGE_IN_BASE, e);
+                        String.format(MESSAGE_MASK_EXCEPTION, group), e);
             }
         });
     }
