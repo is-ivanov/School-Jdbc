@@ -21,10 +21,12 @@ public class StartUpDao {
 
     private DaoUtils daoUtil = new DaoUtils();
 
+    
     public void prepareTables() throws DAOException {
         deleteTables();
         createTables(FILENAME_SCRIPT_CREATE_TABLES);
     }
+    
     
     private void deleteTables() throws DAOException {
         Reader reader = new Reader();
