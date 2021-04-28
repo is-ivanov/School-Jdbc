@@ -13,15 +13,15 @@ public class Facade {
     private static final int NUMBER_STUDENTS = 200;
     private static final int NUMBER_COURSES = 10;
     private static final int NUMBER_GROUPS = 10;
-    
+    private static final String MESSAGE_EXCEPTION_CREATE_TABLES = "Can't delete and create tables";
+
     public void prepareBase() throws DomainException {
-        
+
         StartUpDao startUpDao = new StartUpDao();
         try {
-            startUpDao.deleteTables();
-            startUpDao.createTables("create_all_tables.sql");
+            startUpDao.prepareTables();
         } catch (DAOException e) {
-            throw new DomainException("Can't delete and create tables", e);
+            throw new DomainException(MESSAGE_EXCEPTION_CREATE_TABLES, e);
         }
         Generator groupGenerator = new GroupGenerator();
         groupGenerator.generate(NUMBER_GROUPS);
@@ -31,14 +31,11 @@ public class Facade {
 
         Generator studentGenerator = new StudentGenerator();
         studentGenerator.generate(NUMBER_STUDENTS);
-        
+
         Generator studentCourseGenerator = new StudentCourseGenerator();
         studentCourseGenerator.generate(NUMBER_STUDENTS);
-        
 
         System.out.println("OK");
     }
-
-    
 
 }
