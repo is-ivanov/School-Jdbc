@@ -1,33 +1,31 @@
 package ua.com.foxminded.sqljdbcschool.domain.generator;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import ua.com.foxminded.sqljdbcschool.dao.CourseDao;
 import ua.com.foxminded.sqljdbcschool.entity.Course;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 import ua.com.foxminded.sqljdbcschool.exception.DomainException;
+import ua.com.foxminded.sqljdbcschool.reader.Reader;
 
 public class CourseGenerator implements Generator {
-    private static final String MESSAGE_IN_BASE = " in base";
+    private static final String FILENAME_COURSES_DATA = "courses.txt";
+    private static final String MESSAGE_MASK_EXCEPTION = "Don't save course %s in base";
 
     public void generate(int number) {
-        List<Course> courses = new ArrayList<>();
-        courses.add(new Course(1, "math", "course of Mathematichs"));
-        courses.add(new Course(2, "biology", "course of Biology"));
-        courses.add(new Course(3, "chemistry", "course of Chemistry"));
-        courses.add(new Course(4, "physics", "course of Physics"));
-        courses.add(new Course(5, "philosophy", "course of Philosophy"));
-        courses.add(new Course(6, "drawing", "course of Drawing"));
-        courses.add(new Course(7, "literature", "course of Literature"));
-        courses.add(new Course(8, "English", "course of English"));
-        courses.add(new Course(9, "geography", "course of Geography"));
-        courses.add(new Course(10, "physical training",
-                "course of Physical training"));
+        Reader reader = new Reader();
+
+        List<String> lines = reader.readTxtDataFiles(FILENAME_COURSES_DATA);
+
+        List<Course> courses = lines.stream()
+                .map(line -> line.split(","))
+                .map(arr -> new Course(arr[0], arr[1]))
+                .collect(Collectors.toList());
 
         saveInBase(courses);
     }
-    
+
     private void saveInBase(List<Course> courses) {
         CourseDao courseDao = new CourseDao();
         courses.stream().forEach(course -> {
@@ -35,7 +33,7 @@ public class CourseGenerator implements Generator {
                 courseDao.add(course);
             } catch (DAOException e) {
                 throw new DomainException(
-                        "Don't save course " + course + MESSAGE_IN_BASE, e);
+                        String.format(MESSAGE_MASK_EXCEPTION, course), e);
             }
         });
     }
