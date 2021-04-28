@@ -1,4 +1,4 @@
-math,course of Mathematichs
+math,course of Mathematics
 biology,course of Biology
 chemistry,course of Chemistry
 physics,course of Physics

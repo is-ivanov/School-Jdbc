@@ -11,6 +11,7 @@ import ua.com.foxminded.sqljdbcschool.reader.Reader;
 
 public class CourseGenerator implements Generator {
     private static final String FILENAME_COURSES_DATA = "courses.txt";
+    private static final String DELIMITER = ",";
     private static final String MESSAGE_MASK_EXCEPTION = "Don't save course %s in base";
 
     public void generate(int number) {
@@ -19,7 +20,7 @@ public class CourseGenerator implements Generator {
         List<String> lines = reader.readTxtDataFiles(FILENAME_COURSES_DATA);
 
         List<Course> courses = lines.stream()
-                .map(line -> line.split(","))
+                .map(line -> line.split(DELIMITER))
                 .map(arr -> new Course(arr[0], arr[1]))
                 .collect(Collectors.toList());
 

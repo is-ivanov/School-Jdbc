@@ -8,21 +8,35 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Properties;
 
 import ua.com.foxminded.sqljdbcschool.entity.Course;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
+import ua.com.foxminded.sqljdbcschool.reader.Reader;
 
 public class CourseDao implements Dao<Course> {
+    private static final String FILENAME_SQL_QUERY = "sql_query.properties";
+    private static final String PROPERTY_COURSE_ADD = "course.add";
+    private static final String PROPERTY_COURSE_GET_BY_ID = "course.getById";
+    private static final String PROPERTY_COURSE_GET_ALL = "course.getAll";
+    private static final String PROPERTY_COURSE_UPDATE = "course.update";
+    private static final String PROPERTY_COURSE_DELETE = "course.delete";
     private static final String FIELD_COURSE_ID = "course_id";
     private static final String FIELD_COURSE_NAME = "course_name";
     private static final String FIELD_COURSE_DESCRIPTION = "course_desription";
+    private static final String MESSAGE_EXCEPTION_ADD = "Can't add course";
+    private static final String MESSAGE_EXCEPTION_GET_BY_ID = "Can't get course by ID = ";
+    private static final String MESSAGE_EXCEPTION_GET_ALL = "Can't get courses";
+    private static final String MESSAGE_EXCEPTION_UPDATE = "Can't update course ";
+    private static final String MESSAGE_EXCEPTION_DELETE = "Can't delete course ";
 
     private DaoUtils daoUtil = new DaoUtils();
-    
+    private Reader reader = new Reader();
+    Properties sqlProp = reader.readProperties(FILENAME_SQL_QUERY);
 
     @Override
     public void add(Course course) throws DAOException {
-        String sql = "INSERT INTO courses(course_name, course_description)  VALUES (?, ?)";
+        String sql = sqlProp.getProperty(PROPERTY_COURSE_ADD);
         try (Connection connection = daoUtil.getConnection()) {
 
             try (PreparedStatement statement = connection
@@ -33,13 +47,13 @@ public class CourseDao implements Dao<Course> {
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
-            throw new DAOException("Can't add course", e);
+            throw new DAOException(MESSAGE_EXCEPTION_ADD, e);
         }
     }
 
     @Override
     public Optional<Course> getById(int courseId) throws DAOException {
-        String sql = "SELECT course_id, course_name, course_description FROM courses WHERE course_id = ?";
+        String sql = sqlProp.getProperty(PROPERTY_COURSE_GET_BY_ID);
         Course course = null;
         try (Connection connection = daoUtil.getConnection();
                 PreparedStatement statement = connection
@@ -50,19 +64,21 @@ public class CourseDao implements Dao<Course> {
                 if (resultSet.next()) {
                     course = new Course();
                     course.setCourseId(courseId);
-                    course.setCourseName(resultSet.getString(FIELD_COURSE_NAME));
-                    course.setCourseDescription(resultSet.getString(FIELD_COURSE_DESCRIPTION));
+                    course.setCourseName(
+                            resultSet.getString(FIELD_COURSE_NAME));
+                    course.setCourseDescription(
+                            resultSet.getString(FIELD_COURSE_DESCRIPTION));
                 }
             }
         } catch (SQLException e) {
-            throw new DAOException("Can't get course by ID = " + courseId, e);
+            throw new DAOException(MESSAGE_EXCEPTION_GET_BY_ID + courseId, e);
         }
         return Optional.ofNullable(course);
     }
 
     @Override
     public List<Course> getAll() throws DAOException {
-        String sql = "SELECT course_id, course_name, course_description FROM courses";
+        String sql = sqlProp.getProperty(PROPERTY_COURSE_GET_ALL);
         List<Course> courses = new ArrayList<>();
         try (Connection connection = daoUtil.getConnection();
                 Statement statement = connection.createStatement()) {
@@ -70,21 +86,23 @@ public class CourseDao implements Dao<Course> {
                 while (resultSet.next()) {
                     Course course = new Course();
                     course.setCourseId(resultSet.getInt(FIELD_COURSE_ID));
-                    course.setCourseName(resultSet.getString(FIELD_COURSE_NAME));
-                    course.setCourseDescription(resultSet.getString(FIELD_COURSE_DESCRIPTION));
+                    course.setCourseName(
+                            resultSet.getString(FIELD_COURSE_NAME));
+                    course.setCourseDescription(
+                            resultSet.getString(FIELD_COURSE_DESCRIPTION));
 
                     courses.add(course);
                 }
             }
         } catch (SQLException e) {
-            throw new DAOException("Can't get courses", e);
+            throw new DAOException(MESSAGE_EXCEPTION_GET_ALL, e);
         }
         return courses;
     }
 
     @Override
     public void update(Course course) throws DAOException {
-        String sql = "UPDATE courses SET course_name = ?, course_description = ? WHERE course_id = ?";
+        String sql = sqlProp.getProperty(PROPERTY_COURSE_UPDATE);
         try (Connection connection = daoUtil.getConnection();
                 PreparedStatement statement = connection
                         .prepareStatement(sql)) {
@@ -95,13 +113,13 @@ public class CourseDao implements Dao<Course> {
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new DAOException(
-                    "Can't update course " + course.getCourseId(), e);
+                    MESSAGE_EXCEPTION_UPDATE + course.getCourseId(), e);
         }
     }
 
     @Override
     public void delete(Course course) throws DAOException {
-        String sql = "DELETE FROM courses WHERE course_id = ?";
+        String sql = sqlProp.getProperty(PROPERTY_COURSE_DELETE);
         try (Connection connection = daoUtil.getConnection();
                 PreparedStatement statement = connection
                         .prepareStatement(sql)) {
@@ -109,7 +127,7 @@ public class CourseDao implements Dao<Course> {
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new DAOException(
-                    "Can't delete course " + course.getCourseId(), e);
+                    MESSAGE_EXCEPTION_DELETE + course.getCourseId(), e);
         }
     }
 
