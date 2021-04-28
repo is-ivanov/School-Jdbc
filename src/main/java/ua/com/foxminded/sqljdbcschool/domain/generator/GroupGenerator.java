@@ -18,7 +18,7 @@ public class GroupGenerator implements Generator {
     public void generate(int numberGroups) {
         List<Group> groups = new ArrayList<>();
         for (int i = 0; i < numberGroups; i++) {
-            Group group = new Group(i + 1, generateName());
+            Group group = new Group(generateName());
             groups.add(group);
         }
         saveInBase(groups);
