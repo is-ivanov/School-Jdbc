@@ -16,12 +16,16 @@ import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 import ua.com.foxminded.sqljdbcschool.reader.Reader;
 
 public class StudentDao implements Dao<Student> {
+    private static final String MESSAGE_EXCEPTION_ADD_STUDENT_COURSE = "Can't add pair student-course";
+    private static final String PROPERTY_STUDENT_COURSE_ADD = "student_course.add";
+    private static final String MESSAGE_EXCEPTION_CREATE_TABLE = "Can't create student_course table";
     private static final String FILENAME_SQL_QUERY = "sql_query.properties";
     private static final String PROPERTY_STUDENT_ADD = "student.add";
     private static final String PROPERTY_STUDENT_GET_BY_ID = "student.getById";
     private static final String PROPERTY_STUDENT_GET_ALL = "student.getAll";
     private static final String PROPERTY_STUDENT_UPDATE = "student.update";
     private static final String PROPERTY_STUDENT_DELETE = "student.delete";
+    private static final String PROPERTY_STUDENT_COURSE_CREATE_TABLE = "student_course.create.table";
     private static final String FIELD_STUDENT_ID = "student_id";
     private static final String FIELD_GROUP_ID = "group_id";
     private static final String FIELD_FIRST_NAME = "first_name";
@@ -35,7 +39,7 @@ public class StudentDao implements Dao<Student> {
     private DaoUtils daoUtil = new DaoUtils();
     private Reader reader = new Reader();
     private Properties sqlProp = reader.readProperties(FILENAME_SQL_QUERY);
-    
+
     @Override
     public void add(Student student) throws DAOException {
         String sql = sqlProp.getProperty(PROPERTY_STUDENT_ADD);
@@ -137,5 +141,43 @@ public class StudentDao implements Dao<Student> {
                     MESSAGE_EXCEPTION_DELETE + student.getStudentId(), e);
         }
     }
+
+    public void createTableStudentCourse() throws DAOException {
+        String sql = sqlProp.getProperty(PROPERTY_STUDENT_COURSE_CREATE_TABLE);
+        try (Connection connection = daoUtil.getConnection()) {
+            try (PreparedStatement statement = connection
+                    .prepareStatement(sql)) {
+                statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            throw new DAOException(MESSAGE_EXCEPTION_CREATE_TABLE, e);
+        }
+    }
+
+    public void addStudentCourse(int student_id, int course_id)
+            throws DAOException {
+        String sql = sqlProp.getProperty(PROPERTY_STUDENT_COURSE_ADD);
+        try (Connection connection = daoUtil.getConnection()) {
+            try (PreparedStatement statement = connection
+                    .prepareStatement(sql)) {
+                statement.setInt(1, student_id);
+                statement.setInt(2, course_id);
+                statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            throw new DAOException(MESSAGE_EXCEPTION_ADD_STUDENT_COURSE, e);
+        }
+
+    }
+
+//    public List<Integer> getCoursesByStudentId(int student_id) {
+//        List<Integer> courses;
+//        
+//        return courses;
+//    }
+//
+//    public List<Integer> getstudentsByCourseId(int course_id) {
+//
+//    }
 
 }
