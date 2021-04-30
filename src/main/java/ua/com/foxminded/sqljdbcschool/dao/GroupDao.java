@@ -124,11 +124,11 @@ public class GroupDao implements Dao<Group> {
     public List<Group> getGroupsWithLessEqualsStudentCount(int studentCount)
             throws DAOException {
         String sql = sqlProp
-                .getProperty(PROPERTY_FIND_GROUPS_LESS_STUDENT_COUNT);
+                .getProperty(PROPERTY_FIND_GROUPS_LESS_STUDENT_COUNT) + studentCount;
+
         List<Group> groups = new ArrayList<>();
         try (Connection connection = daoUtil.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, studentCount);
+                Statement statement = connection.createStatement()) {
             try (ResultSet resultSet = statement.executeQuery(sql)) {
                 while (resultSet.next()) {
                     Group group = new Group(resultSet.getInt(FIELD_GROUP_ID),

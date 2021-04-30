@@ -12,6 +12,7 @@ public class Menu {
     private static final String FILENAME_MENU_PROPERTIES = "menu.properties";
     private static final String MENU_FIRST_LEVEL = "menu.level1";
     private static final String MENU_SECOND_LEVEL_CHOOSE1 = "menu.level2.1";
+    private static final String MENU_SECOND_LEVEL_CHOOSE2 = "menu.level2.2";
 
     private Reader reader = new Reader();
     private Properties propMenu = reader
@@ -23,22 +24,44 @@ public class Menu {
         int selection;
         String menuFirstLevel = propMenu.getProperty(MENU_FIRST_LEVEL);
         System.out.println(menuFirstLevel);
-        selection = input.nextInt();
-//        input.close();
-        if (selection == 1) {
-            startSecondLevelMenuForChoose1();
-
-        }
-
+        do {
+            selection = input.nextInt();
+            if (selection == 1) {
+                startSecondLevelMenuForChoose1();
+            }
+            if (selection == 2) {
+                startSecondLevelMenuForChoose1();
+            }
+            if (selection == 3) {
+                startSecondLevelMenuForChoose1();
+            }
+            if (selection == 4) {
+                startSecondLevelMenuForChoose1();
+            }
+            if (selection == 5) {
+                startSecondLevelMenuForChoose1();
+            }
+            if (selection == 6) {
+                startSecondLevelMenuForChoose1();
+            }
+        } while (selection == 0);
+        input.close();
     }
 
     private void startSecondLevelMenuForChoose1() {
-        String menuSecondlevelChoose1 = propMenu
+        String menuSecondlevelChoose = propMenu
                 .getProperty(MENU_SECOND_LEVEL_CHOOSE1);
-        System.out.println(menuSecondlevelChoose1);
-//        Scanner input = new Scanner(System.in);
+        System.out.println(menuSecondlevelChoose);
         int studentCount = input.nextInt();
-        input.close();
+        GroupService service = new GroupService();
+        service.findGroupsWithLessEqualsStudentCount(studentCount);
+    }
+    
+    private void startSecondLevelMenuForChoose2() {
+        String menuSecondlevelChoose = propMenu
+                .getProperty(MENU_SECOND_LEVEL_CHOOSE1);
+        System.out.println(menuSecondlevelChoose);
+        int studentCount = input.nextInt();
         GroupService service = new GroupService();
         service.findGroupsWithLessEqualsStudentCount(studentCount);
     }

@@ -7,6 +7,7 @@ import ua.com.foxminded.sqljdbcschool.entity.Group;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 import ua.com.foxminded.sqljdbcschool.exception.DomainException;
 
+@SuppressWarnings("java:S106")
 public class GroupService {
     
     public void findGroupsWithLessEqualsStudentCount(int studentCount) {
