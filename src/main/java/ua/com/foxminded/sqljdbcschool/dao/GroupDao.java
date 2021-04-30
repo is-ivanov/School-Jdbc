@@ -21,6 +21,7 @@ public class GroupDao implements Dao<Group> {
     private static final String PROPERTY_GROUP_GET_ALL = "group.getAll";
     private static final String PROPERTY_GROUP_UPDATE = "group.update";
     private static final String PROPERTY_GROUP_DELETE = "group.delete";
+    private static final String PROPERTY_FIND_GROUPS_LESS_STUDENT_COUNT = "group.find.all.less.student.count";
     private static final String FIELD_GROUP_ID = "group_id";
     private static final String FIELD_GROUP_NAME = "group_name";
     private static final String MESSAGE_EXCEPTION_ADD = "Can't add group";
@@ -118,6 +119,27 @@ public class GroupDao implements Dao<Group> {
                     MESSAGE_EXCEPTION_GROUP_DELETE + group.getGroupId(), e);
         }
 
+    }
+
+    public List<Group> getGroupsWithLessEqualsStudentCount(int studentCount)
+            throws DAOException {
+        String sql = sqlProp
+                .getProperty(PROPERTY_FIND_GROUPS_LESS_STUDENT_COUNT);
+        List<Group> groups = new ArrayList<>();
+        try (Connection connection = daoUtil.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, studentCount);
+            try (ResultSet resultSet = statement.executeQuery(sql)) {
+                while (resultSet.next()) {
+                    Group group = new Group(resultSet.getInt(FIELD_GROUP_ID),
+                            resultSet.getString(FIELD_GROUP_NAME));
+                    groups.add(group);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DAOException(MESSAGE_EXCEPTION_GET_ALL, e);
+        }
+        return groups;
     }
 
 }
