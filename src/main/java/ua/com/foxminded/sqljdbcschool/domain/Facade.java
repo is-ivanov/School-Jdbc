@@ -17,6 +17,7 @@ public class Facade {
     private static final int NUMBER_GROUPS = 10;
     private static final String MESSAGE_EXCEPTION_CREATE_TABLES = "Can't delete and create tables";
 
+
     public void prepareBase() throws DomainException {
 
         StartUpDao startUpDao = new StartUpDao();
@@ -27,7 +28,7 @@ public class Facade {
         }
         Generator groupGenerator = new GroupGenerator();
         groupGenerator.generate(NUMBER_GROUPS);
-
+        
         Generator courseGenerator = new CourseGenerator();
         courseGenerator.generate(NUMBER_COURSES);
 
@@ -36,12 +37,13 @@ public class Facade {
 
         Generator studentCourseGenerator = new StudentCourseGenerator();
         studentCourseGenerator.generate(NUMBER_STUDENTS);
-        
+
         System.out.println("Data prepared");
-        
+    }
+
+    public void workWithBase() {
         Menu menu = new Menu();
         menu.startMainMenu();
-        
     }
 
 }

@@ -6,6 +6,7 @@ public class Application {
         
         Facade facade = new Facade();
         facade.prepareBase();
+        facade.workWithBase();
             
         }
 

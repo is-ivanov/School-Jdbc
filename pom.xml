@@ -68,7 +68,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>ua.com.foxminded.formula1.Application
+                            <mainClass>ua.com.foxminded.sqljdbcschool.domain.Application
                             </mainClass>
                         </manifest>
                     </archive>
