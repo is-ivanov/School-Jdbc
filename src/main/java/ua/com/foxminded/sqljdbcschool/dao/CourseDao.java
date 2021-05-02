@@ -21,9 +21,11 @@ public class CourseDao implements Dao<Course> {
     private static final String PROPERTY_COURSE_GET_ALL = "course.getAll";
     private static final String PROPERTY_COURSE_UPDATE = "course.update";
     private static final String PROPERTY_COURSE_DELETE = "course.delete";
+    private static final String PROPERTY_COURSE_GET_FOR_STUDENT = "course.getForStudentId";
+    private static final String PROPERTY_COURSE_GET_MISS_FOR_STUDENT = "course.getMissingForStudentId";
     private static final String FIELD_COURSE_ID = "course_id";
     private static final String FIELD_COURSE_NAME = "course_name";
-    private static final String FIELD_COURSE_DESCRIPTION = "course_desription";
+    private static final String FIELD_COURSE_DESCRIPTION = "course_description";
     private static final String MESSAGE_EXCEPTION_ADD = "Can't add course";
     private static final String MESSAGE_EXCEPTION_GET_BY_ID = "Can't get course by ID = ";
     private static final String MESSAGE_EXCEPTION_GET_ALL = "Can't get courses";
@@ -129,6 +131,56 @@ public class CourseDao implements Dao<Course> {
             throw new DAOException(
                     MESSAGE_EXCEPTION_DELETE + course.getCourseId(), e);
         }
+    }
+    
+    public List<Course> getCoursesForStudentId(int studentId) throws DAOException {
+        String sql = sqlProp.getProperty(PROPERTY_COURSE_GET_FOR_STUDENT);
+        List<Course> courses = new ArrayList<>();
+        try (Connection connection = daoUtil.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sql)){
+            statement.setInt(1, studentId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    Course course = new Course();
+                    course.setCourseId(resultSet.getInt(FIELD_COURSE_ID));
+                    course.setCourseName(
+                            resultSet.getString(FIELD_COURSE_NAME));
+                    course.setCourseDescription(
+                            resultSet.getString(FIELD_COURSE_DESCRIPTION));
+
+                    courses.add(course);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DAOException(MESSAGE_EXCEPTION_GET_ALL, e);
+        }
+        return courses;
+        
+    }
+    
+    public List<Course> getCoursesMissingForStudentId(int studentId) throws DAOException {
+        String sql = sqlProp.getProperty(PROPERTY_COURSE_GET_MISS_FOR_STUDENT);
+        List<Course> courses = new ArrayList<>();
+        try (Connection connection = daoUtil.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sql)){
+            statement.setInt(1, studentId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    Course course = new Course();
+                    course.setCourseId(resultSet.getInt(FIELD_COURSE_ID));
+                    course.setCourseName(
+                            resultSet.getString(FIELD_COURSE_NAME));
+                    course.setCourseDescription(
+                            resultSet.getString(FIELD_COURSE_DESCRIPTION));
+
+                    courses.add(course);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DAOException(MESSAGE_EXCEPTION_GET_ALL, e);
+        }
+        return courses;
+        
     }
 
 }

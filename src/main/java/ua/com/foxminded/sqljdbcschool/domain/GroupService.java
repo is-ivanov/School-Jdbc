@@ -9,13 +9,12 @@ import ua.com.foxminded.sqljdbcschool.exception.DomainException;
 
 @SuppressWarnings("java:S106")
 public class GroupService {
+    private GroupDao groupDao = new GroupDao();
     
-    public void findGroupsWithLessEqualsStudentCount(int studentCount) {
-        GroupDao groupDao = new GroupDao();
+    public List<Group> getGroupsWithLessEqualsStudentCount(int studentCount) {
         
         try {
-            List<Group> groups = groupDao.getGroupsWithLessEqualsStudentCount(studentCount);
-            groups.stream().forEach(System.out::println);
+            return groupDao.getGroupsWithLessEqualsStudentCount(studentCount);
         } catch (DAOException e) {
             throw new DomainException("Can't get groups", e);
         }

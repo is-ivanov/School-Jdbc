@@ -121,15 +121,36 @@ public class GroupDao implements Dao<Group> {
 
     }
 
+//    public List<Group> getGroupsWithLessEqualsStudentCount(int studentCount)
+//            throws DAOException {
+//        String sql = sqlProp
+//                .getProperty(PROPERTY_FIND_GROUPS_LESS_STUDENT_COUNT) + studentCount;
+//
+//        List<Group> groups = new ArrayList<>();
+//        try (Connection connection = daoUtil.getConnection();
+//                Statement statement = connection.createStatement()) {
+//            try (ResultSet resultSet = statement.executeQuery(sql)) {
+//                while (resultSet.next()) {
+//                    Group group = new Group(resultSet.getInt(FIELD_GROUP_ID),
+//                            resultSet.getString(FIELD_GROUP_NAME));
+//                    groups.add(group);
+//                }
+//            }
+//        } catch (SQLException e) {
+//            throw new DAOException(MESSAGE_EXCEPTION_GET_ALL, e);
+//        }
+//        return groups;
+//    }
     public List<Group> getGroupsWithLessEqualsStudentCount(int studentCount)
             throws DAOException {
         String sql = sqlProp
-                .getProperty(PROPERTY_FIND_GROUPS_LESS_STUDENT_COUNT) + studentCount;
+                .getProperty(PROPERTY_FIND_GROUPS_LESS_STUDENT_COUNT);
 
         List<Group> groups = new ArrayList<>();
         try (Connection connection = daoUtil.getConnection();
-                Statement statement = connection.createStatement()) {
-            try (ResultSet resultSet = statement.executeQuery(sql)) {
+                PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, studentCount);
+            try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     Group group = new Group(resultSet.getInt(FIELD_GROUP_ID),
                             resultSet.getString(FIELD_GROUP_NAME));

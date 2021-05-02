@@ -23,7 +23,7 @@ public class StudentGenerator implements Generator {
         List<Student> students = new ArrayList<>();
         for (int i = 0; i < numberStudents; i++) {
             String[] names = createStudentNames();
-            Student student = new Student(i + 1, names[0], names[1]);
+            Student student = new Student( names[0], names[1]);
             students.add(student);
         }
         saveInBase(splitStudentsToGroups(students));

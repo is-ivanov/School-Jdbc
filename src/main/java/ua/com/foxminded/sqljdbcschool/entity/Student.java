@@ -10,6 +10,15 @@ public class Student {
         
     }
 
+    public Student(int studentId) {
+        this.studentId = studentId;
+    }
+
+    public Student(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
     public Student(int studentId, String firstName, String lastName) {
         this.studentId = studentId;
         this.firstName = firstName;
