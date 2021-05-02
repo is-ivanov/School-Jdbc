@@ -1,4 +1,4 @@
-package ua.com.foxminded.sqljdbcschool.domain;
+package ua.com.foxminded.sqljdbcschool.domain.service;
 
 import java.util.List;
 

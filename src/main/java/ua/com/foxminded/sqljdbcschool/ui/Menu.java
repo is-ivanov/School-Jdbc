@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
 
-import ua.com.foxminded.sqljdbcschool.domain.CourseService;
-import ua.com.foxminded.sqljdbcschool.domain.GroupService;
-import ua.com.foxminded.sqljdbcschool.domain.StudentServise;
+import ua.com.foxminded.sqljdbcschool.domain.service.CourseService;
+import ua.com.foxminded.sqljdbcschool.domain.service.GroupService;
+import ua.com.foxminded.sqljdbcschool.domain.service.StudentServise;
 import ua.com.foxminded.sqljdbcschool.entity.Course;
 import ua.com.foxminded.sqljdbcschool.entity.Group;
 import ua.com.foxminded.sqljdbcschool.entity.Student;
