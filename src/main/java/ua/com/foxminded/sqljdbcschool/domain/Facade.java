@@ -17,7 +17,6 @@ public class Facade {
     private static final int NUMBER_GROUPS = 10;
     private static final String MESSAGE_EXCEPTION_CREATE_TABLES = "Can't delete and create tables";
 
-
     public void prepareBase() throws DomainException {
 
         StartUpDao startUpDao = new StartUpDao();

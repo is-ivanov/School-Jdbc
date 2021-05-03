@@ -1,6 +1,7 @@
 package ua.com.foxminded.sqljdbcschool.domain;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -9,8 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InOrder;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.ArgumentMatchers;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import ua.com.foxminded.sqljdbcschool.dao.StartUpDao;
@@ -20,25 +19,25 @@ import ua.com.foxminded.sqljdbcschool.ui.Menu;
 
 @ExtendWith(MockitoExtension.class)
 class FacadeTest {
+    @Mock
+    private Facade facadeMock;
 
-    private Facade facade;
-
     @Mock
-    private StartUpDao startUpDao;
+    private StartUpDao startUpDaoMock;
     @Mock
-    private Generator groupGenerator;
+    private Generator groupGeneratorMock;
     @Mock
-    private Generator courseGenerator;
+    private Generator courseGeneratorMock;
     @Mock
-    private Generator studenGenerator;
+    private Generator studenGeneratorMock;
     @Mock
-    private Generator studentCourseGenerator;
+    private Generator studentCourseGeneratorMock;
     @Mock
-    private Menu menu;
+    private Menu menuMock;
 
     @BeforeEach
     void setUp() throws Exception {
-        facade = new Facade();
+        facadeMock = new Facade();
 
     }
 
@@ -52,14 +51,16 @@ class FacadeTest {
         @Test
         @DisplayName("test order call. should first call startupDao, then groupGenerator, courseGenerator, studentGenerator")
         void testOrderCallsObjects() throws DAOException {
-            facade.prepareBase();
-            InOrder inOrder = Mockito.inOrder(startUpDao, groupGenerator, courseGenerator, studenGenerator, studentCourseGenerator);
             
-            inOrder.verify(startUpDao).prepareTables();
-            inOrder.verify(groupGenerator).generate(NUMBER_GROUPS);
-            inOrder.verify(courseGenerator).generate(NUMBER_COURSES);
-            inOrder.verify(studenGenerator).generate(NUMBER_STUDENTS);
-            inOrder.verify(studentCourseGenerator).generate(NUMBER_STUDENTS);
+            facadeMock.prepareBase();
+
+            InOrder inOrder = inOrder(startUpDaoMock, groupGeneratorMock, courseGeneratorMock, studenGeneratorMock, studentCourseGeneratorMock);
+            
+            inOrder.verify(startUpDaoMock).prepareTables();
+            inOrder.verify(groupGeneratorMock).generate(NUMBER_GROUPS);
+            inOrder.verify(courseGeneratorMock).generate(NUMBER_COURSES);
+            inOrder.verify(studenGeneratorMock).generate(NUMBER_STUDENTS);
+            inOrder.verify(studentCourseGeneratorMock).generate(NUMBER_STUDENTS);
             
         }
     }

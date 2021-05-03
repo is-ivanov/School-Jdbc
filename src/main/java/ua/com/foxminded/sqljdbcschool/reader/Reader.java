@@ -6,29 +6,38 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("java:S106")
 public class Reader {
 
-    private static final String MASK_MESSAGE_FILE_NOT_FOUND = "File %s not found";
+    private static final String MESSAGE_FILENAME_IS_NULL = "Filename is null";
+    private static final String MASK_MESSAGE_FILE_NOT_FOUND = "File \"%s\" not found";
 
     public Properties readProperties(String filename) {
+        if (Objects.isNull(filename)) {
+            throw new IllegalArgumentException(MESSAGE_FILENAME_IS_NULL);
+        }
         Properties properties = new Properties();
 
         try (InputStream input = getClass().getClassLoader()
                 .getResourceAsStream(filename)) {
 
             properties.load(input);
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             System.err.println(
                     String.format(MASK_MESSAGE_FILE_NOT_FOUND, filename));
-
         }
         return properties;
     }
 
-    public List<String> readTxtDataFiles(String filename) {
+    public List<String> readTxtDataFiles(String filename)
+            throws IllegalArgumentException {
+        if (Objects.isNull(filename)) {
+            throw new IllegalArgumentException(MESSAGE_FILENAME_IS_NULL);
+        }
         List<String> fileContents = new ArrayList<>();
         try (InputStream inputStream = getClass().getClassLoader()
                 .getResourceAsStream(filename);
