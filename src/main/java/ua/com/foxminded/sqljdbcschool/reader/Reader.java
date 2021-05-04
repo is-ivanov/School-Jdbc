@@ -27,8 +27,8 @@ public class Reader {
 
             properties.load(input);
         } catch (IOException | NullPointerException e) {
-            System.err.println(
-                    String.format(MASK_MESSAGE_FILE_NOT_FOUND, filename));
+            throw new IllegalArgumentException(
+                    String.format(MASK_MESSAGE_FILE_NOT_FOUND, filename), e);
         }
         return properties;
     }
@@ -48,8 +48,8 @@ public class Reader {
             fileContents = bufferedReader.lines().collect(Collectors.toList());
 
         } catch (IOException | NullPointerException e) {
-            System.err.println(
-                    String.format(MASK_MESSAGE_FILE_NOT_FOUND, filename));
+            throw new IllegalArgumentException(
+                    String.format(MASK_MESSAGE_FILE_NOT_FOUND, filename), e);
         }
         return fileContents;
 
