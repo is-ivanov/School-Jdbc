@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import ua.com.foxminded.sqljdbcschool.dao.Dao;
 import ua.com.foxminded.sqljdbcschool.dao.GroupDao;
 import ua.com.foxminded.sqljdbcschool.entity.Group;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
@@ -41,7 +42,7 @@ public class GroupGenerator implements Generator {
     }
 
     private void saveInBase(List<Group> groups) {
-        GroupDao groupDao = new GroupDao();
+        Dao<Group> groupDao = new GroupDao();
         groups.stream().forEach(group -> {
             try {
                 groupDao.add(group);

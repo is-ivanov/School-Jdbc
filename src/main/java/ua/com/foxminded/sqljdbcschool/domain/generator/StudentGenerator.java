@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import ua.com.foxminded.sqljdbcschool.dao.Dao;
 import ua.com.foxminded.sqljdbcschool.dao.StudentDao;
 import ua.com.foxminded.sqljdbcschool.entity.Student;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
@@ -77,7 +78,7 @@ public class StudentGenerator implements Generator {
     }
 
     private void saveInBase(List<Student> students) {
-        StudentDao studentDao = new StudentDao();
+        Dao<Student> studentDao = new StudentDao();
         students.stream().forEach(student -> {
             try {
                 studentDao.add(student);

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import ua.com.foxminded.sqljdbcschool.dao.CourseDao;
+import ua.com.foxminded.sqljdbcschool.dao.Dao;
 import ua.com.foxminded.sqljdbcschool.entity.Course;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 import ua.com.foxminded.sqljdbcschool.exception.DomainException;
@@ -28,7 +29,7 @@ public class CourseGenerator implements Generator {
     }
 
     private void saveInBase(List<Course> courses) {
-        CourseDao courseDao = new CourseDao();
+        Dao<Course> courseDao = new CourseDao();
         courses.stream().forEach(course -> {
             try {
                 courseDao.add(course);
