@@ -14,7 +14,7 @@ public class NewMenu {
     private List<MenuItem> menuItems;
     private Scanner scanner;
 
-    public NewMenu(List<MenuItem> menuItems, Scanner scanner) {
+    public NewMenu() {
         this.menuItems = new ArrayList<>();
         this.scanner = new Scanner(System.in);
     }
