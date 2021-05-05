@@ -9,8 +9,13 @@ import ua.com.foxminded.sqljdbcschool.exception.DomainException;
 
 @SuppressWarnings("java:S106")
 public class GroupService {
-    private GroupDao groupDao = new GroupDao();
+    private GroupDao groupDao;
     
+    public GroupService(GroupDao groupDao) {
+        this.groupDao = groupDao;
+    }
+
+
     public List<Group> getGroupsWithLessEqualsStudentCount(int studentCount) {
         
         try {

@@ -15,29 +15,40 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ua.com.foxminded.sqljdbcschool.dao.GroupDao;
 import ua.com.foxminded.sqljdbcschool.entity.Group;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
+import ua.com.foxminded.sqljdbcschool.exception.DomainException;
 
 @ExtendWith(MockitoExtension.class)
 class GroupServiceTest {
     private GroupService service;
-    
+
     @Mock
     private GroupDao groupDaoMock;
-    
-    @Mock
+
     private List<Group> groups;
-    
+
     @BeforeEach
     void setUp() throws Exception {
-        service = new GroupService();
+        service = new GroupService(groupDaoMock);
         groups = new ArrayList<>();
     }
 
     @Test
-    void test() throws DAOException {
-        when(groupDaoMock.getGroupsWithLessEqualsStudentCount(anyInt())).thenReturn(groups);
-        
-        List<Group> actualGroups = service.getGroupsWithLessEqualsStudentCount(anyInt());
+    void testReturnListGroups() throws DAOException {
+        when(groupDaoMock.getGroupsWithLessEqualsStudentCount(anyInt()))
+                .thenReturn(groups);
+
+        List<Group> actualGroups = service
+                .getGroupsWithLessEqualsStudentCount(anyInt());
         assertEquals(groups, actualGroups);
+    }
+
+    @Test
+    void testReturnDaoException() throws DAOException {
+        when(groupDaoMock.getGroupsWithLessEqualsStudentCount(anyInt()))
+                .thenThrow(DAOException.class);
+        Exception exception = assertThrows(DomainException.class,
+                () -> service.getGroupsWithLessEqualsStudentCount(anyInt()));
+        assertEquals("Can't get groups", exception.getMessage());
     }
 
 }

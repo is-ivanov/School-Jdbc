@@ -8,8 +8,12 @@ import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 import ua.com.foxminded.sqljdbcschool.exception.DomainException;
 
 public class CourseService {
-    private CourseDao courseDao = new CourseDao();
+    private CourseDao courseDao;
     
+    public CourseService(CourseDao courseDao) {
+        this.courseDao = courseDao;
+    }
+
     public List<Course> getCoursesMissingForStudent(int studentId) {
         try {
             return courseDao.getCoursesMissingForStudentId(studentId);

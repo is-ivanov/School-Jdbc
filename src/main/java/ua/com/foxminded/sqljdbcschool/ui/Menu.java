@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
 
+import ua.com.foxminded.sqljdbcschool.dao.CourseDao;
+import ua.com.foxminded.sqljdbcschool.dao.GroupDao;
 import ua.com.foxminded.sqljdbcschool.domain.service.CourseService;
 import ua.com.foxminded.sqljdbcschool.domain.service.GroupService;
 import ua.com.foxminded.sqljdbcschool.domain.service.StudentServise;
@@ -67,7 +69,8 @@ public class Menu {
     private void startSubMenuFindGroupsWithLessStudents() {
         System.out.println(propMenu.getProperty(MENU_SECOND_LEVEL_CHOOSE1));
         int studentCount = Integer.parseInt(input.nextLine());
-        GroupService service = new GroupService();
+        GroupDao groupDao = new GroupDao();
+        GroupService service = new GroupService(groupDao);
         List<Group> groups = service
                 .getGroupsWithLessEqualsStudentCount(studentCount);
         groups.stream().forEach(System.out::println);
@@ -105,8 +108,8 @@ public class Menu {
     private void startSubMenuAddStudentToCourse() {
         System.out.println(propMenu.getProperty(MENU_SECOND_LEVEL_CHOOSE5_1));
         int studentId = Integer.parseInt(input.nextLine());
-
-        CourseService courseService = new CourseService();
+        CourseDao dao = new CourseDao();
+        CourseService courseService = new CourseService(dao);
         List<Course> courses = courseService
                 .getCoursesMissingForStudent(studentId);
         courses.stream().forEach(System.out::println);
@@ -123,8 +126,8 @@ public class Menu {
     private void startSubMenuRemoveStudentFromCourse() {
         System.out.println(propMenu.getProperty(MENU_SECOND_LEVEL_CHOOSE6_1));
         int studentId = Integer.parseInt(input.nextLine());
-
-        CourseService courseService = new CourseService();
+        CourseDao dao = new CourseDao();
+        CourseService courseService = new CourseService(dao);
         List<Course> courses = courseService.getCoursesForStudent(studentId);
         courses.stream().forEach(System.out::println);
 
