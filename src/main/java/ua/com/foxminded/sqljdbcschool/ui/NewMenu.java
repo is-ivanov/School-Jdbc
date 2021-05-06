@@ -38,7 +38,7 @@ public class NewMenu {
         List<MenuItem> filteredMenuItems = menuItems.stream()
                 .filter(a -> a.getKey().toLowerCase().equals(key))
                 .collect(Collectors.toList());
-        if (filteredMenuItems.isEmpty()) {
+        if (!filteredMenuItems.isEmpty()) {
             filteredMenuItems.stream().forEach(a -> a.getRunnable().run());
         } else {
             throw new UIException(

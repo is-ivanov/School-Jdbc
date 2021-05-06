@@ -9,6 +9,7 @@ import ua.com.foxminded.sqljdbcschool.domain.generator.StudentGenerator;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 import ua.com.foxminded.sqljdbcschool.exception.DomainException;
 import ua.com.foxminded.sqljdbcschool.ui.Menu;
+import ua.com.foxminded.sqljdbcschool.ui.MenuStart;
 
 @SuppressWarnings("java:S106")
 public class Facade {
@@ -19,30 +20,30 @@ public class Facade {
 
     public void prepareBase() throws DomainException {
 
-        StartUpDao startUpDao = new StartUpDao();
-        try {
-            startUpDao.prepareTables();
-        } catch (DAOException e) {
-            throw new DomainException(MESSAGE_EXCEPTION_CREATE_TABLES, e);
-        }
-        Generator groupGenerator = new GroupGenerator();
-        groupGenerator.generate(NUMBER_GROUPS);
-        
-        Generator courseGenerator = new CourseGenerator();
-        courseGenerator.generate(NUMBER_COURSES);
-
-        Generator studentGenerator = new StudentGenerator();
-        studentGenerator.generate(NUMBER_STUDENTS);
-
-        Generator studentCourseGenerator = new StudentCourseGenerator();
-        studentCourseGenerator.generate(NUMBER_STUDENTS);
+//        StartUpDao startUpDao = new StartUpDao();
+//        try {
+//            startUpDao.prepareTables();
+//        } catch (DAOException e) {
+//            throw new DomainException(MESSAGE_EXCEPTION_CREATE_TABLES, e);
+//        }
+//        Generator groupGenerator = new GroupGenerator();
+//        groupGenerator.generate(NUMBER_GROUPS);
+//        
+//        Generator courseGenerator = new CourseGenerator();
+//        courseGenerator.generate(NUMBER_COURSES);
+//
+//        Generator studentGenerator = new StudentGenerator();
+//        studentGenerator.generate(NUMBER_STUDENTS);
+//
+//        Generator studentCourseGenerator = new StudentCourseGenerator();
+//        studentCourseGenerator.generate(NUMBER_STUDENTS);
 
         System.out.println("Data prepared");
     }
 
     public void workWithBase() {
-        Menu menu = new Menu();
-        menu.startMainMenu();
+        MenuStart menu = new MenuStart();
+        menu.startMenu();
     }
 
 }
