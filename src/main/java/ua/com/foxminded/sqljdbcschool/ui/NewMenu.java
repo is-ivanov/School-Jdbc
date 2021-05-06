@@ -7,8 +7,6 @@ import java.util.stream.Collectors;
 
 import ua.com.foxminded.sqljdbcschool.exception.UIException;
 
-//example menu https://github.com/bryandh/genericmenu
-
 @SuppressWarnings("java:S106")
 public class NewMenu {
     private List<MenuItem> menuItems;

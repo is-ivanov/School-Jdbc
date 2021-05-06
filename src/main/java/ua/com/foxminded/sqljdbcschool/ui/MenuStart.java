@@ -18,9 +18,7 @@ public class MenuStart {
                 "Find all groups with less or equals student count",
                 this::startSubMenuFindGroupsWithLessStudents);
         menu.addMenuItem("2",
-                "Find all students related to course with given name", () ->
-
-                {
+                "Find all students related to course with given name", () -> {
                     System.out.println(
                             "Find all students related to course with given name");
                 });

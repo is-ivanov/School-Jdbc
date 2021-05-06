@@ -32,14 +32,13 @@ public class CourseDao implements Dao<Course> {
     private static final String MESSAGE_EXCEPTION_UPDATE = "Can't update course ";
     private static final String MESSAGE_EXCEPTION_DELETE = "Can't delete course ";
 
-    private DaoUtils daoUtil = new DaoUtils();
     private Reader reader = new Reader();
     private Properties sqlProp = reader.readProperties(FILENAME_SQL_QUERY);
 
     @Override
     public void add(Course course) throws DAOException {
         String sql = sqlProp.getProperty(PROPERTY_COURSE_ADD);
-        try (Connection connection = daoUtil.getConnection()) {
+        try (Connection connection = DaoUtils.getConnection()) {
 
             try (PreparedStatement statement = connection
                     .prepareStatement(sql)) {
@@ -57,7 +56,7 @@ public class CourseDao implements Dao<Course> {
     public Optional<Course> getById(int courseId) throws DAOException {
         String sql = sqlProp.getProperty(PROPERTY_COURSE_GET_BY_ID);
         Course course = null;
-        try (Connection connection = daoUtil.getConnection();
+        try (Connection connection = DaoUtils.getConnection();
                 PreparedStatement statement = connection
                         .prepareStatement(sql)) {
             statement.setInt(1, courseId);
@@ -82,7 +81,7 @@ public class CourseDao implements Dao<Course> {
     public List<Course> getAll() throws DAOException {
         String sql = sqlProp.getProperty(PROPERTY_COURSE_GET_ALL);
         List<Course> courses = new ArrayList<>();
-        try (Connection connection = daoUtil.getConnection();
+        try (Connection connection = DaoUtils.getConnection();
                 Statement statement = connection.createStatement()) {
             try (ResultSet resultSet = statement.executeQuery(sql)) {
                 while (resultSet.next()) {
@@ -105,7 +104,7 @@ public class CourseDao implements Dao<Course> {
     @Override
     public void update(Course course) throws DAOException {
         String sql = sqlProp.getProperty(PROPERTY_COURSE_UPDATE);
-        try (Connection connection = daoUtil.getConnection();
+        try (Connection connection = DaoUtils.getConnection();
                 PreparedStatement statement = connection
                         .prepareStatement(sql)) {
             statement.setString(1, course.getCourseName());
@@ -122,7 +121,7 @@ public class CourseDao implements Dao<Course> {
     @Override
     public void delete(Course course) throws DAOException {
         String sql = sqlProp.getProperty(PROPERTY_COURSE_DELETE);
-        try (Connection connection = daoUtil.getConnection();
+        try (Connection connection = DaoUtils.getConnection();
                 PreparedStatement statement = connection
                         .prepareStatement(sql)) {
             statement.setInt(1, course.getCourseId());
@@ -136,7 +135,7 @@ public class CourseDao implements Dao<Course> {
     public List<Course> getCoursesForStudentId(int studentId) throws DAOException {
         String sql = sqlProp.getProperty(PROPERTY_COURSE_GET_FOR_STUDENT);
         List<Course> courses = new ArrayList<>();
-        try (Connection connection = daoUtil.getConnection();
+        try (Connection connection = DaoUtils.getConnection();
                 PreparedStatement statement = connection.prepareStatement(sql)){
             statement.setInt(1, studentId);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -161,7 +160,7 @@ public class CourseDao implements Dao<Course> {
     public List<Course> getCoursesMissingForStudentId(int studentId) throws DAOException {
         String sql = sqlProp.getProperty(PROPERTY_COURSE_GET_MISS_FOR_STUDENT);
         List<Course> courses = new ArrayList<>();
-        try (Connection connection = daoUtil.getConnection();
+        try (Connection connection = DaoUtils.getConnection();
                 PreparedStatement statement = connection.prepareStatement(sql)){
             statement.setInt(1, studentId);
             try (ResultSet resultSet = statement.executeQuery()) {

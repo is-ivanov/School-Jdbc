@@ -30,14 +30,13 @@ public class GroupDao implements Dao<Group> {
     private static final String MESSAGE_EXCEPTION_GROUP_UPDATE = "Can't update group ";
     private static final String MESSAGE_EXCEPTION_GROUP_DELETE = "Can't delete group ";
 
-    private DaoUtils daoUtil = new DaoUtils();
     private Reader reader = new Reader();
     private Properties sqlProp = reader.readProperties(FILENAME_SQL_QUERY);
 
     @Override
     public void add(Group group) throws DAOException {
         String sql = sqlProp.getProperty(PROPERTY_GROUP_ADD);
-        try (Connection connection = daoUtil.getConnection()) {
+        try (Connection connection = DaoUtils.getConnection()) {
 
             try (PreparedStatement statement = connection
                     .prepareStatement(sql)) {
@@ -54,7 +53,7 @@ public class GroupDao implements Dao<Group> {
     public Optional<Group> getById(int groupId) throws DAOException {
         String sql = sqlProp.getProperty(PROPERTY_GROUP_GET_BY_ID);
         Group group = null;
-        try (Connection connection = daoUtil.getConnection();
+        try (Connection connection = DaoUtils.getConnection();
                 PreparedStatement statement = connection
                         .prepareStatement(sql)) {
             statement.setInt(1, groupId);
@@ -75,7 +74,7 @@ public class GroupDao implements Dao<Group> {
     public List<Group> getAll() throws DAOException {
         String sql = sqlProp.getProperty(PROPERTY_GROUP_GET_ALL);
         List<Group> groups = new ArrayList<>();
-        try (Connection connection = daoUtil.getConnection();
+        try (Connection connection = DaoUtils.getConnection();
                 Statement statement = connection.createStatement()) {
             try (ResultSet resultSet = statement.executeQuery(sql)) {
                 while (resultSet.next()) {
@@ -93,7 +92,7 @@ public class GroupDao implements Dao<Group> {
     @Override
     public void update(Group group) throws DAOException {
         String sql = sqlProp.getProperty(PROPERTY_GROUP_UPDATE);
-        try (Connection connection = daoUtil.getConnection();
+        try (Connection connection = DaoUtils.getConnection();
                 PreparedStatement statement = connection
                         .prepareStatement(sql)) {
             statement.setString(1, group.getGroupName());
@@ -109,7 +108,7 @@ public class GroupDao implements Dao<Group> {
     @Override
     public void delete(Group group) throws DAOException {
         String sql = sqlProp.getProperty(PROPERTY_GROUP_DELETE);
-        try (Connection connection = daoUtil.getConnection();
+        try (Connection connection = DaoUtils.getConnection();
                 PreparedStatement statement = connection
                         .prepareStatement(sql)) {
             statement.setInt(1, group.getGroupId());
@@ -121,33 +120,13 @@ public class GroupDao implements Dao<Group> {
 
     }
 
-//    public List<Group> getGroupsWithLessEqualsStudentCount(int studentCount)
-//            throws DAOException {
-//        String sql = sqlProp
-//                .getProperty(PROPERTY_FIND_GROUPS_LESS_STUDENT_COUNT) + studentCount;
-//
-//        List<Group> groups = new ArrayList<>();
-//        try (Connection connection = daoUtil.getConnection();
-//                Statement statement = connection.createStatement()) {
-//            try (ResultSet resultSet = statement.executeQuery(sql)) {
-//                while (resultSet.next()) {
-//                    Group group = new Group(resultSet.getInt(FIELD_GROUP_ID),
-//                            resultSet.getString(FIELD_GROUP_NAME));
-//                    groups.add(group);
-//                }
-//            }
-//        } catch (SQLException e) {
-//            throw new DAOException(MESSAGE_EXCEPTION_GET_ALL, e);
-//        }
-//        return groups;
-//    }
     public List<Group> getGroupsWithLessEqualsStudentCount(int studentCount)
             throws DAOException {
         String sql = sqlProp
                 .getProperty(PROPERTY_FIND_GROUPS_LESS_STUDENT_COUNT);
 
         List<Group> groups = new ArrayList<>();
-        try (Connection connection = daoUtil.getConnection();
+        try (Connection connection = DaoUtils.getConnection();
                 PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, studentCount);
             try (ResultSet resultSet = statement.executeQuery()) {
