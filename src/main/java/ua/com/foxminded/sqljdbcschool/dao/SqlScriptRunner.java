@@ -21,6 +21,7 @@ public class SqlScriptRunner {
 
     public void runSqlScript(String scriptFilename) throws DAOException {
         ScriptRunner scriptRunner = new ScriptRunner(connection);
+        scriptRunner.setLogWriter(null);
         try (InputStream inputStream = getClass().getClassLoader()
                 .getResourceAsStream(scriptFilename);
                 InputStreamReader reader = new InputStreamReader(
