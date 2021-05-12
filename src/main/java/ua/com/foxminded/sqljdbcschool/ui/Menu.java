@@ -1,144 +1,81 @@
 package ua.com.foxminded.sqljdbcschool.ui;
 
-import java.util.List;
-import java.util.Properties;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
-import ua.com.foxminded.sqljdbcschool.dao.CourseDao;
-import ua.com.foxminded.sqljdbcschool.dao.GroupDao;
-import ua.com.foxminded.sqljdbcschool.domain.service.CourseService;
-import ua.com.foxminded.sqljdbcschool.domain.service.GroupService;
-import ua.com.foxminded.sqljdbcschool.domain.service.StudentServise;
-import ua.com.foxminded.sqljdbcschool.entity.Course;
-import ua.com.foxminded.sqljdbcschool.entity.Group;
-import ua.com.foxminded.sqljdbcschool.entity.Student;
-import ua.com.foxminded.sqljdbcschool.reader.Reader;
+import ua.com.foxminded.sqljdbcschool.ui.menuitem.MenuItem;
+import ua.com.foxminded.sqljdbcschool.ui.menuitem.MenuItemQuit;
 
 @SuppressWarnings("java:S106")
 public class Menu {
-    private static final String FILENAME_MENU_PROPERTIES = "menu.properties";
-    private static final String MENU_FIRST_LEVEL = "menu.level1";
-    private static final String MENU_SECOND_LEVEL_CHOOSE1 = "menu.level2.1";
-    private static final String MENU_SECOND_LEVEL_CHOOSE2 = "menu.level2.2";
-    private static final String MENU_SECOND_LEVEL_CHOOSE3_1 = "menu.level2.3.1";
-    private static final String MENU_SECOND_LEVEL_CHOOSE3_2 = "menu.level2.3.2";
-    private static final String MENU_SECOND_LEVEL_CHOOSE4 = "menu.level2.4";
-    private static final String MENU_SECOND_LEVEL_CHOOSE5_1 = "menu.level2.5.1";
-    private static final String MENU_SECOND_LEVEL_CHOOSE5_2 = "menu.level2.5.2";
-    private static final String MENU_SECOND_LEVEL_CHOOSE6_1 = "menu.level2.6.1";
-    private static final String MENU_SECOND_LEVEL_CHOOSE6_2 = "menu.level2.6.2";
-    private static final String FORMAT_MASK_ADD_STUDENT_MESSAGE = "%s %s create";
-    private static final String FORMAT_MASK_DELETE_STUDENT_MESSAGE = "Student with id %d deleted";
-    private static final String FORMAT_MASK_ADD_STUDENT_COURSE_MESSAGE = "Student %d added to course %d";
-    private static final String FORMAT_MASK_REMOVE_STUDENT_COURSE_MESSAGE = "Student %d deleted from course %d";
+    private static final String START_MESSAGE_MENU = "Input number item from this menu";
+    private static final String MESSAGE_INPUT_NUMBER = "Input number: ";
+    private static final String CLOSE_BRACKET = "]";
+    private static final String OPEN_BRACKET = "[";
+    private static final String MESSAGE_EXCEPTION_WRONG_NUMBER = "You inputted the wrong number";
+    private static final String MESSAGE_EXCEPTION_NOT_NUMBER = "You inputted not a number. Please input number";
+    private static final String NAME_QUIT_ITEM = "Quit";
+    private static final String MESSAGE_QUIT_APPLICATION = "Quitting application...";
 
-    private Reader reader = new Reader();
-    private Properties propMenu = reader
-            .readProperties(FILENAME_MENU_PROPERTIES);
+    private Map<Integer, MenuItem> menuItems;
+    private Scanner scanner;
 
-    Scanner input = new Scanner(System.in);
+    public Menu(Scanner scanner) {
+        this.menuItems = new LinkedHashMap<>();
+        this.scanner = scanner;
+    }
 
-    public void startMainMenu() {
-        int selection;
-        String menuFirstLevel = propMenu.getProperty(MENU_FIRST_LEVEL);
+    public void addMenuItem(Integer key, MenuItem menuItem) {
+        menuItems.put(key, menuItem);
+    }
+
+    private void printMenuItems() {
+        menuItems.forEach((k, v) -> System.out
+                .println(OPEN_BRACKET + k + CLOSE_BRACKET + v.getName()));
+    }
+
+    private int scanInt() {
+        int result = -1;
         do {
-            System.out.println(menuFirstLevel);
-            selection = Integer.parseInt(input.nextLine());
-            if (selection == 1) {
-                startSubMenuFindGroupsWithLessStudents();
+            System.out.print(MESSAGE_INPUT_NUMBER);
+            try {
+                result = Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println(MESSAGE_EXCEPTION_NOT_NUMBER);
+            } 
+        } while (result == -1);
+        return result;
+    }
+
+    private void addDefaultItems() {
+        MenuItem menuItemQuit = new MenuItemQuit(NAME_QUIT_ITEM);
+        addMenuItem(0, menuItemQuit);
+    }
+
+    public void initMenu() {
+        addDefaultItems();
+
+        boolean quit = false;
+
+        while (!quit) {
+            System.out.println(START_MESSAGE_MENU);
+            printMenuItems();
+            Set<Integer> keys = menuItems.keySet();
+            int choice = scanInt();
+            while(!keys.contains(choice)) {
+                System.out.println(MESSAGE_EXCEPTION_WRONG_NUMBER);
+                choice = scanInt();
             }
-            if (selection == 2) {
-                startSubMenuFindStudentsRelatedCourse();
+            if (choice == 0) {
+                System.out.println(MESSAGE_QUIT_APPLICATION);
+                quit = true;
+            } else {
+                menuItems.get(choice).execute();
             }
-            if (selection == 3) {
-                startSubMenuAddNewStudent();
-            }
-            if (selection == 4) {
-                startSubMenuDeleteStudentById();
-            }
-            if (selection == 5) {
-                startSubMenuAddStudentToCourse();
-            }
-            if (selection == 6) {
-                startSubMenuRemoveStudentFromCourse();
-            }
-        } while (selection != 0);
-        input.close();
+
+            System.out.println();
+        }
     }
-
-    private void startSubMenuFindGroupsWithLessStudents() {
-        System.out.println(propMenu.getProperty(MENU_SECOND_LEVEL_CHOOSE1));
-        int studentCount = Integer.parseInt(input.nextLine());
-        GroupDao groupDao = new GroupDao();
-        GroupService service = new GroupService(groupDao);
-        List<Group> groups = service
-                .getGroupsWithLessEqualsStudentCount(studentCount);
-        groups.stream().forEach(System.out::println);
-
-    }
-
-    private void startSubMenuFindStudentsRelatedCourse() {
-        System.out.println(propMenu.getProperty(MENU_SECOND_LEVEL_CHOOSE2));
-        String courseName = input.nextLine();
-        StudentServise service = new StudentServise();
-        List<Student> students = service.getStudentsWithCourseName(courseName);
-        students.stream().forEach(System.out::println);
-    }
-
-    private void startSubMenuAddNewStudent() {
-        System.out.println(propMenu.getProperty(MENU_SECOND_LEVEL_CHOOSE3_1));
-        String firstName = input.nextLine();
-        System.out.println(propMenu.getProperty(MENU_SECOND_LEVEL_CHOOSE3_2));
-        String lastName = input.nextLine();
-        StudentServise service = new StudentServise();
-        service.create(firstName, lastName);
-        System.out.println(String.format(FORMAT_MASK_ADD_STUDENT_MESSAGE,
-                firstName, lastName));
-    }
-
-    private void startSubMenuDeleteStudentById() {
-        System.out.println(propMenu.getProperty(MENU_SECOND_LEVEL_CHOOSE4));
-        int studentId = Integer.parseInt(input.nextLine());
-        StudentServise servise = new StudentServise();
-        servise.deleteById(studentId);
-        System.out.println(
-                String.format(FORMAT_MASK_DELETE_STUDENT_MESSAGE, studentId));
-    }
-
-    private void startSubMenuAddStudentToCourse() {
-        System.out.println(propMenu.getProperty(MENU_SECOND_LEVEL_CHOOSE5_1));
-        int studentId = Integer.parseInt(input.nextLine());
-        CourseDao dao = new CourseDao();
-        CourseService courseService = new CourseService(dao);
-        List<Course> courses = courseService
-                .getCoursesMissingForStudent(studentId);
-        courses.stream().forEach(System.out::println);
-
-        System.out.println(propMenu.getProperty(MENU_SECOND_LEVEL_CHOOSE5_2));
-        int courseId = Integer.parseInt(input.nextLine());
-        StudentServise studentServise = new StudentServise();
-        studentServise.addStudentToCourse(studentId, courseId);
-        System.out.println(String.format(FORMAT_MASK_ADD_STUDENT_COURSE_MESSAGE,
-                studentId, courseId));
-
-    }
-
-    private void startSubMenuRemoveStudentFromCourse() {
-        System.out.println(propMenu.getProperty(MENU_SECOND_LEVEL_CHOOSE6_1));
-        int studentId = Integer.parseInt(input.nextLine());
-        CourseDao dao = new CourseDao();
-        CourseService courseService = new CourseService(dao);
-        List<Course> courses = courseService.getCoursesForStudent(studentId);
-        courses.stream().forEach(System.out::println);
-
-        System.out.println(propMenu.getProperty(MENU_SECOND_LEVEL_CHOOSE6_2));
-        int courseId = Integer.parseInt(input.nextLine());
-        StudentServise studentServise = new StudentServise();
-        studentServise.removeStudentFromCourse(studentId, courseId);
-        System.out.println(
-                String.format(FORMAT_MASK_REMOVE_STUDENT_COURSE_MESSAGE,
-                        studentId, courseId));
-
-    }
-
 }

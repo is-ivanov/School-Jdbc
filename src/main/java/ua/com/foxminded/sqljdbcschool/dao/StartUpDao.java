@@ -6,16 +6,19 @@ import java.util.Properties;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 import ua.com.foxminded.sqljdbcschool.reader.Reader;
 
+@SuppressWarnings("java:S106")
 public class StartUpDao {
     private static final String DELIMITER_QUERIES = ";";
     private static final String PROPERTY_SQL_DELETE_TABLES = "tables.delete.ifexist";
     private static final String FILENAME_SQL_QUERY_PROPERTIES = "sql_query.properties";
     private static final String MESSAGE_EXCEPTION = "Can't run script";
     private static final String FILENAME_SCRIPT_CREATE_TABLES = "create_all_tables.sql";
+    private static final String MESSAGE_TABLES_READY = "Tables is ready";
 
     public void prepareTables() throws DAOException {
         deleteTables();
         createTables(FILENAME_SCRIPT_CREATE_TABLES);
+        System.out.println(MESSAGE_TABLES_READY);
     }
 
     private void deleteTables() throws DAOException {

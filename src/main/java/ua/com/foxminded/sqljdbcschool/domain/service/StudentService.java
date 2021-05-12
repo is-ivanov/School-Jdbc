@@ -8,10 +8,14 @@ import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 import ua.com.foxminded.sqljdbcschool.exception.DomainException;
 
 @SuppressWarnings("java:S106")
-public class StudentServise {
+public class StudentService {
     private static final String MESSAGE_EXCEPTION_DELETE_STUDENT_COURSE = "Can't delete student %d from course %d";
 
-    private StudentDao studentDao = new StudentDao();
+    private StudentDao studentDao;
+
+    public StudentService(StudentDao studentDao) {
+        this.studentDao = studentDao;
+    }
 
     public List<Student> getStudentsWithCourseName(String courseName) {
         try {
