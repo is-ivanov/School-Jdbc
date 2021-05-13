@@ -1,7 +1,6 @@
 package ua.com.foxminded.sqljdbcschool.dao;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -40,7 +39,7 @@ class GroupDaoTest {
     }
 
     @AfterEach
-    void cleanData() throws Exception {
+    void tearDown() throws Exception {
         try (Connection connection = DaoUtils.getConnection()) {
             SqlScriptRunner scriptRunner = new SqlScriptRunner(connection);
             scriptRunner.runSqlScript(FILENAME_FINISH_SCRIPT);
@@ -114,7 +113,6 @@ class GroupDaoTest {
             String actualName = groupDao.getById(1).get().getGroupName();
             assertEquals(TEST_GROUP_NAME, actualName);
         }
-
     }
 
     @Nested
@@ -134,7 +132,16 @@ class GroupDaoTest {
     @Nested
     @DisplayName("test 'getGroupsWithLessEqualsStudentCount' method")
     class getGroupsWithLessEqualsStudentCount {
+        @Test
+        @DisplayName("get groups with less or equals 1 student should return group 'XI-12'")
+        void testGetGroupsLessEqualsOneStudent() throws DAOException {
+            List<Group> expectedGroups = new ArrayList<>();
+            expectedGroups.add(new Group(3, NAME_GROUP_ID3));
 
+            List<Group> actualGroups = groupDao
+                    .getGroupsWithLessEqualsStudentCount(1);
+            assertEquals(expectedGroups, actualGroups);
+        }
     }
 
 }
