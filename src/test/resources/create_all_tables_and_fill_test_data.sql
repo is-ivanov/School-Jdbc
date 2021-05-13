@@ -14,8 +14,8 @@ CREATE TABLE students
     CONSTRAINT students_pkey PRIMARY KEY (student_id),
     CONSTRAINT group_id FOREIGN KEY (group_id)
         REFERENCES public.groups (group_id)
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
 );
 	
 CREATE TABLE courses
@@ -42,36 +42,18 @@ CREATE TABLE students_courses
 insert into groups (group_name) values ('OR-41');
 insert into groups (group_name) values ('GM-87');
 insert into groups (group_name) values ('XI-12');
-insert into groups (group_name) values ('WC-93');
-insert into groups (group_name) values ('BN-14');
 
 insert into students (group_id, first_name, last_name) values (1, 'Wilmette', 'Sambles');
-insert into students (group_id, first_name, last_name) values (5, 'Cobb', 'Muzzini');
 insert into students (group_id, first_name, last_name) values (3, 'Kalinda', 'Reicharz');
-insert into students (group_id, first_name, last_name) values (4, 'Rosemonde', 'Malecky');
-insert into students (group_id, first_name, last_name) values (5, 'Jourdain', 'Mouser');
 insert into students (group_id, first_name, last_name) values (2, 'Valencia', 'Templeton');
-insert into students (group_id, first_name, last_name) values (4, 'Natala', 'Wederell');
-insert into students (group_id, first_name, last_name) values (2, 'Rafaelia', 'Durtnell');
 insert into students (group_id, first_name, last_name) values (2, 'Alaster', 'Hadwin');
 insert into students (group_id, first_name, last_name) values (1, 'Mayor', 'Anespie');
 
 insert into courses (course_name, course_description) values ('math', 'course of Mathematics');
 insert into courses (course_name, course_description) values ('biology', 'course of Biology');
-insert into courses (course_name, course_description) values ('chemistry', 'course of Chemistry');
-insert into courses (course_name, course_description) values ('physics', 'course of Physics');
-insert into courses (course_name, course_description) values ('English', 'course of English');
 
 insert into students_courses (student_id, course_id) values (1, 1);
 insert into students_courses (student_id, course_id) values (1, 2);
-insert into students_courses (student_id, course_id) values (1, 3);
 insert into students_courses (student_id, course_id) values (2, 2);
-insert into students_courses (student_id, course_id) values (3, 5);
-insert into students_courses (student_id, course_id) values (3, 4);
 insert into students_courses (student_id, course_id) values (4, 1);
 insert into students_courses (student_id, course_id) values (5, 2);
-insert into students_courses (student_id, course_id) values (5, 5);
-insert into students_courses (student_id, course_id) values (6, 4);
-insert into students_courses (student_id, course_id) values (8, 1);
-insert into students_courses (student_id, course_id) values (9, 1);
-insert into students_courses (student_id, course_id) values (10, 2);

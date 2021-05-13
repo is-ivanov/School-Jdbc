@@ -18,9 +18,9 @@ CREATE TABLE public.students
     last_name character varying(50) NOT NULL,
     CONSTRAINT students_pkey PRIMARY KEY (student_id),
     CONSTRAINT group_id FOREIGN KEY (group_id)
-        REFERENCES public.groups (group_id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
+        REFERENCES public.groups (group_id)
+        ON UPDATE CASCADE
+        ON DELETE SET NULL
 )
 
 TABLESPACE pg_default;
