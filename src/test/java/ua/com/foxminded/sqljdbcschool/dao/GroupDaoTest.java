@@ -26,10 +26,18 @@ class GroupDaoTest {
     private static final String TEST_GROUP_NAME = "TestGroup";
 
     private GroupDao groupDao;
+    private Group groupId1;
+    private Group groupId2;
+    private Group groupId3;
 
     @BeforeEach
     void setUp() throws Exception {
         groupDao = new GroupDao();
+
+        groupId1 = new Group(1, NAME_GROUP_ID1);
+        groupId2 = new Group(2, NAME_GROUP_ID2);
+        groupId3 = new Group(3, NAME_GROUP_ID3);
+
         try (Connection connection = DaoUtils.getConnection()) {
             SqlScriptRunner scriptRunner = new SqlScriptRunner(connection);
             scriptRunner.runSqlScript(FILENAME_STARTUP_SCRIPT);
@@ -94,9 +102,9 @@ class GroupDaoTest {
         @DisplayName("get all groups from base should return all groups")
         void testGetAllGroups() throws DAOException {
             List<Group> expectedGroups = new ArrayList<>();
-            expectedGroups.add(new Group(1, NAME_GROUP_ID1));
-            expectedGroups.add(new Group(2, NAME_GROUP_ID2));
-            expectedGroups.add(new Group(3, NAME_GROUP_ID3));
+            expectedGroups.add(groupId1);
+            expectedGroups.add(groupId2);
+            expectedGroups.add(groupId3);
 
             assertEquals(expectedGroups, groupDao.getAll());
         }
@@ -121,8 +129,7 @@ class GroupDaoTest {
         @Test
         @DisplayName("delete group id=1 should delete group and getById(1) return empty Optional")
         void testDeleteGroupById() throws DAOException {
-            Group group = new Group(1, NAME_GROUP_ID1);
-            groupDao.delete(group);
+            groupDao.delete(groupId1);
             Optional<Group> expected = Optional.empty();
             Optional<Group> actual = groupDao.getById(1);
             assertEquals(expected, actual);
@@ -133,10 +140,10 @@ class GroupDaoTest {
     @DisplayName("test 'getGroupsWithLessEqualsStudentCount' method")
     class getGroupsWithLessEqualsStudentCount {
         @Test
-        @DisplayName("get groups with less or equals 1 student should return group 'XI-12'")
+        @DisplayName("get groups with less or equals 1 student should return group with id=3")
         void testGetGroupsLessEqualsOneStudent() throws DAOException {
             List<Group> expectedGroups = new ArrayList<>();
-            expectedGroups.add(new Group(3, NAME_GROUP_ID3));
+            expectedGroups.add(groupId3);
 
             List<Group> actualGroups = groupDao
                     .getGroupsWithLessEqualsStudentCount(1);
