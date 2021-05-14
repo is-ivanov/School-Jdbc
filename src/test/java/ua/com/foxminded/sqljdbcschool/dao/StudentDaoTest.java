@@ -14,7 +14,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import ua.com.foxminded.sqljdbcschool.entity.Course;
 import ua.com.foxminded.sqljdbcschool.entity.Student;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 
@@ -23,6 +22,8 @@ class StudentDaoTest {
     private static final String FILENAME_FINISH_SCRIPT = "drop_all_tables.sql";
     private static final String TEST_FIRST_NAME = "TestFirstName";
     private static final String TEST_LAST_NAME = "TestLastName";
+    private static final String COURSE_ID1_NAME = "math";
+    private static final String COURSE_ID2_NAME = "biology";
 
     private StudentDao studentDao;
     private Student studentId1;
@@ -120,7 +121,7 @@ class StudentDaoTest {
             studentDao.update(newStudent);
             assertEquals(newStudent, studentDao.getById(1).get());
         }
-        
+
         @Test
         @DisplayName("update names student id=1 without groupId should write new names and getById(1) return new names")
         void testUpdateStudent1WithoutGroupId() throws DAOException {
@@ -141,6 +142,59 @@ class StudentDaoTest {
             Optional<Student> expected = Optional.empty();
             Optional<Student> actual = studentDao.getById(1);
             assertEquals(expected, actual);
+        }
+    }
+
+    @Nested
+    @DisplayName("test 'addStudentCourse' method")
+    class testAddStudentCourse {
+        private static final int STUDENT_ID = 3;
+
+        @Test
+        @DisplayName("add student id=3 to course id=1 should create new record")
+        void testCreateTable() throws DAOException {
+            studentDao.addStudentCourse(STUDENT_ID, 1);
+            List<Student> students = studentDao
+                    .getStudentsWithCourseName(COURSE_ID1_NAME);
+            Student actualStudent = students.stream()
+                    .filter(s -> s.getStudentId() == STUDENT_ID)
+                    .findAny()
+                    .orElse(null);
+            assertEquals(studentId3, actualStudent);
+        }
+    }
+
+    @Nested
+    @DisplayName("test 'removeStudentFromCourse' method")
+    class testRemoveStudentFromCourse {
+        private static final int STUDENT_ID = 2;
+
+        @Test
+        @DisplayName("remove student id=2 from course id=2 should remove record from table students_courses")
+        void testRemoveStudentId2FromCourseId2() throws DAOException {
+            studentDao.removeStudentFromCourse(STUDENT_ID, 2);
+            List<Student> students = studentDao
+                    .getStudentsWithCourseName(COURSE_ID2_NAME);
+            Student actualStudent = students.stream()
+                    .filter(s -> s.getStudentId() == STUDENT_ID)
+                    .findAny()
+                    .orElse(null);
+            assertNull(actualStudent);
+        }
+    }
+
+    @Nested
+    @DisplayName("test 'getStudentsWithCourseName' method")
+    class testGetStudentsWithCourseName {
+        @Test
+        @DisplayName("get students from course 'math' should return student id=1 and student id=4")
+        void testGetStudentsWithCourseMath() throws DAOException {
+            List<Student> students = new ArrayList<>();
+            students.add(studentId1);
+            students.add(studentId4);
+
+            assertEquals(students,
+                    studentDao.getStudentsWithCourseName(COURSE_ID1_NAME));
         }
     }
 

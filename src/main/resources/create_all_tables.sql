@@ -3,12 +3,7 @@ CREATE TABLE public.groups
     group_id SERIAL NOT NULL,
     group_name character varying(10) NOT NULL,
     CONSTRAINT groups_pkey PRIMARY KEY (group_id)
-)
-
-TABLESPACE pg_default;
-
-ALTER TABLE public.groups
-    OWNER to karyama;
+);
 
 CREATE TABLE public.students
 (
@@ -21,22 +16,12 @@ CREATE TABLE public.students
         REFERENCES public.groups (group_id)
         ON UPDATE CASCADE
         ON DELETE SET NULL
-)
+);
 
-TABLESPACE pg_default;
-
-ALTER TABLE public.students
-    OWNER to karyama;
-	
 CREATE TABLE public.courses
 (
     course_id SERIAL NOT NULL,
     course_name character varying(50) NOT NULL,
     course_description character varying,
     CONSTRAINT courses_pkey PRIMARY KEY (course_id)
-)
-
-TABLESPACE pg_default;
-
-ALTER TABLE public.courses
-    OWNER to karyama;
+);
