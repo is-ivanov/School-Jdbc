@@ -118,7 +118,11 @@ public class StudentDao implements Dao<Student> {
         try (Connection connection = DaoUtils.getConnection();
                 PreparedStatement statement = connection
                         .prepareStatement(sql)) {
-            statement.setInt(1, student.getGroupId());
+            if (student.getGroupId() != 0) {
+                statement.setInt(1, student.getGroupId());
+            } else {
+                statement.setNull(1, Types.INTEGER);
+            }
             statement.setString(2, student.getFirstName());
             statement.setString(3, student.getLastName());
             statement.setInt(4, student.getStudentId());
