@@ -16,7 +16,7 @@ import ua.com.foxminded.sqljdbcschool.ui.menuitem.MenuItemGetStudentsWithCourseN
 import ua.com.foxminded.sqljdbcschool.ui.menuitem.MenuItemRemoveStudentFromCourse;
 
 @SuppressWarnings("java:S106")
-public class MenuStart {
+public class MenuStarter {
 
     public void startMenu() {
         Scanner scanner = new Scanner(System.in);

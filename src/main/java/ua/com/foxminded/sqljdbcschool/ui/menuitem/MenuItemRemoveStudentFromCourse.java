@@ -3,7 +3,6 @@ package ua.com.foxminded.sqljdbcschool.ui.menuitem;
 import java.util.List;
 import java.util.Scanner;
 
-import ua.com.foxminded.sqljdbcschool.dao.CourseDao;
 import ua.com.foxminded.sqljdbcschool.domain.service.CourseService;
 import ua.com.foxminded.sqljdbcschool.domain.service.StudentService;
 import ua.com.foxminded.sqljdbcschool.entity.Course;

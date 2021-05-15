@@ -8,7 +8,7 @@ import ua.com.foxminded.sqljdbcschool.domain.generator.StudentCourseGenerator;
 import ua.com.foxminded.sqljdbcschool.domain.generator.StudentGenerator;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 import ua.com.foxminded.sqljdbcschool.exception.DomainException;
-import ua.com.foxminded.sqljdbcschool.ui.MenuStart;
+import ua.com.foxminded.sqljdbcschool.ui.MenuStarter;
 
 @SuppressWarnings("java:S106")
 public class Facade {
@@ -19,6 +19,24 @@ public class Facade {
     private static final int NUMBER_GROUPS = 10;
     private static final String MESSAGE_EXCEPTION_CREATE_TABLES = "Can't delete and create tables";
 
+    private StartUpDao startUpDao;
+    private Generator groupGenerator;
+    private Generator courseGenerator;
+    private Generator studentGenerator;
+    private Generator studentCourseGenerator;
+    private MenuStarter menu;
+
+    public Facade(StartUpDao startUpDao, Generator groupGenerator,
+            Generator courseGenerator, Generator studentGenerator,
+            Generator studentCourseGenerator, MenuStarter menu) {
+        this.startUpDao = startUpDao;
+        this.groupGenerator = groupGenerator;
+        this.courseGenerator = courseGenerator;
+        this.studentGenerator = studentGenerator;
+        this.studentCourseGenerator = studentCourseGenerator;
+        this.menu = menu;
+    }
+
     public void prepareBase() throws DomainException {
         System.out.println(MESSAGE_START_PREPARE);
         createTables();
@@ -27,12 +45,10 @@ public class Facade {
     }
 
     public void workWithBase() {
-        MenuStart menu = new MenuStart();
         menu.startMenu();
     }
 
     private void createTables() {
-        StartUpDao startUpDao = new StartUpDao();
         try {
             startUpDao.prepareTables();
         } catch (DAOException e) {
@@ -41,16 +57,9 @@ public class Facade {
     }
 
     private void fillTables() {
-        Generator groupGenerator = new GroupGenerator();
         groupGenerator.generate(NUMBER_GROUPS);
-
-        Generator courseGenerator = new CourseGenerator();
         courseGenerator.generate(NUMBER_COURSES);
-
-        Generator studentGenerator = new StudentGenerator();
         studentGenerator.generate(NUMBER_STUDENTS);
-
-        Generator studentCourseGenerator = new StudentCourseGenerator();
         studentCourseGenerator.generate(NUMBER_STUDENTS);
     }
 

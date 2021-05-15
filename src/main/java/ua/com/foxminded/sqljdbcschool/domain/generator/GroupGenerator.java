@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Random;
 
 import ua.com.foxminded.sqljdbcschool.dao.Dao;
-import ua.com.foxminded.sqljdbcschool.dao.GroupDao;
 import ua.com.foxminded.sqljdbcschool.entity.Group;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 import ua.com.foxminded.sqljdbcschool.exception.DomainException;
@@ -14,7 +13,13 @@ public class GroupGenerator implements Generator {
     private static final String MESSAGE_MASK_EXCEPTION = "Don't save group %s in base";
     private static final String GROUP_DELIMITER = "-";
 
-    private Random random = new Random();
+    private Dao<Group> groupDao;
+    private Random random;
+
+    public GroupGenerator(Dao<Group> groupDao) {
+        this.groupDao = groupDao;
+        this.random = new Random();
+    }
 
     public void generate(int numberGroups) {
         List<Group> groups = new ArrayList<>();
@@ -38,11 +43,9 @@ public class GroupGenerator implements Generator {
         int rightPartName = random.nextInt(90) + 10;
 
         return leftPartName + GROUP_DELIMITER + rightPartName;
-
     }
 
     private void saveInBase(List<Group> groups) {
-        Dao<Group> groupDao = new GroupDao();
         groups.stream().forEach(group -> {
             try {
                 groupDao.add(group);
