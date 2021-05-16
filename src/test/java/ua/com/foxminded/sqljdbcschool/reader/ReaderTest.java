@@ -17,7 +17,7 @@ class ReaderTest {
     private static final String MESSAGE_EXCEPTION_FILE_NOT_FOUND = "File \"missing file\" not found";
     private static final String FILENAME_PROPERTY_FILE = "db.properties";
     private static final String PROPERTY_DB_LOGIN = "db.login";
-    private static final String EXPECTED_LOGIN = "karyama";
+    private static final String EXPECTED_LOGIN = "sa";
 
     private Reader reader;
 

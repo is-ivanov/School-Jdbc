@@ -12,37 +12,35 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import ua.com.foxminded.sqljdbcschool.dao.Dao;
-import ua.com.foxminded.sqljdbcschool.entity.Group;
+import ua.com.foxminded.sqljdbcschool.entity.Student;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 
 @ExtendWith(MockitoExtension.class)
-class GroupGeneratorTest {
-    private static final String TEST_GROUP_NAME = "-10";
-    private Generator groupGenerator;
-    private Group group;
-
+class StudentGeneratorTest {
+    private StudentGenerator generator;
+    private Student student;
+    
     @Mock
-    Dao<Group> groupDao;
-
+    Dao<Student> studentDao;
+    
     @Mock
     Random random;
-
+    
     @BeforeEach
     void setUp() throws Exception {
-        groupGenerator = new GroupGenerator(groupDao, random);
+        generator = new StudentGenerator(studentDao, random);
     }
+
 
     @Test
-    @DisplayName("test generate with numberGroups = 10 should call 10 times method groupDao.add")
-    void testVerifyCallsGroupDao() throws DAOException {
-
-        group = new Group(0, TEST_GROUP_NAME);
+    @DisplayName("test generator with number student = 3 should call 3 times method studentDao.add")
+    void test() throws DAOException {
+        when(random.nextInt(anyInt())).thenReturn(0);
+        student = new Student(0, 0, "Ivan", "Ivanov");
         
-        groupGenerator.generate(10);
-
-        verify(groupDao, times(10)).add(group);
-
+        generator.generate(3);
+        verify(studentDao, times(3)).add(student);
+        
     }
-
 
 }

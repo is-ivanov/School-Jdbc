@@ -16,9 +16,9 @@ public class GroupGenerator implements Generator {
     private Dao<Group> groupDao;
     private Random random;
 
-    public GroupGenerator(Dao<Group> groupDao) {
+    public GroupGenerator(Dao<Group> groupDao, Random random) {
         this.groupDao = groupDao;
-        this.random = new Random();
+        this.random = random;
     }
 
     public void generate(int numberGroups) {

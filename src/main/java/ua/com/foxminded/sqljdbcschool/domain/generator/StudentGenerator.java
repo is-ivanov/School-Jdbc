@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import ua.com.foxminded.sqljdbcschool.dao.Dao;
-import ua.com.foxminded.sqljdbcschool.dao.StudentDao;
 import ua.com.foxminded.sqljdbcschool.entity.Student;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 import ua.com.foxminded.sqljdbcschool.exception.DomainException;
@@ -18,13 +17,19 @@ public class StudentGenerator implements Generator {
     private static final String FILENAME_LAST_NAME_DATA = "student_last_names.txt";
     private static final String MESSAGE_MASK_EXCEPTION = "Don't save student %s in base";
 
-    private Random random = new Random();
+    private Dao<Student> studentDao;
+    private Random random;
+
+    public StudentGenerator(Dao<Student> studentDao, Random random) {
+        this.studentDao = studentDao;
+        this.random = random;
+    }
 
     public void generate(int numberStudents) {
         List<Student> students = new ArrayList<>();
         for (int i = 0; i < numberStudents; i++) {
             String[] names = createStudentNames();
-            Student student = new Student( names[0], names[1]);
+            Student student = new Student(names[0], names[1]);
             students.add(student);
         }
         saveInBase(splitStudentsToGroups(students));
@@ -78,7 +83,6 @@ public class StudentGenerator implements Generator {
     }
 
     private void saveInBase(List<Student> students) {
-        Dao<Student> studentDao = new StudentDao();
         students.stream().forEach(student -> {
             try {
                 studentDao.add(student);

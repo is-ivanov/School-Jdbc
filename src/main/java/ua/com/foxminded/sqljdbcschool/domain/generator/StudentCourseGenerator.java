@@ -10,14 +10,22 @@ import ua.com.foxminded.sqljdbcschool.dao.StudentDao;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 import ua.com.foxminded.sqljdbcschool.exception.DomainException;
 
+@SuppressWarnings("java:S5413")
 public class StudentCourseGenerator implements Generator {
 
     private static final String MESSAGE_MASK_EXCEPTION_CREATE = "Don't save student %d and course %d";
-    private Random random = new Random();
+    
+    private StudentDao studentDao;
+    private Random random;
+    
+
+    public StudentCourseGenerator(StudentDao studentDao, Random random) {
+        this.studentDao = studentDao;
+        this.random = random;
+    }
 
     @Override
     public void generate(int numberStudent) {
-        StudentDao studentDao = new StudentDao();
         try {
             studentDao.createTableStudentCourse();
         } catch (DAOException e) {
@@ -32,7 +40,6 @@ public class StudentCourseGenerator implements Generator {
         saveInBase(studentCourses);
     }
     
-    @SuppressWarnings("java:S5413")
     private void assingCourses(int studentId, List<Integer[]> studentCourses) {
         int numberCoursesPerStudent = random.nextInt(2) + 1;
         List<Integer> coursesId = new LinkedList<>();
@@ -47,7 +54,6 @@ public class StudentCourseGenerator implements Generator {
     }
 
     private void saveInBase(List<Integer[]> studentCourses) {
-        StudentDao studentDao = new StudentDao();
         studentCourses.stream().forEach(pair -> {
             try {
                 studentDao.addStudentCourse(pair[0], pair[1]);

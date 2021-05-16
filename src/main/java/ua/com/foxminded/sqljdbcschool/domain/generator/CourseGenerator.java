@@ -3,7 +3,6 @@ package ua.com.foxminded.sqljdbcschool.domain.generator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import ua.com.foxminded.sqljdbcschool.dao.CourseDao;
 import ua.com.foxminded.sqljdbcschool.dao.Dao;
 import ua.com.foxminded.sqljdbcschool.entity.Course;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
@@ -15,13 +14,21 @@ public class CourseGenerator implements Generator {
     private static final String DELIMITER = ",";
     private static final String MESSAGE_MASK_EXCEPTION = "Don't save course %s in base";
 
+    private Dao<Course> courseDao;
+
+    public CourseGenerator(Dao<Course> courseDao) {
+        this.courseDao = courseDao;
+    }
+
     public void generate(int number) {
+
         Reader reader = new Reader();
 
         List<String> lines = reader.readTxtDataFiles(FILENAME_COURSES_DATA);
 
         List<Course> courses = lines.stream()
                 .map(line -> line.split(DELIMITER))
+                .limit(number)
                 .map(arr -> new Course(arr[0], arr[1]))
                 .collect(Collectors.toList());
 
@@ -29,7 +36,6 @@ public class CourseGenerator implements Generator {
     }
 
     private void saveInBase(List<Course> courses) {
-        Dao<Course> courseDao = new CourseDao();
         courses.stream().forEach(course -> {
             try {
                 courseDao.add(course);

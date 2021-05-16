@@ -1,11 +1,7 @@
 package ua.com.foxminded.sqljdbcschool.domain;
 
 import ua.com.foxminded.sqljdbcschool.dao.StartUpDao;
-import ua.com.foxminded.sqljdbcschool.domain.generator.CourseGenerator;
 import ua.com.foxminded.sqljdbcschool.domain.generator.Generator;
-import ua.com.foxminded.sqljdbcschool.domain.generator.GroupGenerator;
-import ua.com.foxminded.sqljdbcschool.domain.generator.StudentCourseGenerator;
-import ua.com.foxminded.sqljdbcschool.domain.generator.StudentGenerator;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 import ua.com.foxminded.sqljdbcschool.exception.DomainException;
 import ua.com.foxminded.sqljdbcschool.ui.MenuStarter;
