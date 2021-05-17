@@ -19,6 +19,9 @@ import ua.com.foxminded.sqljdbcschool.exception.DomainException;
 
 @ExtendWith(MockitoExtension.class)
 class GroupServiceTest {
+    private static final int STUDENT_COUNT_EXCEPTION = 27;
+    private static final String MESSAGE_EXCEPTION = "Can't get groups";
+
     private GroupService service;
 
     @Mock
@@ -44,11 +47,12 @@ class GroupServiceTest {
 
     @Test
     void testReturnDaoException() throws DAOException {
-        when(groupDaoMock.getGroupsWithLessEqualsStudentCount(anyInt()))
-                .thenThrow(DAOException.class);
-        Exception exception = assertThrows(DomainException.class,
-                () -> service.getGroupsWithLessEqualsStudentCount(anyInt()));
-        assertEquals("Can't get groups", exception.getMessage());
+        when(groupDaoMock
+                .getGroupsWithLessEqualsStudentCount(STUDENT_COUNT_EXCEPTION))
+                        .thenThrow(DAOException.class);
+        Exception exception = assertThrows(DomainException.class, () -> service
+                .getGroupsWithLessEqualsStudentCount(STUDENT_COUNT_EXCEPTION));
+        assertEquals(MESSAGE_EXCEPTION, exception.getMessage());
     }
 
 }
