@@ -29,7 +29,7 @@ class MenuItemDeleteStudentByIdTest {
     private ByteArrayInputStream testIn;
     private ByteArrayOutputStream testOut;
 
-    private MenuItemDeleteStudentById item;
+    private DeleteStudentByIdMenuItem item;
     private Scanner scanner;
 
     @Mock
@@ -58,7 +58,7 @@ class MenuItemDeleteStudentByIdTest {
         String input = STUDENT_ID_STRING;
         provideInput(input);
         scanner = new Scanner(testIn);
-        item = new MenuItemDeleteStudentById(NAME_MENU, studentService,
+        item = new DeleteStudentByIdMenuItem(NAME_MENU, studentService,
                 scanner);
         item.execute();
         verify(studentService, times(1)).deleteById(STUDENT_ID_INT);

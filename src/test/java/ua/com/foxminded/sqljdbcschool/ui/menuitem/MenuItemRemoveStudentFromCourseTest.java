@@ -34,7 +34,7 @@ class MenuItemRemoveStudentFromCourseTest {
     private ByteArrayInputStream testIn;
     private ByteArrayOutputStream testOut;
 
-    private MenuItemRemoveStudentFromCourse item;
+    private RemoveStudentFromCourseMenuItem item;
     private Scanner scanner;
 
     @Mock
@@ -66,7 +66,7 @@ class MenuItemRemoveStudentFromCourseTest {
         String input = STUDENT_ID_STRING + LS + COURSE_ID_STRING;
         provideInput(input);
         scanner = new Scanner(testIn);
-        item = new MenuItemRemoveStudentFromCourse(NAME_MENU, courseService,
+        item = new RemoveStudentFromCourseMenuItem(NAME_MENU, courseService,
                 studentService, scanner);
         item.execute();
         verify(courseService, times(1)).getCoursesForStudent(STUDENT_ID_INT);

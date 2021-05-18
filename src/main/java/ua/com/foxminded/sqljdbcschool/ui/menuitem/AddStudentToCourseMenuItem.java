@@ -8,16 +8,15 @@ import ua.com.foxminded.sqljdbcschool.domain.service.StudentService;
 import ua.com.foxminded.sqljdbcschool.entity.Course;
 
 @SuppressWarnings("java:S106")
-public class MenuItemRemoveStudentFromCourse extends MenuItem {
-    private static final String MASK_REMOVE_STUDENT_COURSE_MESSAGE = "Student %d deleted from course %d";
-    
+public class AddStudentToCourseMenuItem extends MenuItem {
+    private static final String MASK_ADD_STUDENT_COURSE_MESSAGE = "Student %d added to course %d";
+
     private CourseService courseService;
     private StudentService studentService;
     private Scanner scanner;
 
-    public MenuItemRemoveStudentFromCourse(String name,
-            CourseService courseService, StudentService studentService,
-            Scanner scanner) {
+    public AddStudentToCourseMenuItem(String name, CourseService courseService,
+            StudentService studentService, Scanner scanner) {
         super(name);
         this.courseService = courseService;
         this.studentService = studentService;
@@ -26,17 +25,18 @@ public class MenuItemRemoveStudentFromCourse extends MenuItem {
 
     @Override
     public void execute() {
-        System.out.print("Input student_id for remove from course: ");
+        System.out.print("Input student_id for add to course: ");
         int studentId = Integer.parseInt(scanner.nextLine());
-        List<Course> courses = courseService.getCoursesForStudent(studentId);
+        List<Course> courses = courseService
+                .getCoursesMissingForStudent(studentId);
         courses.stream().forEach(System.out::println);
 
-        System.out.print("Input course_id from list courses for removing student: ");
+        System.out.print(
+                "Input course_id from list courses for adding student: ");
         int courseId = Integer.parseInt(scanner.nextLine());
-        studentService.removeStudentFromCourse(studentId, courseId);
-        System.out.println(
-                String.format(MASK_REMOVE_STUDENT_COURSE_MESSAGE,
-                        studentId, courseId));
+        studentService.addStudentToCourse(studentId, courseId);
+        System.out.println(String.format(MASK_ADD_STUDENT_COURSE_MESSAGE,
+                studentId, courseId));
     }
 
     @Override
@@ -58,7 +58,7 @@ public class MenuItemRemoveStudentFromCourse extends MenuItem {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        MenuItemRemoveStudentFromCourse other = (MenuItemRemoveStudentFromCourse) obj;
+        AddStudentToCourseMenuItem other = (AddStudentToCourseMenuItem) obj;
         if (courseService == null) {
             if (other.courseService != null)
                 return false;

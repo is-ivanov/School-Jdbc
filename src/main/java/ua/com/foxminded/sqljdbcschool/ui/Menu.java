@@ -6,7 +6,7 @@ import java.util.Scanner;
 import java.util.Set;
 
 import ua.com.foxminded.sqljdbcschool.ui.menuitem.MenuItem;
-import ua.com.foxminded.sqljdbcschool.ui.menuitem.MenuItemQuit;
+import ua.com.foxminded.sqljdbcschool.ui.menuitem.QuitMenuItem;
 
 @SuppressWarnings("java:S106")
 public class Menu {
@@ -50,7 +50,7 @@ public class Menu {
     }
 
     private void addDefaultItems() {
-        MenuItem menuItemQuit = new MenuItemQuit(NAME_QUIT_ITEM);
+        MenuItem menuItemQuit = new QuitMenuItem(NAME_QUIT_ITEM);
         addMenuItem(0, menuItemQuit);
     }
 

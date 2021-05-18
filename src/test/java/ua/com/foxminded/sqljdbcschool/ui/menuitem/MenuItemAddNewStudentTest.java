@@ -30,7 +30,7 @@ class MenuItemAddNewStudentTest {
     private ByteArrayInputStream testIn;
     private ByteArrayOutputStream testOut;
 
-    private MenuItemAddNewStudent item;
+    private AddNewStudentMenuItem item;
     private Scanner scanner;
 
     @Mock
@@ -59,7 +59,7 @@ class MenuItemAddNewStudentTest {
         String input = TEST_FIRST_NAME + LS + TEST_LAST_NAME;
         provideInput(input);
         scanner = new Scanner(testIn);
-        item = new MenuItemAddNewStudent(NAME_MENU, service, scanner);
+        item = new AddNewStudentMenuItem(NAME_MENU, service, scanner);
         item.execute();
         verify(service, times(1)).create(TEST_FIRST_NAME, TEST_LAST_NAME);
         ;

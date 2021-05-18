@@ -7,13 +7,13 @@ import ua.com.foxminded.sqljdbcschool.domain.service.GroupService;
 import ua.com.foxminded.sqljdbcschool.entity.Group;
 
 @SuppressWarnings("java:S106")
-public class MenuItemFindGroupsLessStudentsCount extends MenuItem {
+public class FindGroupsLessStudentsCountMenuItem extends MenuItem {
     private static final String INPUT_STUDENT_COUNT = "Input student count: ";
 
     private Scanner scanner;
     private GroupService service;
 
-    public MenuItemFindGroupsLessStudentsCount(String name,
+    public FindGroupsLessStudentsCountMenuItem(String name,
             GroupService service, Scanner scanner) {
         super(name);
         this.service = service;
@@ -55,7 +55,7 @@ public class MenuItemFindGroupsLessStudentsCount extends MenuItem {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        MenuItemFindGroupsLessStudentsCount other = (MenuItemFindGroupsLessStudentsCount) obj;
+        FindGroupsLessStudentsCountMenuItem other = (FindGroupsLessStudentsCountMenuItem) obj;
         if (this.service == null) {
             if (other.service != null)
                 return false;

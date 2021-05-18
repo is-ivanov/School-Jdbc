@@ -29,7 +29,7 @@ class MenuItemGetStudentsWithCourseNameTest {
     private ByteArrayInputStream testIn;
     private ByteArrayOutputStream testOut;
     
-    private MenuItemGetStudentsWithCourseName item;
+    private GetStudentsWithCourseNameMenuItem item;
     private Scanner scanner;
     
     @Mock
@@ -58,7 +58,7 @@ class MenuItemGetStudentsWithCourseNameTest {
         String input = COURSE_NAME;
         provideInput(input);
         scanner = new Scanner(testIn);
-        item = new MenuItemGetStudentsWithCourseName(NAME_MENU, studentService, scanner);
+        item = new GetStudentsWithCourseNameMenuItem(NAME_MENU, studentService, scanner);
         item.execute();
         verify(studentService, times(1)).getStudentsWithCourseName(COURSE_NAME);
 

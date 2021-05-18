@@ -29,7 +29,7 @@ class MenuItemFindGroupsLessStudentsCountTest {
     private ByteArrayInputStream testIn;
     private ByteArrayOutputStream testOut;
 
-    private MenuItemFindGroupsLessStudentsCount item;
+    private FindGroupsLessStudentsCountMenuItem item;
     private Scanner scanner;
 
     @Mock
@@ -58,7 +58,7 @@ class MenuItemFindGroupsLessStudentsCountTest {
         String input = STUDENT_COUNT_STRING;
         provideInput(input);
         scanner = new Scanner(testIn);
-        item = new MenuItemFindGroupsLessStudentsCount(NAME_MENU, groupService,
+        item = new FindGroupsLessStudentsCountMenuItem(NAME_MENU, groupService,
                 scanner);
         item.execute();
         verify(groupService, times(1))

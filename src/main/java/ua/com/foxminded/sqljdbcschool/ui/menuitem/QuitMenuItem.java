@@ -1,8 +1,8 @@
 package ua.com.foxminded.sqljdbcschool.ui.menuitem;
 
-public class MenuItemQuit extends MenuItem {
+public class QuitMenuItem extends MenuItem {
     
-    public MenuItemQuit(String name) {
+    public QuitMenuItem(String name) {
         super(name);
     }
 
