@@ -25,7 +25,7 @@ class StudentDaoTest {
     private static final String COURSE_ID1_NAME = "math";
     private static final String COURSE_ID2_NAME = "biology";
 
-    private StudentDao studentDao;
+    private StudentDaoImpl studentDao;
     private Student studentId1;
     private Student studentId2;
     private Student studentId3;
@@ -34,14 +34,14 @@ class StudentDaoTest {
 
     @BeforeEach
     void setUp() throws Exception {
-        studentDao = new StudentDao();
+        studentDao = new StudentDaoImpl();
         studentId1 = new Student(1, 1, "Wilmette", "Sambles");
         studentId2 = new Student(2, 3, "Kalinda", "Reicharz");
         studentId3 = new Student(3, 2, "Valencia", "Templeton");
         studentId4 = new Student(4, 2, "Alaster", "Hadwin");
         studentId5 = new Student(5, 1, "Mayor", "Anespie");
 
-        try (Connection connection = DaoUtils.getConnection()) {
+        try (Connection connection = ConnectionFactory.getConnection()) {
             SqlScriptRunner scriptRunner = new SqlScriptRunner(connection);
             scriptRunner.runSqlScript(FILENAME_STARTUP_SCRIPT);
         } catch (SQLException e) {
@@ -51,7 +51,7 @@ class StudentDaoTest {
 
     @AfterEach
     void tearDown() throws Exception {
-        try (Connection connection = DaoUtils.getConnection()) {
+        try (Connection connection = ConnectionFactory.getConnection()) {
             SqlScriptRunner scriptRunner = new SqlScriptRunner(connection);
             scriptRunner.runSqlScript(FILENAME_FINISH_SCRIPT);
         } catch (SQLException e) {

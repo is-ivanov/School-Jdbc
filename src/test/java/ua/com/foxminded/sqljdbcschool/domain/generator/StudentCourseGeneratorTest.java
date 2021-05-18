@@ -11,7 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import ua.com.foxminded.sqljdbcschool.dao.StudentDao;
+import ua.com.foxminded.sqljdbcschool.dao.StudentDaoImpl;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 
 @ExtendWith(MockitoExtension.class)
@@ -19,7 +19,7 @@ class StudentCourseGeneratorTest {
     private StudentCourseGenerator generator;
 
     @Mock
-    StudentDao studentDao;
+    StudentDaoImpl studentDao;
 
     @Mock
     Random random;

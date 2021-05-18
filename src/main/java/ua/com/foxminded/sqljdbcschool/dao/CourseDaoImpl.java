@@ -10,11 +10,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 
+import ua.com.foxminded.sqljdbcschool.dao.interfaces.CourseDao;
 import ua.com.foxminded.sqljdbcschool.entity.Course;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 import ua.com.foxminded.sqljdbcschool.reader.Reader;
 
-public class CourseDao implements Dao<Course> {
+public class CourseDaoImpl implements CourseDao {
     private static final String FILENAME_SQL_QUERY = "sql_query.properties";
     private static final String PROPERTY_COURSE_ADD = "course.add";
     private static final String PROPERTY_COURSE_GET_BY_ID = "course.getById";
@@ -37,11 +38,11 @@ public class CourseDao implements Dao<Course> {
 
     @Override
     public void add(Course course) throws DAOException {
-        String sql = sqlProp.getProperty(PROPERTY_COURSE_ADD);
-        try (Connection connection = DaoUtils.getConnection()) {
+        String query = sqlProp.getProperty(PROPERTY_COURSE_ADD);
+        try (Connection connection = ConnectionFactory.getConnection()) {
 
             try (PreparedStatement statement = connection
-                    .prepareStatement(sql)) {
+                    .prepareStatement(query)) {
                 statement.setString(1, course.getCourseName());
                 statement.setString(2, course.getCourseDescription());
 
@@ -54,11 +55,11 @@ public class CourseDao implements Dao<Course> {
 
     @Override
     public Optional<Course> getById(int courseId) throws DAOException {
-        String sql = sqlProp.getProperty(PROPERTY_COURSE_GET_BY_ID);
+        String query = sqlProp.getProperty(PROPERTY_COURSE_GET_BY_ID);
         Course course = null;
-        try (Connection connection = DaoUtils.getConnection();
+        try (Connection connection = ConnectionFactory.getConnection();
                 PreparedStatement statement = connection
-                        .prepareStatement(sql)) {
+                        .prepareStatement(query)) {
             statement.setInt(1, courseId);
 
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -79,11 +80,11 @@ public class CourseDao implements Dao<Course> {
 
     @Override
     public List<Course> getAll() throws DAOException {
-        String sql = sqlProp.getProperty(PROPERTY_COURSE_GET_ALL);
+        String query = sqlProp.getProperty(PROPERTY_COURSE_GET_ALL);
         List<Course> courses = new ArrayList<>();
-        try (Connection connection = DaoUtils.getConnection();
+        try (Connection connection = ConnectionFactory.getConnection();
                 Statement statement = connection.createStatement()) {
-            try (ResultSet resultSet = statement.executeQuery(sql)) {
+            try (ResultSet resultSet = statement.executeQuery(query)) {
                 while (resultSet.next()) {
                     Course course = new Course();
                     course.setCourseId(resultSet.getInt(FIELD_COURSE_ID));
@@ -103,10 +104,10 @@ public class CourseDao implements Dao<Course> {
 
     @Override
     public void update(Course course) throws DAOException {
-        String sql = sqlProp.getProperty(PROPERTY_COURSE_UPDATE);
-        try (Connection connection = DaoUtils.getConnection();
+        String query = sqlProp.getProperty(PROPERTY_COURSE_UPDATE);
+        try (Connection connection = ConnectionFactory.getConnection();
                 PreparedStatement statement = connection
-                        .prepareStatement(sql)) {
+                        .prepareStatement(query)) {
             statement.setString(1, course.getCourseName());
             statement.setString(2, course.getCourseDescription());
             statement.setInt(3, course.getCourseId());
@@ -120,10 +121,10 @@ public class CourseDao implements Dao<Course> {
 
     @Override
     public void delete(Course course) throws DAOException {
-        String sql = sqlProp.getProperty(PROPERTY_COURSE_DELETE);
-        try (Connection connection = DaoUtils.getConnection();
+        String query = sqlProp.getProperty(PROPERTY_COURSE_DELETE);
+        try (Connection connection = ConnectionFactory.getConnection();
                 PreparedStatement statement = connection
-                        .prepareStatement(sql)) {
+                        .prepareStatement(query)) {
             statement.setInt(1, course.getCourseId());
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -131,12 +132,12 @@ public class CourseDao implements Dao<Course> {
                     MESSAGE_EXCEPTION_DELETE + course.getCourseId(), e);
         }
     }
-    
+    @Override
     public List<Course> getCoursesForStudentId(int studentId) throws DAOException {
-        String sql = sqlProp.getProperty(PROPERTY_COURSE_GET_FOR_STUDENT);
+        String query = sqlProp.getProperty(PROPERTY_COURSE_GET_FOR_STUDENT);
         List<Course> courses = new ArrayList<>();
-        try (Connection connection = DaoUtils.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql)){
+        try (Connection connection = ConnectionFactory.getConnection();
+                PreparedStatement statement = connection.prepareStatement(query)){
             statement.setInt(1, studentId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
@@ -157,11 +158,12 @@ public class CourseDao implements Dao<Course> {
         
     }
     
+    @Override
     public List<Course> getCoursesMissingForStudentId(int studentId) throws DAOException {
-        String sql = sqlProp.getProperty(PROPERTY_COURSE_GET_MISS_FOR_STUDENT);
+        String query = sqlProp.getProperty(PROPERTY_COURSE_GET_MISS_FOR_STUDENT);
         List<Course> courses = new ArrayList<>();
-        try (Connection connection = DaoUtils.getConnection();
-                PreparedStatement statement = connection.prepareStatement(sql)){
+        try (Connection connection = ConnectionFactory.getConnection();
+                PreparedStatement statement = connection.prepareStatement(query)){
             statement.setInt(1, studentId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {

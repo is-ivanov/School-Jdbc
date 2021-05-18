@@ -8,7 +8,7 @@ import java.util.Properties;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 import ua.com.foxminded.sqljdbcschool.reader.Reader;
 
-public class DaoUtils {
+public class ConnectionFactory {
     private static final String FILENAME_DB_PROPERTIES = "db.properties";
     private static final String DB_DRIVER = "db.driver";
     private static final String DB_PASSWORD = "db.password";
@@ -17,7 +17,7 @@ public class DaoUtils {
     private static final String MESSAGE_DRIVER_NOT_FOUND = "Driver not found";
     private static final String MESSAGE_CONNECTION_ERROR = "Connection failed";
     
-    private DaoUtils() {
+    private ConnectionFactory() {
         
     }
 

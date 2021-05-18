@@ -11,11 +11,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 
+import ua.com.foxminded.sqljdbcschool.dao.interfaces.StudentDao;
 import ua.com.foxminded.sqljdbcschool.entity.Student;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 import ua.com.foxminded.sqljdbcschool.reader.Reader;
 
-public class StudentDao implements Dao<Student> {
+public class StudentDaoImpl implements StudentDao {
     private static final String FILENAME_SQL_QUERY = "sql_query.properties";
     private static final String PROPERTY_STUDENT_ADD = "student.add";
     private static final String PROPERTY_STUDENT_GET_BY_ID = "student.getById";
@@ -44,11 +45,11 @@ public class StudentDao implements Dao<Student> {
 
     @Override
     public void add(Student student) throws DAOException {
-        String sql = sqlProp.getProperty(PROPERTY_STUDENT_ADD);
-        try (Connection connection = DaoUtils.getConnection()) {
+        String query = sqlProp.getProperty(PROPERTY_STUDENT_ADD);
+        try (Connection connection = ConnectionFactory.getConnection()) {
 
             try (PreparedStatement statement = connection
-                    .prepareStatement(sql)) {
+                    .prepareStatement(query)) {
                 if (student.getGroupId() != 0) {
                     statement.setInt(1, student.getGroupId());
                 } else {
@@ -67,11 +68,11 @@ public class StudentDao implements Dao<Student> {
 
     @Override
     public Optional<Student> getById(int studentId) throws DAOException {
-        String sql = sqlProp.getProperty(PROPERTY_STUDENT_GET_BY_ID);
+        String query = sqlProp.getProperty(PROPERTY_STUDENT_GET_BY_ID);
         Student student = null;
-        try (Connection connection = DaoUtils.getConnection();
+        try (Connection connection = ConnectionFactory.getConnection();
                 PreparedStatement statement = connection
-                        .prepareStatement(sql)) {
+                        .prepareStatement(query)) {
             statement.setInt(1, studentId);
 
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -91,11 +92,11 @@ public class StudentDao implements Dao<Student> {
 
     @Override
     public List<Student> getAll() throws DAOException {
-        String sql = sqlProp.getProperty(PROPERTY_STUDENT_GET_ALL);
+        String query = sqlProp.getProperty(PROPERTY_STUDENT_GET_ALL);
         List<Student> students = new ArrayList<>();
-        try (Connection connection = DaoUtils.getConnection();
+        try (Connection connection = ConnectionFactory.getConnection();
                 Statement statement = connection.createStatement()) {
-            try (ResultSet resultSet = statement.executeQuery(sql)) {
+            try (ResultSet resultSet = statement.executeQuery(query)) {
                 while (resultSet.next()) {
                     Student student = new Student();
                     student.setStudentId(resultSet.getInt(FIELD_STUDENT_ID));
@@ -114,10 +115,10 @@ public class StudentDao implements Dao<Student> {
 
     @Override
     public void update(Student student) throws DAOException {
-        String sql = sqlProp.getProperty(PROPERTY_STUDENT_UPDATE);
-        try (Connection connection = DaoUtils.getConnection();
+        String query = sqlProp.getProperty(PROPERTY_STUDENT_UPDATE);
+        try (Connection connection = ConnectionFactory.getConnection();
                 PreparedStatement statement = connection
-                        .prepareStatement(sql)) {
+                        .prepareStatement(query)) {
             if (student.getGroupId() != 0) {
                 statement.setInt(1, student.getGroupId());
             } else {
@@ -136,10 +137,10 @@ public class StudentDao implements Dao<Student> {
 
     @Override
     public void delete(Student student) throws DAOException {
-        String sql = sqlProp.getProperty(PROPERTY_STUDENT_DELETE);
-        try (Connection connection = DaoUtils.getConnection();
+        String query = sqlProp.getProperty(PROPERTY_STUDENT_DELETE);
+        try (Connection connection = ConnectionFactory.getConnection();
                 PreparedStatement statement = connection
-                        .prepareStatement(sql)) {
+                        .prepareStatement(query)) {
             statement.setInt(1, student.getStudentId());
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -147,25 +148,26 @@ public class StudentDao implements Dao<Student> {
                     MESSAGE_EXCEPTION_DELETE + student.getStudentId(), e);
         }
     }
-
+    @Override
     public void createTableStudentCourse() throws DAOException {
-        String sql = sqlProp.getProperty(PROPERTY_STUDENT_COURSE_CREATE_TABLE);
-        try (Connection connection = DaoUtils.getConnection()) {
+        String query = sqlProp.getProperty(PROPERTY_STUDENT_COURSE_CREATE_TABLE);
+        try (Connection connection = ConnectionFactory.getConnection()) {
             try (PreparedStatement statement = connection
-                    .prepareStatement(sql)) {
+                    .prepareStatement(query)) {
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
             throw new DAOException(MESSAGE_EXCEPTION_CREATE_TABLE, e);
         }
     }
-
+    
+    @Override
     public void addStudentCourse(int studentId, int courseId)
             throws DAOException {
-        String sql = sqlProp.getProperty(PROPERTY_STUDENT_COURSE_ADD);
-        try (Connection connection = DaoUtils.getConnection()) {
+        String query = sqlProp.getProperty(PROPERTY_STUDENT_COURSE_ADD);
+        try (Connection connection = ConnectionFactory.getConnection()) {
             try (PreparedStatement statement = connection
-                    .prepareStatement(sql)) {
+                    .prepareStatement(query)) {
                 statement.setInt(1, studentId);
                 statement.setInt(2, courseId);
                 statement.executeUpdate();
@@ -176,12 +178,13 @@ public class StudentDao implements Dao<Student> {
 
     }
 
+    @Override
     public void removeStudentFromCourse(int studentId, int courseId)
             throws DAOException {
-        String sql = sqlProp.getProperty(PROPERTY_STUDENT_COURSE_DELETE);
-        try (Connection connection = DaoUtils.getConnection();
+        String query = sqlProp.getProperty(PROPERTY_STUDENT_COURSE_DELETE);
+        try (Connection connection = ConnectionFactory.getConnection();
                 PreparedStatement statement = connection
-                        .prepareStatement(sql)) {
+                        .prepareStatement(query)) {
             statement.setInt(1, studentId);
             statement.setInt(2, courseId);
             statement.executeUpdate();
@@ -193,13 +196,14 @@ public class StudentDao implements Dao<Student> {
         }
     }
 
+    @Override
     public List<Student> getStudentsWithCourseName(String courseName)
             throws DAOException {
-        String sql = sqlProp.getProperty(PROPERTY_STUDENT_GET_WITH_COURSE_NAME);
+        String query = sqlProp.getProperty(PROPERTY_STUDENT_GET_WITH_COURSE_NAME);
         List<Student> students = new ArrayList<>();
-        try (Connection connection = DaoUtils.getConnection();
+        try (Connection connection = ConnectionFactory.getConnection();
                 PreparedStatement statement = connection
-                        .prepareStatement(sql)) {
+                        .prepareStatement(query)) {
             statement.setString(1, courseName);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {

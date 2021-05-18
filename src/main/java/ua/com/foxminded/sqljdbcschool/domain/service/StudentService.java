@@ -2,7 +2,7 @@ package ua.com.foxminded.sqljdbcschool.domain.service;
 
 import java.util.List;
 
-import ua.com.foxminded.sqljdbcschool.dao.StudentDao;
+import ua.com.foxminded.sqljdbcschool.dao.interfaces.StudentDao;
 import ua.com.foxminded.sqljdbcschool.entity.Student;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 import ua.com.foxminded.sqljdbcschool.exception.DomainException;

@@ -25,20 +25,20 @@ class GroupDaoTest {
     private static final String NAME_GROUP_ID3 = "XI-12";
     private static final String TEST_GROUP_NAME = "TestGroup";
 
-    private GroupDao groupDao;
+    private GroupDaoImpl groupDao;
     private Group groupId1;
     private Group groupId2;
     private Group groupId3;
 
     @BeforeEach
     void setUp() throws Exception {
-        groupDao = new GroupDao();
+        groupDao = new GroupDaoImpl();
 
         groupId1 = new Group(1, NAME_GROUP_ID1);
         groupId2 = new Group(2, NAME_GROUP_ID2);
         groupId3 = new Group(3, NAME_GROUP_ID3);
 
-        try (Connection connection = DaoUtils.getConnection()) {
+        try (Connection connection = ConnectionFactory.getConnection()) {
             SqlScriptRunner scriptRunner = new SqlScriptRunner(connection);
             scriptRunner.runSqlScript(FILENAME_STARTUP_SCRIPT);
         } catch (SQLException e) {
@@ -48,7 +48,7 @@ class GroupDaoTest {
 
     @AfterEach
     void tearDown() throws Exception {
-        try (Connection connection = DaoUtils.getConnection()) {
+        try (Connection connection = ConnectionFactory.getConnection()) {
             SqlScriptRunner scriptRunner = new SqlScriptRunner(connection);
             scriptRunner.runSqlScript(FILENAME_FINISH_SCRIPT);
         } catch (SQLException e) {

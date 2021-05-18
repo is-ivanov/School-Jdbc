@@ -29,7 +29,7 @@ public class StartUpDao {
         String sqlCommands = properties.getProperty(PROPERTY_SQL_DELETE_TABLES);
         String[] sql = sqlCommands.split(DELIMITER_QUERIES);
 
-        try (Connection connection = DaoUtils.getConnection()) {
+        try (Connection connection = ConnectionFactory.getConnection()) {
             try (Statement statement = connection.createStatement()) {
 
                 connection.setAutoCommit(false);
@@ -46,7 +46,7 @@ public class StartUpDao {
 
     private void createTables(String scriptFilename) throws DAOException {
 
-        try (Connection connection = DaoUtils.getConnection()) {
+        try (Connection connection = ConnectionFactory.getConnection()) {
 
             SqlScriptRunner scriptRunner = new SqlScriptRunner(connection);
             scriptRunner.runSqlScript(scriptFilename);

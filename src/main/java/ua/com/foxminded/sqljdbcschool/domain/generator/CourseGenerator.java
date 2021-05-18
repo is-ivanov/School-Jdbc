@@ -3,7 +3,7 @@ package ua.com.foxminded.sqljdbcschool.domain.generator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import ua.com.foxminded.sqljdbcschool.dao.Dao;
+import ua.com.foxminded.sqljdbcschool.dao.interfaces.Dao;
 import ua.com.foxminded.sqljdbcschool.entity.Course;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 import ua.com.foxminded.sqljdbcschool.exception.DomainException;

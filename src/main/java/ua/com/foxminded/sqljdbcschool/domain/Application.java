@@ -2,19 +2,18 @@ package ua.com.foxminded.sqljdbcschool.domain;
 
 import java.util.Random;
 
-import ua.com.foxminded.sqljdbcschool.dao.CourseDao;
-import ua.com.foxminded.sqljdbcschool.dao.Dao;
-import ua.com.foxminded.sqljdbcschool.dao.GroupDao;
+import ua.com.foxminded.sqljdbcschool.dao.CourseDaoImpl;
+import ua.com.foxminded.sqljdbcschool.dao.GroupDaoImpl;
 import ua.com.foxminded.sqljdbcschool.dao.StartUpDao;
-import ua.com.foxminded.sqljdbcschool.dao.StudentDao;
+import ua.com.foxminded.sqljdbcschool.dao.StudentDaoImpl;
+import ua.com.foxminded.sqljdbcschool.dao.interfaces.CourseDao;
+import ua.com.foxminded.sqljdbcschool.dao.interfaces.GroupDao;
+import ua.com.foxminded.sqljdbcschool.dao.interfaces.StudentDao;
 import ua.com.foxminded.sqljdbcschool.domain.generator.CourseGenerator;
 import ua.com.foxminded.sqljdbcschool.domain.generator.Generator;
 import ua.com.foxminded.sqljdbcschool.domain.generator.GroupGenerator;
 import ua.com.foxminded.sqljdbcschool.domain.generator.StudentCourseGenerator;
 import ua.com.foxminded.sqljdbcschool.domain.generator.StudentGenerator;
-import ua.com.foxminded.sqljdbcschool.entity.Course;
-import ua.com.foxminded.sqljdbcschool.entity.Group;
-import ua.com.foxminded.sqljdbcschool.entity.Student;
 import ua.com.foxminded.sqljdbcschool.ui.MenuStarter;
 
 public class Application {
@@ -22,10 +21,10 @@ public class Application {
     public static void main(String[] args) {
 
         StartUpDao startUpDao = new StartUpDao();
-        Dao<Group> groupDao = new GroupDao();
-        Dao<Student> studentDao = new StudentDao();
-        Dao<Course> courseDao = new CourseDao();
-        StudentDao studentCourseDao = new StudentDao(); 
+        GroupDao groupDao = new GroupDaoImpl();
+        StudentDao studentDao = new StudentDaoImpl();
+        CourseDao courseDao = new CourseDaoImpl();
+        StudentDaoImpl studentCourseDao = new StudentDaoImpl(); 
         Random random = new Random();
         Generator groupGenerator = new GroupGenerator(groupDao, random);
         Generator courseGenerator = new CourseGenerator(courseDao);

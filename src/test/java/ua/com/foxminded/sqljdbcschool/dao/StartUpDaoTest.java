@@ -26,7 +26,7 @@ class StartUpDaoTest {
     void setUp() throws Exception {
         startUpDao = new StartUpDao();
         
-        try (Connection connection = DaoUtils.getConnection()) {
+        try (Connection connection = ConnectionFactory.getConnection()) {
             SqlScriptRunner scriptRunner = new SqlScriptRunner(connection);
             scriptRunner.runSqlScript(FILENAME_STARTUP_SCRIPT);
         } catch (SQLException e) {
@@ -36,7 +36,7 @@ class StartUpDaoTest {
 
     @AfterEach
     void tearDown() throws Exception {
-        try (Connection connection = DaoUtils.getConnection()) {
+        try (Connection connection = ConnectionFactory.getConnection()) {
             SqlScriptRunner scriptRunner = new SqlScriptRunner(connection);
             scriptRunner.runSqlScript(FILENAME_FINISH_SCRIPT);
         } catch (SQLException e) {
@@ -50,7 +50,7 @@ class StartUpDaoTest {
         startUpDao.prepareTables();
         
         List<Group> expectedGroups = new ArrayList<>();
-        GroupDao groupDao = new GroupDao();
+        GroupDaoImpl groupDao = new GroupDaoImpl();
         List<Group> actualGroups = groupDao.getAll();
         
         assertEquals(expectedGroups, actualGroups);
@@ -62,7 +62,7 @@ class StartUpDaoTest {
         startUpDao.prepareTables();
         
         List<Student> expectedStudents = new ArrayList<>();
-        StudentDao studentDao = new StudentDao();
+        StudentDaoImpl studentDao = new StudentDaoImpl();
         List<Student> actualStudents = studentDao.getAll();
         
         assertEquals(expectedStudents, actualStudents);
@@ -74,7 +74,7 @@ class StartUpDaoTest {
         startUpDao.prepareTables();
         
         List<Course> expectedCourses = new ArrayList<>();
-        CourseDao courseDao = new CourseDao();
+        CourseDaoImpl courseDao = new CourseDaoImpl();
         List<Course> actualCourses = courseDao.getAll();
         
         assertEquals(expectedCourses, actualCourses);

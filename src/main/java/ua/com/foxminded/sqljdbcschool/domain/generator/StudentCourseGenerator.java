@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-import ua.com.foxminded.sqljdbcschool.dao.StudentDao;
+import ua.com.foxminded.sqljdbcschool.dao.StudentDaoImpl;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 import ua.com.foxminded.sqljdbcschool.exception.DomainException;
 
@@ -15,11 +15,11 @@ public class StudentCourseGenerator implements Generator {
 
     private static final String MESSAGE_MASK_EXCEPTION_CREATE = "Don't save student %d and course %d";
     
-    private StudentDao studentDao;
+    private StudentDaoImpl studentDao;
     private Random random;
     
 
-    public StudentCourseGenerator(StudentDao studentDao, Random random) {
+    public StudentCourseGenerator(StudentDaoImpl studentDao, Random random) {
         this.studentDao = studentDao;
         this.random = random;
     }

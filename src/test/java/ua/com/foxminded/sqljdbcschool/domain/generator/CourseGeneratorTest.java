@@ -9,7 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import ua.com.foxminded.sqljdbcschool.dao.Dao;
+import ua.com.foxminded.sqljdbcschool.dao.interfaces.Dao;
 import ua.com.foxminded.sqljdbcschool.entity.Course;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 

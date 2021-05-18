@@ -2,9 +2,9 @@ package ua.com.foxminded.sqljdbcschool.ui;
 
 import java.util.Scanner;
 
-import ua.com.foxminded.sqljdbcschool.dao.CourseDao;
-import ua.com.foxminded.sqljdbcschool.dao.GroupDao;
-import ua.com.foxminded.sqljdbcschool.dao.StudentDao;
+import ua.com.foxminded.sqljdbcschool.dao.CourseDaoImpl;
+import ua.com.foxminded.sqljdbcschool.dao.GroupDaoImpl;
+import ua.com.foxminded.sqljdbcschool.dao.StudentDaoImpl;
 import ua.com.foxminded.sqljdbcschool.domain.service.CourseService;
 import ua.com.foxminded.sqljdbcschool.domain.service.GroupService;
 import ua.com.foxminded.sqljdbcschool.domain.service.StudentService;
@@ -23,9 +23,9 @@ public class MenuStarter {
 
         Menu menu = new Menu(scanner);
 
-        GroupDao groupDao = new GroupDao();
-        StudentDao studentDao = new StudentDao();
-        CourseDao courseDao = new CourseDao();
+        GroupDaoImpl groupDao = new GroupDaoImpl();
+        StudentDaoImpl studentDao = new StudentDaoImpl();
+        CourseDaoImpl courseDao = new CourseDaoImpl();
 
         GroupService groupService = new GroupService(groupDao);
         StudentService studentService = new StudentService(studentDao);

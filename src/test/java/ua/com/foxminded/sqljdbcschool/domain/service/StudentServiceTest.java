@@ -14,7 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import ua.com.foxminded.sqljdbcschool.dao.StudentDao;
+import ua.com.foxminded.sqljdbcschool.dao.StudentDaoImpl;
 import ua.com.foxminded.sqljdbcschool.entity.Student;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 import ua.com.foxminded.sqljdbcschool.exception.DomainException;
@@ -32,7 +32,7 @@ class StudentServiceTest {
     private Student student;
 
     @Mock
-    private StudentDao studentDao;
+    private StudentDaoImpl studentDao;
 
     @BeforeEach
     void setUp() throws Exception {

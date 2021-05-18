@@ -1,4 +1,4 @@
-package ua.com.foxminded.sqljdbcschool.dao;
+package ua.com.foxminded.sqljdbcschool.dao.interfaces;
 
 import java.util.List;
 import java.util.Optional;

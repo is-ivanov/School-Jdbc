@@ -6,7 +6,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import ua.com.foxminded.sqljdbcschool.dao.Dao;
+import ua.com.foxminded.sqljdbcschool.dao.interfaces.Dao;
 import ua.com.foxminded.sqljdbcschool.entity.Student;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 import ua.com.foxminded.sqljdbcschool.exception.DomainException;

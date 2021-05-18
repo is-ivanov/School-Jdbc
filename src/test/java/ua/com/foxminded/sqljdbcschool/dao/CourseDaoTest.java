@@ -27,19 +27,19 @@ class CourseDaoTest {
     private static final String COURSE_DESCRIPTION_ID1 = "course of Mathematics";
     private static final String COURSE_DESCRIPTION_ID2 = "course of Biology";
 
-    private CourseDao courseDao;
+    private CourseDaoImpl courseDao;
     private Course courseId1;
     private Course courseId2;
 
     @BeforeEach
     void setUp() throws Exception {
-        courseDao = new CourseDao();
+        courseDao = new CourseDaoImpl();
         
         courseId1 = new Course(1, COURSE_NAME_ID1, COURSE_DESCRIPTION_ID1);
         courseId2 = new Course(2, COURSE_NAME_ID2, COURSE_DESCRIPTION_ID2);
         
         
-        try (Connection connection = DaoUtils.getConnection()) {
+        try (Connection connection = ConnectionFactory.getConnection()) {
             SqlScriptRunner scriptRunner = new SqlScriptRunner(connection);
             scriptRunner.runSqlScript(FILENAME_STARTUP_SCRIPT);
         } catch (SQLException e) {
@@ -49,7 +49,7 @@ class CourseDaoTest {
 
     @AfterEach
     void tearDown() throws Exception {
-        try (Connection connection = DaoUtils.getConnection()) {
+        try (Connection connection = ConnectionFactory.getConnection()) {
             SqlScriptRunner scriptRunner = new SqlScriptRunner(connection);
             scriptRunner.runSqlScript(FILENAME_FINISH_SCRIPT);
         } catch (SQLException e) {

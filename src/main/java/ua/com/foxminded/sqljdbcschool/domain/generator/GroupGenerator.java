@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import ua.com.foxminded.sqljdbcschool.dao.Dao;
+import ua.com.foxminded.sqljdbcschool.dao.interfaces.Dao;
 import ua.com.foxminded.sqljdbcschool.entity.Group;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 import ua.com.foxminded.sqljdbcschool.exception.DomainException;
