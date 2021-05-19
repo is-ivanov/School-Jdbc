@@ -18,7 +18,7 @@ import ua.com.foxminded.sqljdbcschool.dao.impl.StudentDaoImpl;
 import ua.com.foxminded.sqljdbcschool.entity.Student;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 
-class StudentDaoTest {
+class StudentDaoImplTest {
     private static final String FILENAME_STARTUP_SCRIPT = "create_all_tables_and_fill_test_data.sql";
     private static final String FILENAME_FINISH_SCRIPT = "drop_all_tables.sql";
     private static final String TEST_FIRST_NAME = "TestFirstName";

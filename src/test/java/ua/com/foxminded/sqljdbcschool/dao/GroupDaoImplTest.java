@@ -18,7 +18,7 @@ import ua.com.foxminded.sqljdbcschool.dao.impl.GroupDaoImpl;
 import ua.com.foxminded.sqljdbcschool.entity.Group;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 
-class GroupDaoTest {
+class GroupDaoImplTest {
     private static final String FILENAME_STARTUP_SCRIPT = "create_all_tables_and_fill_test_data.sql";
     private static final String FILENAME_FINISH_SCRIPT = "drop_all_tables.sql";
     private static final String NAME_GROUP_ID1 = "OR-41";
