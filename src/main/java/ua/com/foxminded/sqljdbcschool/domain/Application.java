@@ -12,8 +12,8 @@ import ua.com.foxminded.sqljdbcschool.dao.interfaces.StudentDao;
 import ua.com.foxminded.sqljdbcschool.domain.generator.CourseGenerator;
 import ua.com.foxminded.sqljdbcschool.domain.generator.Generator;
 import ua.com.foxminded.sqljdbcschool.domain.generator.GroupGenerator;
-import ua.com.foxminded.sqljdbcschool.domain.generator.StudentCourseGenerator;
 import ua.com.foxminded.sqljdbcschool.domain.generator.StudentGenerator;
+import ua.com.foxminded.sqljdbcschool.domain.service.StudentCourseService;
 import ua.com.foxminded.sqljdbcschool.ui.MenuStarter;
 
 public class Application {
@@ -28,7 +28,7 @@ public class Application {
         Generator groupGenerator = new GroupGenerator(groupDao, random);
         Generator courseGenerator = new CourseGenerator(courseDao);
         Generator studentGenerator = new StudentGenerator(studentDao, random);
-        Generator studentCourseGenerator = new StudentCourseGenerator(
+        Generator studentCourseGenerator = new StudentCourseService(
                 studentCourseDao, random);
         MenuStarter menuStarter = new MenuStarter();
 

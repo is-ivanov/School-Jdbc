@@ -12,11 +12,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import ua.com.foxminded.sqljdbcschool.dao.StudentDaoImpl;
+import ua.com.foxminded.sqljdbcschool.domain.service.StudentCourseService;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 
 @ExtendWith(MockitoExtension.class)
 class StudentCourseGeneratorTest {
-    private StudentCourseGenerator generator;
+    private StudentCourseService generator;
 
     @Mock
     StudentDaoImpl studentDao;
@@ -26,7 +27,7 @@ class StudentCourseGeneratorTest {
 
     @BeforeEach
     void setUp() throws Exception {
-        generator = new StudentCourseGenerator(studentDao, random);
+        generator = new StudentCourseService(studentDao, random);
 
     }
 
@@ -34,7 +35,7 @@ class StudentCourseGeneratorTest {
     @DisplayName("test generator with number student = 3 should call studentDao.addStudentCourse for 3 students")
     void test() throws DAOException {
 
-        generator.generate(3);
+        generator.createTestStudentsCourses(3);
         verify(studentDao).addStudentCourse(1, 1);
         verify(studentDao).addStudentCourse(2, 1);
         verify(studentDao).addStudentCourse(3, 1);

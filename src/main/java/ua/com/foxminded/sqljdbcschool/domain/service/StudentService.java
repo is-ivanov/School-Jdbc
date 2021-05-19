@@ -12,7 +12,7 @@ import ua.com.foxminded.sqljdbcschool.exception.DomainException;
 public class StudentService {
     private static final String MESSAGE_EXCEPTION_DELETE_STUDENT_COURSE = "Can't delete student %d from course %d";
     private static final String MESSAGE_MASK_EXCEPTION = "Don't save student %s in base";
-    
+
     private StudentDao studentDao;
     private Generator<Student> generator;
 
@@ -20,12 +20,12 @@ public class StudentService {
         this.studentDao = studentDao;
         this.generator = generator;
     }
-    
+
     public void createTestStudents(int numberStudents) {
         List<Student> students = generator.generate(numberStudents);
         students.forEach(this::addStudentToBase);
     }
-    
+
     public List<Student> getStudentsWithCourseName(String courseName) {
         try {
             return studentDao.getStudentsWithCourseName(courseName);
@@ -38,14 +38,14 @@ public class StudentService {
         Student student = new Student(firstName, lastName);
         addStudentToBase(student);
     }
-    
+
     public void addStudentToBase(Student student) {
         try {
-          studentDao.add(student);
-      } catch (DAOException e) {
-          throw new DomainException(
-                  String.format(MESSAGE_MASK_EXCEPTION, student), e);
-      }
+            studentDao.add(student);
+        } catch (DAOException e) {
+            throw new DomainException(
+                    String.format(MESSAGE_MASK_EXCEPTION, student), e);
+        }
     }
 
     public void deleteById(int id) {
@@ -63,7 +63,6 @@ public class StudentService {
         } catch (DAOException e) {
             throw new DomainException("Can't add student to course", e);
         }
-
     }
 
     public void removeStudentFromCourse(int studentId, int courseId) {
