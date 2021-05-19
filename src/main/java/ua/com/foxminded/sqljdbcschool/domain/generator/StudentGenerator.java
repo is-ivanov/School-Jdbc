@@ -6,33 +6,26 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import ua.com.foxminded.sqljdbcschool.dao.interfaces.Dao;
 import ua.com.foxminded.sqljdbcschool.entity.Student;
-import ua.com.foxminded.sqljdbcschool.exception.DAOException;
-import ua.com.foxminded.sqljdbcschool.exception.DomainException;
 import ua.com.foxminded.sqljdbcschool.reader.Reader;
 
-public class StudentGenerator implements Generator {
+public class StudentGenerator implements Generator<Student> {
     private static final String FILENAME_FIRST_NAME_DATA = "student_first_names.txt";
     private static final String FILENAME_LAST_NAME_DATA = "student_last_names.txt";
-    private static final String MESSAGE_MASK_EXCEPTION = "Don't save student %s in base";
-
-    private Dao<Student> studentDao;
     private Random random;
 
-    public StudentGenerator(Dao<Student> studentDao, Random random) {
-        this.studentDao = studentDao;
+    public StudentGenerator(Random random) {
         this.random = random;
     }
 
-    public void generate(int numberStudents) {
+    public List<Student> generate(int numberStudents) {
         List<Student> students = new ArrayList<>();
         for (int i = 0; i < numberStudents; i++) {
             String[] names = createStudentNames();
             Student student = new Student(names[0], names[1]);
             students.add(student);
         }
-        saveInBase(splitStudentsToGroups(students));
+        return splitStudentsToGroups(students);
     }
 
     private String[] createStudentNames() {
@@ -82,14 +75,4 @@ public class StudentGenerator implements Generator {
         return numberStudentInGroups;
     }
 
-    private void saveInBase(List<Student> students) {
-        students.stream().forEach(student -> {
-            try {
-                studentDao.add(student);
-            } catch (DAOException e) {
-                throw new DomainException(
-                        String.format(MESSAGE_MASK_EXCEPTION, student), e);
-            }
-        });
-    }
 }

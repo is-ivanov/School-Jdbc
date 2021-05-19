@@ -75,7 +75,7 @@ class StudentServiceTest {
         @Test
         @DisplayName("normal input should call studentDao.add method with right argument")
         void testCallStudentDaoAddMethod() throws DAOException {
-            service.create(TEST_FIRST_NAME, TEST_LAST_NAME);
+            service.createStudent(TEST_FIRST_NAME, TEST_LAST_NAME);
             verify(studentDao, times(1)).add(student);
         }
 
@@ -85,7 +85,7 @@ class StudentServiceTest {
             doThrow(DAOException.class).when(studentDao).add(student);
 
             Exception exception = assertThrows(DomainException.class,
-                    () -> service.create(TEST_FIRST_NAME, TEST_LAST_NAME));
+                    () -> service.createStudent(TEST_FIRST_NAME, TEST_LAST_NAME));
             assertEquals(MESSAGE_CREATE_EXCEPTION, exception.getMessage());
 
         }

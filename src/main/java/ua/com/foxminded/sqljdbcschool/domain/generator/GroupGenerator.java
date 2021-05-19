@@ -4,30 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import ua.com.foxminded.sqljdbcschool.dao.interfaces.Dao;
 import ua.com.foxminded.sqljdbcschool.entity.Group;
-import ua.com.foxminded.sqljdbcschool.exception.DAOException;
-import ua.com.foxminded.sqljdbcschool.exception.DomainException;
 
-public class GroupGenerator implements Generator {
-    private static final String MESSAGE_MASK_EXCEPTION = "Don't save group %s in base";
+public class GroupGenerator implements Generator<Group> {
     private static final String GROUP_DELIMITER = "-";
 
-    private Dao<Group> groupDao;
     private Random random;
 
-    public GroupGenerator(Dao<Group> groupDao, Random random) {
-        this.groupDao = groupDao;
+    public GroupGenerator(Random random) {
         this.random = random;
     }
 
-    public void generate(int numberGroups) {
+    public List<Group> generate(int numberGroups) {
         List<Group> groups = new ArrayList<>();
         for (int i = 0; i < numberGroups; i++) {
             Group group = new Group(generateName());
             groups.add(group);
         }
-        saveInBase(groups);
+        return groups;
     }
 
     private String generateName() {
@@ -36,24 +30,12 @@ public class GroupGenerator implements Generator {
         int targetStringLength = 2;
 
         String leftPartName = random.ints(leftLimit, rightLimit + 1)
-                .limit(targetStringLength)
-                .collect(StringBuilder::new,
+                .limit(targetStringLength).collect(StringBuilder::new,
                         StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
         int rightPartName = random.nextInt(90) + 10;
 
         return leftPartName + GROUP_DELIMITER + rightPartName;
-    }
-
-    private void saveInBase(List<Group> groups) {
-        groups.stream().forEach(group -> {
-            try {
-                groupDao.add(group);
-            } catch (DAOException e) {
-                throw new DomainException(
-                        String.format(MESSAGE_MASK_EXCEPTION, group), e);
-            }
-        });
     }
 
 }

@@ -1,7 +1,9 @@
 package ua.com.foxminded.sqljdbcschool.domain.generator;
 
-public interface Generator {
+import java.util.List;
 
-    void generate(int number);
+public interface Generator<T> {
+
+    List<T> generate(int number);
 
 }

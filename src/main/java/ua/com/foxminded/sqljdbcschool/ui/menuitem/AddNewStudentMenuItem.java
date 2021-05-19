@@ -26,7 +26,7 @@ public class AddNewStudentMenuItem extends MenuItem {
         String firstName = scanner.nextLine();
         System.out.print(MESSAGE_LAST_NAME);
         String lastName = scanner.nextLine();
-        service.create(firstName, lastName);
+        service.createStudent(firstName, lastName);
         System.out.println(String.format(MASK_ADD_STUDENT_MESSAGE,
                 firstName, lastName));
     }

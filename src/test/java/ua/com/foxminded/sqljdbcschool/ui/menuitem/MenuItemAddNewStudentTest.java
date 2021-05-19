@@ -61,7 +61,7 @@ class MenuItemAddNewStudentTest {
         scanner = new Scanner(testIn);
         item = new AddNewStudentMenuItem(NAME_MENU, service, scanner);
         item.execute();
-        verify(service, times(1)).create(TEST_FIRST_NAME, TEST_LAST_NAME);
+        verify(service, times(1)).createStudent(TEST_FIRST_NAME, TEST_LAST_NAME);
         ;
     }
 

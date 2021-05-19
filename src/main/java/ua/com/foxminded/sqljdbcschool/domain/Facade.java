@@ -2,6 +2,9 @@ package ua.com.foxminded.sqljdbcschool.domain;
 
 import ua.com.foxminded.sqljdbcschool.dao.StartUpDao;
 import ua.com.foxminded.sqljdbcschool.domain.generator.Generator;
+import ua.com.foxminded.sqljdbcschool.domain.service.CourseService;
+import ua.com.foxminded.sqljdbcschool.domain.service.GroupService;
+import ua.com.foxminded.sqljdbcschool.domain.service.StudentService;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 import ua.com.foxminded.sqljdbcschool.exception.DomainException;
 import ua.com.foxminded.sqljdbcschool.ui.MenuStarter;
@@ -16,19 +19,14 @@ public class Facade {
     private static final String MESSAGE_EXCEPTION_CREATE_TABLES = "Can't delete and create tables";
 
     private StartUpDao startUpDao;
-    private Generator groupGenerator;
-    private Generator courseGenerator;
-    private Generator studentGenerator;
     private Generator studentCourseGenerator;
     private MenuStarter menu;
+    private GroupService groupService;
+    private CourseService courseService;
+    private StudentService studentService;
 
-    public Facade(StartUpDao startUpDao, Generator groupGenerator,
-            Generator courseGenerator, Generator studentGenerator,
-            Generator studentCourseGenerator, MenuStarter menu) {
+    public Facade(StartUpDao startUpDao, Generator studentCourseGenerator, MenuStarter menu) {
         this.startUpDao = startUpDao;
-        this.groupGenerator = groupGenerator;
-        this.courseGenerator = courseGenerator;
-        this.studentGenerator = studentGenerator;
         this.studentCourseGenerator = studentCourseGenerator;
         this.menu = menu;
     }
@@ -53,9 +51,10 @@ public class Facade {
     }
 
     private void fillTables() {
-        groupGenerator.generate(NUMBER_GROUPS);
-        courseGenerator.generate(NUMBER_COURSES);
-        studentGenerator.generate(NUMBER_STUDENTS);
+        groupService.createTestGroups(NUMBER_GROUPS);
+        courseService.createTestCourses(NUMBER_COURSES);
+        studentService.createTestStudents(NUMBER_STUDENTS);
+        
         studentCourseGenerator.generate(NUMBER_STUDENTS);
     }
 

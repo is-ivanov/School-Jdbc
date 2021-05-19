@@ -24,7 +24,6 @@ public class Application {
         GroupDao groupDao = new GroupDaoImpl();
         StudentDao studentDao = new StudentDaoImpl();
         CourseDao courseDao = new CourseDaoImpl();
-        StudentDaoImpl studentCourseDao = new StudentDaoImpl(); 
         Random random = new Random();
         Generator groupGenerator = new GroupGenerator(groupDao, random);
         Generator courseGenerator = new CourseGenerator(courseDao);
@@ -33,8 +32,7 @@ public class Application {
                 studentCourseDao, random);
         MenuStarter menuStarter = new MenuStarter();
 
-        Facade facade = new Facade(startUpDao, groupGenerator, courseGenerator,
-                studentGenerator, studentCourseGenerator, menuStarter);
+        Facade facade = new Facade(startUpDao, studentGenerator, studentCourseGenerator, menuStarter);
         facade.prepareBase();
         facade.workWithBase();
 
