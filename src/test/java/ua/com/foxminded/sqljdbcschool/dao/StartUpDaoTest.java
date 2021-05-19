@@ -12,6 +12,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import ua.com.foxminded.sqljdbcschool.dao.impl.CourseDaoImpl;
+import ua.com.foxminded.sqljdbcschool.dao.impl.GroupDaoImpl;
+import ua.com.foxminded.sqljdbcschool.dao.impl.StudentDaoImpl;
 import ua.com.foxminded.sqljdbcschool.entity.Course;
 import ua.com.foxminded.sqljdbcschool.entity.Group;
 import ua.com.foxminded.sqljdbcschool.entity.Student;

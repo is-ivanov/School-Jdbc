@@ -1,4 +1,4 @@
-package ua.com.foxminded.sqljdbcschool.dao;
+package ua.com.foxminded.sqljdbcschool.dao.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 
+import ua.com.foxminded.sqljdbcschool.dao.ConnectionFactory;
 import ua.com.foxminded.sqljdbcschool.dao.interfaces.GroupDao;
 import ua.com.foxminded.sqljdbcschool.entity.Group;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;

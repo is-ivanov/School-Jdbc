@@ -3,7 +3,6 @@ package ua.com.foxminded.sqljdbcschool.domain;
 import ua.com.foxminded.sqljdbcschool.dao.StartUpDao;
 import ua.com.foxminded.sqljdbcschool.domain.service.CourseService;
 import ua.com.foxminded.sqljdbcschool.domain.service.GroupService;
-import ua.com.foxminded.sqljdbcschool.domain.service.StudentCourseService;
 import ua.com.foxminded.sqljdbcschool.domain.service.StudentService;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 import ua.com.foxminded.sqljdbcschool.exception.DomainException;
@@ -19,23 +18,16 @@ public class Facade {
     private static final String MESSAGE_EXCEPTION_CREATE_TABLES = "Can't delete and create tables";
 
     private StartUpDao startUpDao;
-    private MenuStarter menu;
     private GroupService groupService;
     private CourseService courseService;
     private StudentService studentService;
-    private StudentCourseService studentCourseService;
 
-
-    public Facade(StartUpDao startUpDao, MenuStarter menu,
-            GroupService groupService, CourseService courseService,
-            StudentService studentService,
-            StudentCourseService studentCourseService) {
+    public Facade(StartUpDao startUpDao, GroupService groupService,
+            CourseService courseService, StudentService studentService) {
         this.startUpDao = startUpDao;
-        this.menu = menu;
         this.groupService = groupService;
         this.courseService = courseService;
         this.studentService = studentService;
-        this.studentCourseService = studentCourseService;
     }
 
     public void prepareBase() throws DomainException {
@@ -46,7 +38,9 @@ public class Facade {
     }
 
     public void workWithBase() {
-        menu.startMenu();
+        MenuStarter men = new MenuStarter(groupService, studentService,
+                courseService);
+        men.startMenu();
     }
 
     private void createTables() {
@@ -61,7 +55,7 @@ public class Facade {
         groupService.createTestGroups(NUMBER_GROUPS);
         courseService.createTestCourses(NUMBER_COURSES);
         studentService.createTestStudents(NUMBER_STUDENTS);
-        studentCourseService.createTestStudentsCourses(NUMBER_STUDENTS);
+        studentService.createTestStudentsCourses(NUMBER_STUDENTS);
     }
 
 }

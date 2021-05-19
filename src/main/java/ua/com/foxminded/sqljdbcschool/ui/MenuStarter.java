@@ -2,9 +2,6 @@ package ua.com.foxminded.sqljdbcschool.ui;
 
 import java.util.Scanner;
 
-import ua.com.foxminded.sqljdbcschool.dao.CourseDaoImpl;
-import ua.com.foxminded.sqljdbcschool.dao.GroupDaoImpl;
-import ua.com.foxminded.sqljdbcschool.dao.StudentDaoImpl;
 import ua.com.foxminded.sqljdbcschool.domain.service.CourseService;
 import ua.com.foxminded.sqljdbcschool.domain.service.GroupService;
 import ua.com.foxminded.sqljdbcschool.domain.service.StudentService;
@@ -15,21 +12,22 @@ import ua.com.foxminded.sqljdbcschool.ui.menuitem.FindGroupsLessStudentsCountMen
 import ua.com.foxminded.sqljdbcschool.ui.menuitem.GetStudentsWithCourseNameMenuItem;
 import ua.com.foxminded.sqljdbcschool.ui.menuitem.RemoveStudentFromCourseMenuItem;
 
-@SuppressWarnings("java:S106")
 public class MenuStarter {
+    private GroupService groupService;
+    private StudentService studentService;
+    private CourseService courseService;
+
+    public MenuStarter(GroupService groupService, StudentService studentService,
+            CourseService courseService) {
+        this.groupService = groupService;
+        this.studentService = studentService;
+        this.courseService = courseService;
+    }
 
     public void startMenu() {
         Scanner scanner = new Scanner(System.in);
 
         Menu menu = new Menu(scanner);
-
-        GroupDaoImpl groupDao = new GroupDaoImpl();
-        StudentDaoImpl studentDao = new StudentDaoImpl();
-        CourseDaoImpl courseDao = new CourseDaoImpl();
-
-        GroupService groupService = new GroupService(groupDao);
-        StudentService studentService = new StudentService(studentDao);
-        CourseService courseService = new CourseService(courseDao);
 
         FindGroupsLessStudentsCountMenuItem menuItem1 = new FindGroupsLessStudentsCountMenuItem(
                 "Find all groups with less or equals student count",
@@ -58,7 +56,6 @@ public class MenuStarter {
                 "Remove the student from one of his or her courses",
                 courseService, studentService, scanner);
         menu.addMenuItem(6, menuItem6);
-
 
         menu.initMenu();
         scanner.close();
