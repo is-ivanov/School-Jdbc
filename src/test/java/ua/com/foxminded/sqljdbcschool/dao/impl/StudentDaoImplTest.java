@@ -1,4 +1,4 @@
-package ua.com.foxminded.sqljdbcschool.dao;
+package ua.com.foxminded.sqljdbcschool.dao.impl;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -14,6 +14,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import ua.com.foxminded.sqljdbcschool.dao.ConnectionFactory;
+import ua.com.foxminded.sqljdbcschool.dao.SqlScriptRunner;
 import ua.com.foxminded.sqljdbcschool.dao.impl.StudentDaoImpl;
 import ua.com.foxminded.sqljdbcschool.entity.Student;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
@@ -158,8 +160,7 @@ class StudentDaoImplTest {
             List<Student> students = studentDao
                     .getStudentsWithCourseName(COURSE_ID1_NAME);
             Student actualStudent = students.stream()
-                    .filter(s -> s.getStudentId() == STUDENT_ID)
-                    .findAny()
+                    .filter(s -> s.getStudentId() == STUDENT_ID).findAny()
                     .orElse(null);
             assertEquals(studentId3, actualStudent);
         }
@@ -177,8 +178,7 @@ class StudentDaoImplTest {
             List<Student> students = studentDao
                     .getStudentsWithCourseName(COURSE_ID2_NAME);
             Student actualStudent = students.stream()
-                    .filter(s -> s.getStudentId() == STUDENT_ID)
-                    .findAny()
+                    .filter(s -> s.getStudentId() == STUDENT_ID).findAny()
                     .orElse(null);
             assertNull(actualStudent);
         }

@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import ua.com.foxminded.sqljdbcschool.dao.impl.CourseDaoImpl;
+import ua.com.foxminded.sqljdbcschool.domain.generator.Generator;
 import ua.com.foxminded.sqljdbcschool.entity.Course;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 import ua.com.foxminded.sqljdbcschool.exception.DomainException;
@@ -26,14 +27,45 @@ class CourseServiceTest {
 
     private CourseService service;
     private List<Course> courses;
+    private Course course;
 
     @Mock
-    private CourseDaoImpl courseDao;
+    private CourseDaoImpl courseDaoMock;
+
+    @Mock
+    private Generator<Course> generatorMock;
 
     @BeforeEach
     void setUp() throws Exception {
-        service = new CourseService(courseDao);
+        service = new CourseService(courseDaoMock, generatorMock);
         courses = new ArrayList<>();
+    }
+
+    @Nested
+    @DisplayName("test 'createTestCourses' method")
+    class testCreateTestCourses {
+        private int numberCourses = 5;
+
+        @Test
+        @DisplayName("method should call generator.generate once")
+        void testNubmerCallsGenerator() throws DAOException {
+            service.createTestCourses(numberCourses);
+
+            verify(generatorMock, times(1)).generate(numberCourses);
+        }
+
+        @Test
+        @DisplayName("method should call courseDao as much time as NumberCourses")
+        void testNumberCallsDao() throws DAOException {
+            for (int i = 0; i < numberCourses; i++) {
+                courses.add(course);
+            }
+            when(generatorMock.generate(numberCourses)).thenReturn(courses);
+
+            service.createTestCourses(numberCourses);
+
+            verify(courseDaoMock, times(numberCourses)).add(course);
+        }
     }
 
     @Nested
@@ -42,7 +74,7 @@ class CourseServiceTest {
 
         @Test
         void testReturnListCourses() throws DAOException {
-            when(courseDao.getCoursesMissingForStudentId(anyInt()))
+            when(courseDaoMock.getCoursesMissingForStudentId(anyInt()))
                     .thenReturn(courses);
 
             List<Course> actualCourses = service
@@ -53,14 +85,14 @@ class CourseServiceTest {
 
         @Test
         void testThrowDomainException() throws DAOException {
-            when(courseDao.getCoursesMissingForStudentId(STUDENT_ID_EXCEPTION))
-                    .thenThrow(DAOException.class);
+            when(courseDaoMock
+                    .getCoursesMissingForStudentId(STUDENT_ID_EXCEPTION))
+                            .thenThrow(DAOException.class);
 
             Exception exception = assertThrows(DomainException.class,
                     () -> service
                             .getCoursesMissingForStudent(STUDENT_ID_EXCEPTION));
             assertEquals(MESSAGE_EXCEPTION, exception.getMessage());
-
         }
     }
 
@@ -70,7 +102,7 @@ class CourseServiceTest {
 
         @Test
         void testReturnListCourses() throws DAOException {
-            when(courseDao.getCoursesForStudentId(anyInt()))
+            when(courseDaoMock.getCoursesForStudentId(anyInt()))
                     .thenReturn(courses);
 
             List<Course> actualCourses = service.getCoursesForStudent(anyInt());
@@ -80,13 +112,12 @@ class CourseServiceTest {
 
         @Test
         void testThrowDomainException() throws DAOException {
-            when(courseDao.getCoursesForStudentId(STUDENT_ID_EXCEPTION))
+            when(courseDaoMock.getCoursesForStudentId(STUDENT_ID_EXCEPTION))
                     .thenThrow(DAOException.class);
 
             Exception exception = assertThrows(DomainException.class,
                     () -> service.getCoursesForStudent(STUDENT_ID_EXCEPTION));
             assertEquals(MESSAGE_EXCEPTION, exception.getMessage());
-
         }
 
     }
