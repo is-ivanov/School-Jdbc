@@ -28,11 +28,16 @@ class StudentServiceTest {
     private static final String TEST_LAST_NAME = "Last";
     private static final String MESSAGE_GET_EXCEPTION = "Can't get students";
     private static final String MESSAGE_CREATE_EXCEPTION = "Don't save student %s in base";
+    private static final String MESSAGE_DELETE_EXCEPTION = "Can't delete student";
+    private static final String MESSAGE_ADD_STUDENT_COURSE_EXCEPTION = "Can't add student to course";
+    private static final String MESSAGE_DELETE_STUDENT_COURSE_EXCEPTION = "Can't delete student %d from course %d";
 
     private StudentService service;
     private List<Student> students;
     private Student student;
     private int numberStudents = 5;
+    private int testStudentId = 2;
+    private int testCourseId = 2;
 
     @Mock
     private StudentDaoImpl studentDaoMock;
@@ -144,24 +149,83 @@ class StudentServiceTest {
 
     }
 
-    // TODO
     @Nested
     @DisplayName("test 'deleteById' method")
     class testDeleteById {
 
+        @Test
+        @DisplayName("method should call studentDao.delete with right parameter")
+        void testCallDaoWithParameter() throws DAOException {
+            Student student = new Student(testStudentId);
+            service.deleteById(testStudentId);
+
+            verify(studentDaoMock, times(1)).delete(student);
+        }
+
+        @Test
+        @DisplayName("when DAOException from Dao should return DomainException")
+        void testThrowDomainException() throws DAOException {
+            doThrow(DAOException.class).when(studentDaoMock).delete(any());
+
+            Exception exception = assertThrows(DomainException.class,
+                    () -> service.deleteById(testStudentId));
+            assertEquals(MESSAGE_DELETE_EXCEPTION, exception.getMessage());
+        }
+
     }
 
-    // TODO
     @Nested
     @DisplayName("test 'addStudentToCourse' method")
     class testAddStudentToCourse {
 
+        @Test
+        @DisplayName("method should call studentDao.addStudentCourse with right parameter")
+        void testCallDaoWithParameter() throws DAOException {
+            service.addStudentToCourse(testStudentId, testCourseId);
+            verify(studentDaoMock, times(1)).addStudentCourse(testStudentId,
+                    testCourseId);
+        }
+
+        @Test
+        @DisplayName("when DAOException from Dao should return DomainException")
+        void testThrowDomainException() throws DAOException {
+            doThrow(DAOException.class).when(studentDaoMock)
+                    .addStudentCourse(anyInt(), anyInt());
+
+            Exception exception = assertThrows(DomainException.class,
+                    () -> service.addStudentToCourse(testStudentId,
+                            testCourseId));
+            assertEquals(MESSAGE_ADD_STUDENT_COURSE_EXCEPTION,
+                    exception.getMessage());
+        }
+
     }
 
-    // TODO
     @Nested
     @DisplayName("test 'removeStudentFromCourse' method")
     class testRemoveStudentFromCourse {
 
+        @Test
+        @DisplayName("method should call studentDao.removeStudentFromCourse with right parameter")
+        void testCallDaoWithParameter() throws DAOException {
+            service.removeStudentFromCourse(testStudentId, testCourseId);
+            verify(studentDaoMock, times(1))
+                    .removeStudentFromCourse(testStudentId, testCourseId);
+        }
+
+        @Test
+        @DisplayName("when DAOException from Dao should return DomainException")
+        void testThrowDomainException() throws DAOException {
+            doThrow(DAOException.class).when(studentDaoMock)
+                    .removeStudentFromCourse(anyInt(), anyInt());
+
+            Exception exception = assertThrows(DomainException.class,
+                    () -> service.removeStudentFromCourse(testStudentId,
+                            testCourseId));
+            String expectedMessage = String.format(
+                    MESSAGE_DELETE_STUDENT_COURSE_EXCEPTION, testStudentId,
+                    testCourseId);
+            assertEquals(expectedMessage, exception.getMessage());
+        }
     }
 }
