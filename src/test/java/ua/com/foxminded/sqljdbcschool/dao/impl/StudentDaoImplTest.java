@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test;
 
 import ua.com.foxminded.sqljdbcschool.dao.ConnectionFactory;
 import ua.com.foxminded.sqljdbcschool.dao.SqlScriptRunner;
-import ua.com.foxminded.sqljdbcschool.dao.impl.StudentDaoImpl;
 import ua.com.foxminded.sqljdbcschool.entity.Student;
 import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 
