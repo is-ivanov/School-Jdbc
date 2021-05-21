@@ -9,7 +9,8 @@ import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 import ua.com.foxminded.sqljdbcschool.exception.DomainException;
 
 public class GroupService {
-    private static final String MESSAGE_MASK_EXCEPTION = "Don't save group %s in base";
+    private static final String MASK_MESSAGE_ADD_EXCEPTION = "Don't save group %s in base";
+    private static final String MESSAGE_GET_EXCEPTION = "Can't get groups";
 
     private GroupDao groupDao;
     private Generator<Group> generator;
@@ -29,7 +30,7 @@ public class GroupService {
         try {
             return groupDao.getGroupsWithLessEqualsStudentCount(studentCount);
         } catch (DAOException e) {
-            throw new DomainException("Can't get groups", e);
+            throw new DomainException(MESSAGE_GET_EXCEPTION, e);
         }
     }
 
@@ -38,7 +39,7 @@ public class GroupService {
             groupDao.add(group);
         } catch (DAOException e) {
             throw new DomainException(
-                    String.format(MESSAGE_MASK_EXCEPTION, group), e);
+                    String.format(MASK_MESSAGE_ADD_EXCEPTION, group), e);
         }
     }
 }

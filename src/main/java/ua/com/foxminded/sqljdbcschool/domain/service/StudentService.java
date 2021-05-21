@@ -13,9 +13,12 @@ import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 import ua.com.foxminded.sqljdbcschool.exception.DomainException;
 
 public class StudentService {
-    private static final String MESSAGE_EXCEPTION_DELETE_STUDENT_COURSE = "Can't delete student %d from course %d";
-    private static final String MESSAGE_MASK_EXCEPTION = "Don't save student %s in base";
-    private static final String MESSAGE_MASK_EXCEPTION_CREATE = "Don't save student %d and course %d";
+    private static final String MASK_MESSAGE_ADD_EXCEPTION = "Don't save student %s in base";
+    private static final String MESSAGE_GET_EXCEPTION = "Can't get students";
+    private static final String MESSAGE_DELETE_EXCEPTION = "Can't delete student";
+    private static final String MESSAGE_ADD_STUDENT_COURSE_EXCEPTION = "Can't add student to course";
+    private static final String MASK_MESSAGE_ADD_STUDENT_COURSE_EXCEPTION = "Don't save student %d and course %d";
+    private static final String MASK_MESSAGE_DELETE_STUDENT_COURSE_EXCEPTION = "Can't delete student %d from course %d";
 
     private StudentDao studentDao;
     private Generator<Student> generator;
@@ -47,7 +50,7 @@ public class StudentService {
         try {
             return studentDao.getStudentsWithCourseName(courseName);
         } catch (DAOException e) {
-            throw new DomainException("Can't get students", e);
+            throw new DomainException(MESSAGE_GET_EXCEPTION, e);
         }
     }
 
@@ -61,7 +64,7 @@ public class StudentService {
             studentDao.add(student);
         } catch (DAOException e) {
             throw new DomainException(
-                    String.format(MESSAGE_MASK_EXCEPTION, student), e);
+                    String.format(MASK_MESSAGE_ADD_EXCEPTION, student), e);
         }
     }
 
@@ -70,7 +73,7 @@ public class StudentService {
         try {
             studentDao.delete(student);
         } catch (DAOException e) {
-            throw new DomainException("Can't delete student", e);
+            throw new DomainException(MESSAGE_DELETE_EXCEPTION, e);
         }
     }
 
@@ -78,7 +81,7 @@ public class StudentService {
         try {
             studentDao.addStudentCourse(studentId, courseId);
         } catch (DAOException e) {
-            throw new DomainException("Can't add student to course", e);
+            throw new DomainException(MESSAGE_ADD_STUDENT_COURSE_EXCEPTION, e);
         }
     }
 
@@ -87,7 +90,7 @@ public class StudentService {
             studentDao.removeStudentFromCourse(studentId, courseId);
         } catch (DAOException e) {
             throw new DomainException(
-                    String.format(MESSAGE_EXCEPTION_DELETE_STUDENT_COURSE,
+                    String.format(MASK_MESSAGE_DELETE_STUDENT_COURSE_EXCEPTION,
                             studentId, courseId),
                     e);
         }
@@ -100,7 +103,8 @@ public class StudentService {
             throw new DomainException(e.getMessage(), e);
         }
     }
-
+    
+    @SuppressWarnings("java:S5413")
     private void assignCourses(int studentId, List<Integer[]> studentCourses) {
         int numberCoursesPerStudent = random.nextInt(2) + 1;
         List<Integer> coursesId = new LinkedList<>();
@@ -120,7 +124,7 @@ public class StudentService {
                 studentDao.addStudentCourse(pair[0], pair[1]);
             } catch (DAOException e) {
                 throw new DomainException(String.format(
-                        MESSAGE_MASK_EXCEPTION_CREATE, pair[0], pair[1]), e);
+                        MASK_MESSAGE_ADD_STUDENT_COURSE_EXCEPTION, pair[0], pair[1]), e);
             }
         });
     }

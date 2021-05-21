@@ -8,7 +8,7 @@ import ua.com.foxminded.sqljdbcschool.entity.Group;
 
 @SuppressWarnings("java:S106")
 public class FindGroupsLessStudentsCountMenuItem extends MenuItem {
-    private static final String INPUT_STUDENT_COUNT = "Input student count: ";
+    private static final String MESSAGE_INPUT_STUDENT_COUNT = "Input student count: ";
 
     private Scanner scanner;
     private GroupService service;
@@ -30,7 +30,7 @@ public class FindGroupsLessStudentsCountMenuItem extends MenuItem {
 
     private int inputStudentCount() {
         int studentCount = 0;
-        System.out.print(INPUT_STUDENT_COUNT);
+        System.out.print(MESSAGE_INPUT_STUDENT_COUNT);
         while (scanner.hasNext()) {
             studentCount = Integer.parseInt(scanner.nextLine());
             break;

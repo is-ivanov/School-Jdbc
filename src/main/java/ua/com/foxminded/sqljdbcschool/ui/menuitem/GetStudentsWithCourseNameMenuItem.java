@@ -8,6 +8,7 @@ import ua.com.foxminded.sqljdbcschool.entity.Student;
 
 @SuppressWarnings("java:S106")
 public class GetStudentsWithCourseNameMenuItem extends MenuItem {
+    private static final String MESSAGE_INPUT_COURSE_NAME = "Input course name: ";
     private StudentService service;
     private Scanner scanner;
 
@@ -20,7 +21,7 @@ public class GetStudentsWithCourseNameMenuItem extends MenuItem {
 
     @Override
     public void execute() {
-        System.out.print("Input course name: ");
+        System.out.print(MESSAGE_INPUT_COURSE_NAME);
         String courseName = scanner.nextLine();
         List<Student> students = service.getStudentsWithCourseName(courseName);
         students.stream().forEach(System.out::println);

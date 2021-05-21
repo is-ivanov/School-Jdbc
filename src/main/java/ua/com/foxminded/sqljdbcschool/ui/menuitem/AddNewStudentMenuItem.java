@@ -8,7 +8,7 @@ import ua.com.foxminded.sqljdbcschool.domain.service.StudentService;
 public class AddNewStudentMenuItem extends MenuItem {
     private static final String MESSAGE_FIRST_NAME = "Input first name: ";
     private static final String MESSAGE_LAST_NAME = "Input last name: ";
-    private static final String MASK_ADD_STUDENT_MESSAGE = "Student %s %s is created";
+    private static final String MASK_MESSAGE_ADD_STUDENT = "Student %s %s is created";
 
     private StudentService service;
     private Scanner scanner;
@@ -27,7 +27,7 @@ public class AddNewStudentMenuItem extends MenuItem {
         System.out.print(MESSAGE_LAST_NAME);
         String lastName = scanner.nextLine();
         service.createStudent(firstName, lastName);
-        System.out.println(String.format(MASK_ADD_STUDENT_MESSAGE,
+        System.out.println(String.format(MASK_MESSAGE_ADD_STUDENT,
                 firstName, lastName));
     }
 

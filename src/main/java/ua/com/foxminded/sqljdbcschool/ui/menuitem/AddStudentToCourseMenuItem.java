@@ -9,7 +9,9 @@ import ua.com.foxminded.sqljdbcschool.entity.Course;
 
 @SuppressWarnings("java:S106")
 public class AddStudentToCourseMenuItem extends MenuItem {
-    private static final String MASK_ADD_STUDENT_COURSE_MESSAGE = "Student %d added to course %d";
+    private static final String MESSAGE_INPUT_COURSE_ID = "Input course_id from list courses for adding student: ";
+    private static final String MESSAGE_INPUT_STUDENT_ID = "Input student_id for add to course: ";
+    private static final String MASK_MESSAGE_ADD_STUDENT_COURSE = "Student %d added to course %d";
 
     private CourseService courseService;
     private StudentService studentService;
@@ -25,17 +27,17 @@ public class AddStudentToCourseMenuItem extends MenuItem {
 
     @Override
     public void execute() {
-        System.out.print("Input student_id for add to course: ");
+        System.out.print(MESSAGE_INPUT_STUDENT_ID);
         int studentId = Integer.parseInt(scanner.nextLine());
         List<Course> courses = courseService
                 .getCoursesMissingForStudent(studentId);
         courses.stream().forEach(System.out::println);
 
         System.out.print(
-                "Input course_id from list courses for adding student: ");
+                MESSAGE_INPUT_COURSE_ID);
         int courseId = Integer.parseInt(scanner.nextLine());
         studentService.addStudentToCourse(studentId, courseId);
-        System.out.println(String.format(MASK_ADD_STUDENT_COURSE_MESSAGE,
+        System.out.println(String.format(MASK_MESSAGE_ADD_STUDENT_COURSE,
                 studentId, courseId));
     }
 

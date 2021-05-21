@@ -19,6 +19,9 @@ import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 
 @ExtendWith(MockitoExtension.class)
 class StudentGeneratorTest {
+    private static final String STUDENT_FIRST_NAME = "Ivan";
+    private static final String STUDENT_LAST_NAME = "Ivanov";
+
     private StudentGenerator generator;
 
     @Mock
@@ -34,7 +37,8 @@ class StudentGeneratorTest {
     void test() throws DAOException {
         when(random.nextInt(anyInt())).thenReturn(0);
         List<Student> expectedStudents = new ArrayList<>();
-        expectedStudents.add(new Student(0, 0, "Ivan", "Ivanov"));
+        expectedStudents
+                .add(new Student(0, 0, STUDENT_FIRST_NAME, STUDENT_LAST_NAME));
         List<Student> actualStudent = generator.generate(1);
         assertEquals(expectedStudents, actualStudent);
 

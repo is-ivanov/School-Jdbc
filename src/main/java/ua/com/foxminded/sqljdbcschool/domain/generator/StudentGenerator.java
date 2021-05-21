@@ -10,6 +10,8 @@ import ua.com.foxminded.sqljdbcschool.entity.Student;
 import ua.com.foxminded.sqljdbcschool.reader.Reader;
 
 public class StudentGenerator implements Generator<Student> {
+    private static final int MIN_GROUP_SIZE = 19;
+    private static final int MAX_GROUP_SIZE = 30;
     private static final String FILENAME_FIRST_NAME_DATA = "student_first_names.txt";
     private static final String FILENAME_LAST_NAME_DATA = "student_last_names.txt";
     private Random random;
@@ -61,8 +63,10 @@ public class StudentGenerator implements Generator<Student> {
 
     private int[] calculateSizeGroups(int numberStudents) {
         int[] numberStudentInGroups = new int[10];
-        List<Integer> variantSizes = Stream.iterate(0, n -> n + 1).limit(31)
-                .filter(n -> n == 0 || n > 19).collect(Collectors.toList());
+        List<Integer> variantSizes = Stream.iterate(0, n -> n + 1)
+                .limit(MAX_GROUP_SIZE + 1l)
+                .filter(n -> n == 0 || n > MIN_GROUP_SIZE)
+                .collect(Collectors.toList());
         for (int i = 0; i < numberStudentInGroups.length; i++) {
             if (numberStudents > 10) {
                 numberStudentInGroups[i] = variantSizes

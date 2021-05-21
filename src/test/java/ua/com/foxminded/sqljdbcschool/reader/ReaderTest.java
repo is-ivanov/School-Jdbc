@@ -61,6 +61,10 @@ class ReaderTest {
     @Nested
     @DisplayName("test readTxtDataFiles method")
     class testreadTxtDataFiles {
+        private static final String FILENAME_STUDENTS_FIRST_NAMES = "student_first_names.txt";
+        private static final String FIRST_NAME_1 = "Ivan";
+        private static final String FIRST_NAME_2 = "Peter";
+        private static final String FIRST_NAME_3 = "John";
 
         @Test
         @DisplayName("test null input string have to return IllegalArgumentException")
@@ -82,9 +86,9 @@ class ReaderTest {
         @Test
         @DisplayName("test normal input student_first_names have to return expected List<String>")
         void testNormalInputTxtFile() {
-            String[] firstNames = {"Ivan", "Peter", "John"};
+            String[] firstNames = {FIRST_NAME_1, FIRST_NAME_2, FIRST_NAME_3};
             List<String> expectedFirstNames = Arrays.asList(firstNames);
-            List<String> actualFirstNames = reader.readTxtDataFiles("student_first_names.txt");
+            List<String> actualFirstNames = reader.readTxtDataFiles(FILENAME_STUDENTS_FIRST_NAMES);
             assertEquals(expectedFirstNames, actualFirstNames);
         }
 

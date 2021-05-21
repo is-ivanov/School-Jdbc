@@ -9,7 +9,9 @@ import ua.com.foxminded.sqljdbcschool.entity.Course;
 
 @SuppressWarnings("java:S106")
 public class RemoveStudentFromCourseMenuItem extends MenuItem {
-    private static final String MASK_REMOVE_STUDENT_COURSE_MESSAGE = "Student %d deleted from course %d";
+    private static final String MESSAGE_INPUT_COURSE_ID = "Input course_id from list courses for removing student: ";
+    private static final String MESSAGE_INPUT_STUDENT_ID = "Input student_id for remove from course: ";
+    private static final String MASK_MESSAGE_REMOVE_STUDENT_COURSE = "Student %d deleted from course %d";
     
     private CourseService courseService;
     private StudentService studentService;
@@ -26,16 +28,16 @@ public class RemoveStudentFromCourseMenuItem extends MenuItem {
 
     @Override
     public void execute() {
-        System.out.print("Input student_id for remove from course: ");
+        System.out.print(MESSAGE_INPUT_STUDENT_ID);
         int studentId = Integer.parseInt(scanner.nextLine());
         List<Course> courses = courseService.getCoursesForStudent(studentId);
         courses.stream().forEach(System.out::println);
 
-        System.out.print("Input course_id from list courses for removing student: ");
+        System.out.print(MESSAGE_INPUT_COURSE_ID);
         int courseId = Integer.parseInt(scanner.nextLine());
         studentService.removeStudentFromCourse(studentId, courseId);
         System.out.println(
-                String.format(MASK_REMOVE_STUDENT_COURSE_MESSAGE,
+                String.format(MASK_MESSAGE_REMOVE_STUDENT_COURSE,
                         studentId, courseId));
     }
 

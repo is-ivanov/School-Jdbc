@@ -9,7 +9,8 @@ import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 import ua.com.foxminded.sqljdbcschool.exception.DomainException;
 
 public class CourseService {
-    private static final String MESSAGE_MASK_EXCEPTION = "Don't save course %s in base";
+    private static final String MASK_MESSAGE_ADD_EXCEPTION = "Don't save course %s in base";
+    private static final String MESSAGE_GET_EXCEPTION = "Can't get courses";
 
     private CourseDao courseDao;
     private Generator<Course> generator;
@@ -28,7 +29,7 @@ public class CourseService {
         try {
             return courseDao.getCoursesMissingForStudentId(studentId);
         } catch (DAOException e) {
-            throw new DomainException("Can't get courses", e);
+            throw new DomainException(MESSAGE_GET_EXCEPTION, e);
         }
     }
 
@@ -36,7 +37,7 @@ public class CourseService {
         try {
             return courseDao.getCoursesForStudentId(studentId);
         } catch (DAOException e) {
-            throw new DomainException("Can't get courses", e);
+            throw new DomainException(MESSAGE_GET_EXCEPTION, e);
         }
     }
 
@@ -45,7 +46,7 @@ public class CourseService {
             courseDao.add(course);
         } catch (DAOException e) {
             throw new DomainException(
-                    String.format(MESSAGE_MASK_EXCEPTION, course), e);
+                    String.format(MASK_MESSAGE_ADD_EXCEPTION, course), e);
         }
     }
 }

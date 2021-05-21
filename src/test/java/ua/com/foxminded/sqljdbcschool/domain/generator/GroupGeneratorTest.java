@@ -17,7 +17,7 @@ import ua.com.foxminded.sqljdbcschool.exception.DAOException;
 
 @ExtendWith(MockitoExtension.class)
 class GroupGeneratorTest {
-    private static final String TEST_GROUP_NAME = "-10";
+    private static final String TEST_GROUP_NAME = "-00";
     private GroupGenerator groupGenerator;
 
     @Mock

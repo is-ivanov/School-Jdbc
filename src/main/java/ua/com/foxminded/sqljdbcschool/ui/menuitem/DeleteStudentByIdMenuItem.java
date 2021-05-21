@@ -7,7 +7,7 @@ import ua.com.foxminded.sqljdbcschool.domain.service.StudentService;
 @SuppressWarnings("java:S106")
 public class DeleteStudentByIdMenuItem extends MenuItem {
     private static final String MESSAGE_INPUT_STUDENT_ID = "Input student_id for deleting: ";
-    private static final String MASK_DELETE_STUDENT_MESSAGE = "Student with id %d is deleted";
+    private static final String MASK_MESSAGE_DELETE_STUDENT = "Student with id %d is deleted";
     private static final String MESSAGE_EXCEPTION_NOT_NUMBER = "You inputted not a number. Please input number ";
     
     private StudentService service;
@@ -25,7 +25,7 @@ public class DeleteStudentByIdMenuItem extends MenuItem {
         int studentId = inputStudentId();
         service.deleteById(studentId);
         System.out
-                .println(String.format(MASK_DELETE_STUDENT_MESSAGE, studentId));
+                .println(String.format(MASK_MESSAGE_DELETE_STUDENT, studentId));
     }
 
     private int inputStudentId() {
