@@ -7,7 +7,9 @@ import java.util.Random;
 import ua.com.foxminded.sqljdbcschool.entity.Group;
 
 public class GroupGenerator implements Generator<Group> {
-    private static final String GROUP_DELIMITER = "-";
+    private static final String FORMAT_MASK = "%s-%02d";
+    private static final int NUMBER_CHAR_A = 65;
+    private static final int NUMBER_CHAR_Z = 90;
 
     private Random random;
 
@@ -25,17 +27,14 @@ public class GroupGenerator implements Generator<Group> {
     }
 
     private String generateName() {
-        int leftLimit = 65;
-        int rightLimit = 90;
         int targetStringLength = 2;
 
-        String leftPartName = random.ints(leftLimit, rightLimit + 1)
+        String leftPartName = random.ints(NUMBER_CHAR_A, NUMBER_CHAR_Z + 1)
                 .limit(targetStringLength).collect(StringBuilder::new,
                         StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
-        int rightPartName = random.nextInt(90) + 10;
+        int rightPartName = random.nextInt(101);
 
-        return leftPartName + GROUP_DELIMITER + rightPartName;
+        return String.format(FORMAT_MASK, leftPartName, rightPartName);
     }
-
 }

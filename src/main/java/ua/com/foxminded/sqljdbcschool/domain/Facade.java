@@ -38,9 +38,9 @@ public class Facade {
     }
 
     public void workWithBase() {
-        MenuStarter men = new MenuStarter(groupService, studentService,
+        MenuStarter menu = new MenuStarter(groupService, studentService,
                 courseService);
-        men.startMenu();
+        menu.startMenu();
     }
 
     private void createTables() {
