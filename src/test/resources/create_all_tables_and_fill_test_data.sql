@@ -45,9 +45,7 @@ insert into groups (group_name) values ('XI-12');
 
 insert into students (group_id, first_name, last_name) values (1, 'Wilmette', 'Sambles');
 insert into students (group_id, first_name, last_name) values (3, 'Kalinda', 'Reicharz');
-insert into students (group_id, first_name, last_name) values (2, 'Valencia', 'Templeton');
-insert into students (group_id, first_name, last_name) values (2, 'Alaster', 'Hadwin');
-insert into students (group_id, first_name, last_name) values (1, 'Mayor', 'Anespie');
+
 
 insert into courses (course_name, course_description) values ('math', 'course of Mathematics');
 insert into courses (course_name, course_description) values ('biology', 'course of Biology');
@@ -55,5 +53,4 @@ insert into courses (course_name, course_description) values ('biology', 'course
 insert into students_courses (student_id, course_id) values (1, 1);
 insert into students_courses (student_id, course_id) values (1, 2);
 insert into students_courses (student_id, course_id) values (2, 2);
-insert into students_courses (student_id, course_id) values (4, 1);
-insert into students_courses (student_id, course_id) values (5, 2);
+

@@ -30,18 +30,12 @@ class StudentDaoImplTest {
     private StudentDaoImpl studentDao;
     private Student studentId1;
     private Student studentId2;
-    private Student studentId3;
-    private Student studentId4;
-    private Student studentId5;
+    private List<Student> expectedStudents;
 
     @BeforeEach
     void setUp() throws Exception {
         studentDao = new StudentDaoImpl();
-        studentId1 = new Student(1, 1, "Wilmette", "Sambles");
-        studentId2 = new Student(2, 3, "Kalinda", "Reicharz");
-        studentId3 = new Student(3, 2, "Valencia", "Templeton");
-        studentId4 = new Student(4, 2, "Alaster", "Hadwin");
-        studentId5 = new Student(5, 1, "Mayor", "Anespie");
+        expectedStudents = generateTestStudents();
 
         try (Connection connection = ConnectionFactory.getConnection()) {
             SqlScriptRunner scriptRunner = new SqlScriptRunner(connection);
@@ -49,6 +43,15 @@ class StudentDaoImplTest {
         } catch (SQLException e) {
             throw new DAOException(e.getMessage());
         }
+    }
+    
+    List<Student> generateTestStudents () {
+        List<Student> result = new ArrayList<>();
+        studentId1 = new Student(1, 1, "Wilmette", "Sambles");
+        studentId2 = new Student(2, 3, "Kalinda", "Reicharz");
+        result.add(studentId1);
+        result.add(studentId2);
+        return result;
     }
 
     @AfterEach
@@ -65,12 +68,14 @@ class StudentDaoImplTest {
     @DisplayName("test 'add' method")
     class testAdd {
 
+        private static final int EXPECTED_STUDENT_ID = 3;
+
         @Test
-        @DisplayName("add student should create new record in testDB with id=6")
+        @DisplayName("add student should create new record in testDB with id=3")
         void testAddStudent() throws DAOException {
-            Student student = new Student(6, TEST_FIRST_NAME, TEST_LAST_NAME);
+            Student student = new Student(EXPECTED_STUDENT_ID, TEST_FIRST_NAME, TEST_LAST_NAME);
             studentDao.add(student);
-            assertEquals(student, studentDao.getById(6).get());
+            assertEquals(student, studentDao.getById(EXPECTED_STUDENT_ID).get());
         }
     }
 
@@ -99,14 +104,8 @@ class StudentDaoImplTest {
     class testGetAll {
 
         @Test
-        @DisplayName("get all students from base should return all 5 students")
+        @DisplayName("get all students from base should return all 2 students")
         void testGetAllStudents() throws DAOException {
-            List<Student> expectedStudents = new ArrayList<>();
-            expectedStudents.add(studentId1);
-            expectedStudents.add(studentId2);
-            expectedStudents.add(studentId3);
-            expectedStudents.add(studentId4);
-            expectedStudents.add(studentId5);
 
             assertEquals(expectedStudents, studentDao.getAll());
         }
@@ -150,7 +149,7 @@ class StudentDaoImplTest {
     @Nested
     @DisplayName("test 'addStudentCourse' method")
     class testAddStudentCourse {
-        private static final int STUDENT_ID = 3;
+        private static final int STUDENT_ID = 2;
 
         @Test
         @DisplayName("add student id=3 to course id=1 should create new record")
@@ -161,7 +160,7 @@ class StudentDaoImplTest {
             Student actualStudent = students.stream()
                     .filter(s -> s.getStudentId() == STUDENT_ID).findAny()
                     .orElse(null);
-            assertEquals(studentId3, actualStudent);
+            assertEquals(studentId2, actualStudent);
         }
     }
 
@@ -187,11 +186,10 @@ class StudentDaoImplTest {
     @DisplayName("test 'getStudentsWithCourseName' method")
     class testGetStudentsWithCourseName {
         @Test
-        @DisplayName("get students from course 'math' should return student id=1 and student id=4")
+        @DisplayName("get students from course 'math' should return student id=1")
         void testGetStudentsWithCourseMath() throws DAOException {
             List<Student> students = new ArrayList<>();
             students.add(studentId1);
-            students.add(studentId4);
 
             assertEquals(students,
                     studentDao.getStudentsWithCourseName(COURSE_ID1_NAME));
