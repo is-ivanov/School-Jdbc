@@ -30,12 +30,10 @@ class StudentDaoImplTest {
     private StudentDaoImpl studentDao;
     private Student studentId1;
     private Student studentId2;
-    private List<Student> expectedStudents;
 
     @BeforeEach
     void setUp() throws Exception {
         studentDao = new StudentDaoImpl();
-        expectedStudents = generateTestStudents();
 
         try (Connection connection = ConnectionFactory.getConnection()) {
             SqlScriptRunner scriptRunner = new SqlScriptRunner(connection);
@@ -45,14 +43,6 @@ class StudentDaoImplTest {
         }
     }
     
-    List<Student> generateTestStudents () {
-        List<Student> result = new ArrayList<>();
-        studentId1 = new Student(1, 1, "Wilmette", "Sambles");
-        studentId2 = new Student(2, 3, "Kalinda", "Reicharz");
-        result.add(studentId1);
-        result.add(studentId2);
-        return result;
-    }
 
     @AfterEach
     void tearDown() throws Exception {
@@ -106,8 +96,17 @@ class StudentDaoImplTest {
         @Test
         @DisplayName("get all students from base should return all 2 students")
         void testGetAllStudents() throws DAOException {
-
+            List<Student> expectedStudents = getStudentTestData();
             assertEquals(expectedStudents, studentDao.getAll());
+        }
+
+        List<Student> getStudentTestData () {
+            List<Student> result = new ArrayList<>();
+            studentId1 = new Student(1, 1, "Wilmette", "Sambles");
+            studentId2 = new Student(2, 3, "Kalinda", "Reicharz");
+            result.add(studentId1);
+            result.add(studentId2);
+            return result;
         }
     }
 
@@ -122,6 +121,7 @@ class StudentDaoImplTest {
             studentDao.update(newStudent);
             assertEquals(newStudent, studentDao.getById(1).get());
         }
+        
 
         @Test
         @DisplayName("update names student id=1 without groupId should write new names and getById(1) return new names")
